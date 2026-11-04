@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Autonodwell</title>
+<meta name="description" content="Autonodwell is a homebuilding platform connecting family budgets to custom home design, land, and financing in one process.">
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..800&family=Newsreader:ital,opsz,wght@0,6..72,300..500;1,6..72,300..500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: an architectural drawing set. Each page is a "sheet" with a title block; dark drafting-table ground, survey-stake orange as the single accent. */
+:root{
+  --ink:#0c0d0d;
+  --ink-2:#141616;
+  --line:rgba(233,231,225,.14);
+  --bone:#e9e7e1;
+  --mute:#8d918e;
+  --stake:#e8643a;
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --serif:"Newsreader",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --gutter:clamp(20px,4vw,56px);
+  color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--ink);color:var(--bone)}
+body{font-family:var(--display);font-variation-settings:"wdth" 100;font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;min-height:100%}
+a{color:inherit;text-decoration:none}
+img,svg{max-width:100%;display:block}
+:focus-visible{outline:2px solid var(--stake);outline-offset:3px}
+.skip{position:absolute;left:-9999px}.skip:focus{left:16px;top:16px;z-index:80;background:var(--stake);color:var(--ink);padding:8px 14px}
+.mono{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.wrap{padding-inline:var(--gutter);max-width:1440px;margin-inline:auto}
+h1,h2,h3{font-weight:600;text-wrap:balance;letter-spacing:-.02em}
+.display{font-variation-settings:"wdth" 118;font-weight:620;line-height:.95;letter-spacing:-.035em}
+.serif{font-family:var(--serif);font-weight:350;letter-spacing:-.01em}
+p{max-width:62ch}
+.lede{font-family:var(--serif);font-size:clamp(20px,2.1vw,26px);line-height:1.4;font-weight:330;color:var(--bone)}
+.dim{color:var(--mute)}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.06;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* ===== Header (Culiene: translate + background, 1100ms expo-out) ===== */
+header.site{position:fixed;inset:0 0 auto 0;z-index:50;height:80px;display:flex;align-items:center;
+  transition:translate 1100ms var(--ease),background-color 1100ms var(--ease),border-color 1100ms var(--ease);
+  background:transparent;border-bottom:1px solid transparent}
+header.site.solid{background:rgba(12,13,13,.92);backdrop-filter:blur(10px);border-bottom-color:var(--line)}
+header.site.hidden{translate:0 -100%}
+header.site.menu-open{background:var(--ink);translate:0 0;border-bottom-color:var(--line);transition-duration:300ms}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:24px;width:100%}
+.logo{display:flex;align-items:center;gap:12px;font-variation-settings:"wdth" 125;font-weight:700;letter-spacing:.14em;font-size:15px;text-transform:uppercase}
+.logo img{width:38px;height:36px;object-fit:contain}
+nav.primary ul{display:flex;gap:34px;list-style:none}
+nav.primary a{position:relative;font-size:15px;padding:8px 0;color:rgba(233,231,225,.85);transition:color .3s}
+nav.primary a:hover,nav.primary a[aria-current="page"]{color:var(--bone)}
+nav.primary a::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;background:var(--stake);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease)}
+nav.primary a[aria-current="page"]::after,nav.primary a:hover::after{transform:scaleX(1)}
+.cta{display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(232,100,58,.7);color:var(--stake);padding:11px 18px;font-size:14px;font-weight:560;transition:background .3s,color .3s}
+.cta:hover{background:var(--stake);color:var(--ink)}
+.cta.fill{background:var(--stake);color:var(--ink)}
+.cta.fill:hover{background:var(--bone);border-color:var(--bone)}
+.cta.ghost{border-color:var(--line);color:var(--bone)}
+.cta.ghost:hover{background:var(--bone);color:var(--ink)}
+.burger{display:none;width:44px;height:44px;border:1px solid rgba(233,231,225,.25);background:none;color:var(--bone);cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.burger span{display:block;width:20px;height:1px;background:currentColor;transition:transform .3s var(--ease)}
+.burger[aria-expanded="true"] span:first-child{transform:translateY(3.5px) rotate(45deg)}
+.burger[aria-expanded="true"] span:last-child{transform:translateY(-3.5px) rotate(-45deg)}
+
+/* ===== Mobile menu (Culiene: fixed below header, bg-ink, opacity 300ms, grain, big display links + descriptions) ===== */
+#mobile-menu{position:fixed;inset:80px 0 0 0;z-index:40;overflow-y:auto;background:var(--ink);opacity:0;pointer-events:none;transition:opacity 300ms ease}
+#mobile-menu.open{opacity:1;pointer-events:auto}
+#mobile-menu nav{position:relative;padding:40px 24px 48px}
+#mobile-menu ul{list-style:none;display:grid;gap:28px}
+#mobile-menu a.item{display:block}
+#mobile-menu .t{display:flex;align-items:baseline;gap:14px;font-size:36px;font-variation-settings:"wdth" 112;font-weight:560;letter-spacing:-.03em;line-height:1.05}
+#mobile-menu .t i{font-style:normal;font-family:var(--mono);font-size:11px;color:var(--stake);letter-spacing:.1em}
+#mobile-menu .s{display:block;margin-top:4px;font-size:14.5px;color:rgba(233,231,225,.6)}
+#mobile-menu a.item[aria-current="page"] .t{color:var(--stake)}
+#mobile-menu .foot{margin-top:40px;display:grid;gap:16px}
+@media (max-width:1023px){nav.primary,header .cta.head{display:none}.burger{display:flex}}
+html.lock{overflow:hidden}
+
+/* ===== Page transitions ===== */
+main{min-height:100svh}
+.page{display:none}
+.page.active{display:block}
+.page.enter .rise{animation:rise 1100ms var(--ease) both}
+.page.enter .rise:nth-child(2){animation-delay:70ms}
+.page.enter .rise:nth-child(3){animation-delay:140ms}
+.page.enter .rise:nth-child(4){animation-delay:210ms}
+.page.enter .rise:nth-child(5){animation-delay:280ms}
+.page.leave{animation:leave 260ms ease both}
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+@keyframes leave{to{opacity:0}}
+.wipe{position:fixed;inset:0;z-index:45;background:var(--ink);pointer-events:none;opacity:0;transition:opacity 260ms ease}
+.wipe.on{opacity:1}
+
+/* ===== Sections ===== */
+section{position:relative}
+.hero{padding-top:150px;padding-bottom:72px;border-bottom:1px solid var(--line);overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(32px,5vw,80px);align-items:end}
+.hero h1{font-size:clamp(44px,6.6vw,104px);margin:20px 0 28px}
+.hero h1 em{font-family:var(--serif);font-style:italic;font-weight:300;letter-spacing:-.02em;font-variation-settings:normal}
+.hero .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px}
+.status{display:inline-flex;align-items:center;gap:10px}
+.status::before{content:"";width:7px;height:7px;background:var(--stake);border-radius:50%;box-shadow:0 0 0 4px rgba(232,100,58,.15)}
+.sheet{border:1px solid var(--line);background:var(--ink-2);position:relative}
+.sheet .plan{padding:28px 22px 10px}
+.titleblock{display:grid;grid-template-columns:1fr 1fr 1fr auto;border-top:1px solid var(--line)}
+.titleblock div{padding:10px 14px;border-right:1px solid var(--line)}
+.titleblock div:last-child{border-right:0}
+.titleblock b{display:block;font-family:var(--mono);font-weight:500;font-size:13px;color:var(--bone);letter-spacing:.04em;text-transform:none}
+.plan svg text{font-family:var(--mono);fill:var(--mute);font-size:8.5px;letter-spacing:.06em}
+.plan svg .lbl{fill:var(--bone);font-size:9px}
+
+.band{padding-block:clamp(72px,10vw,140px);border-bottom:1px solid var(--line)}
+.sec-head{display:grid;grid-template-columns:200px minmax(0,1fr);gap:32px;margin-bottom:56px}
+.sec-head h2{font-size:clamp(34px,4.4vw,64px);line-height:1;font-variation-settings:"wdth" 112}
+.cols-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--line)}
+.cols-3>div{padding:32px 28px 8px 0;border-right:1px solid var(--line)}
+.cols-3>div+div{padding-left:28px}
+.cols-3>div:last-child{border-right:0}
+.cols-3 h3{font-size:24px;margin:18px 0 12px;font-variation-settings:"wdth" 108}
+.cols-3 p{color:rgba(233,231,225,.72)}
+
+.shift{display:grid;gap:0;border-top:1px solid var(--line)}
+.shift div{display:grid;grid-template-columns:200px 1fr 1fr;gap:32px;padding:22px 0;border-bottom:1px solid var(--line);align-items:baseline}
+.shift .from{color:var(--mute);text-decoration:line-through;text-decoration-color:rgba(232,100,58,.6)}
+.shift .to{font-size:20px}
+
+.quote{font-family:var(--serif);font-size:clamp(30px,3.8vw,56px);line-height:1.12;font-weight:300;letter-spacing:-.02em;max-width:22ch}
+.quote em{color:var(--stake);font-style:italic}
+
+/* Journey */
+.journey{list-style:none;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border-top:1px solid var(--line)}
+.journey li{padding:26px 18px 30px 0;border-right:1px solid var(--line);position:relative}
+.journey li+li{padding-left:18px}
+.journey li:last-child{border-right:0}
+.journey .n{font-family:var(--mono);color:var(--stake);font-size:12px}
+.journey h3{font-size:22px;letter-spacing:.02em;text-transform:uppercase;font-variation-settings:"wdth" 120;margin:14px 0 10px}
+.journey q{display:block;font-family:var(--serif);font-style:italic;font-size:17px;line-height:1.35;color:var(--bone);margin-bottom:14px;quotes:"\201C" "\201D"}
+.journey p{font-size:14px;color:var(--mute)}
+
+.stack{display:grid;gap:0;border-top:1px solid var(--line)}
+.stack .row{display:grid;grid-template-columns:200px 1fr 220px;gap:32px;padding:20px 0;border-bottom:1px solid var(--line);align-items:center}
+.stack .row h3{font-size:20px;font-variation-settings:"wdth" 108}
+.stack .row p{color:rgba(233,231,225,.7);font-size:15.5px}
+.chip{justify-self:start;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:5px 9px;border:1px solid var(--line);color:var(--mute)}
+.chip.dev{border-color:rgba(232,100,58,.55);color:var(--stake)}
+.chip.next{border-color:rgba(233,231,225,.35);color:var(--bone)}
+
+.boundaries{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.boundaries div{border:1px dashed rgba(233,231,225,.22);padding:22px}
+.boundaries b{display:block;font-weight:560;margin-bottom:6px}
+.boundaries span{color:var(--mute);font-size:15px}
+
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line)}
+.stats>div{padding:28px 24px 28px 0;border-right:1px solid var(--line)}
+.stats>div+div{padding-left:24px}
+.stats>div:last-child{border-right:0}
+.big{font-size:clamp(40px,5vw,76px);font-variation-settings:"wdth" 112;font-weight:600;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums;margin:18px 0 10px}
+.big.hl{color:var(--stake)}
+.stats p{font-size:14.5px;color:var(--mute)}
+.bars{margin-top:48px;display:grid;gap:14px}
+.barrow{display:grid;grid-template-columns:200px 1fr 90px;gap:20px;align-items:center;font-size:14px}
+.barrow .track{height:10px;background:rgba(233,231,225,.07);position:relative}
+.barrow .fill{position:absolute;inset:0 auto 0 0;background:var(--bone)}
+.barrow .fill.s{background:var(--stake)}
+.barrow .v{font-family:var(--mono);text-align:right;font-variant-numeric:tabular-nums}
+.source{margin-top:28px;font-size:13px;color:var(--mute);max-width:80ch}
+
+/* Partner */
+.paths{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.path{border:1px solid var(--line);padding:28px;background:var(--ink-2);display:flex;flex-direction:column;gap:12px}
+.path h3{font-size:24px;font-variation-settings:"wdth" 110}
+.path p{color:rgba(233,231,225,.72);font-size:15.5px}
+.path .msg{font-family:var(--serif);font-style:italic;font-size:18px;color:var(--bone);border-left:2px solid var(--stake);padding-left:14px;margin-top:auto}
+form.inquiry{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:8px}
+form.inquiry .full{grid-column:1/-1}
+label{display:grid;gap:8px;font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+input,select,textarea{font:inherit;font-family:var(--display);font-size:16px;text-transform:none;letter-spacing:0;color:var(--bone);background:transparent;border:0;border-bottom:1px solid rgba(233,231,225,.3);padding:10px 0;border-radius:0}
+select option{background:var(--ink-2)}
+textarea{min-height:110px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-bottom-color:var(--stake)}
+.note{font-size:14px;color:var(--mute)}
+.formmsg{grid-column:1/-1;font-size:15px;color:var(--bone);border:1px solid rgba(232,100,58,.5);padding:14px 16px;display:none}
+.formmsg.show{display:block}
+
+/* Footer */
+footer{position:relative;overflow:hidden;background:var(--ink-2);padding-block:72px 40px}
+.foot-top{display:grid;grid-template-columns:minmax(0,1.4fr) repeat(2,minmax(0,1fr));gap:40px;padding-bottom:56px;border-bottom:1px solid var(--line)}
+.foot-top h2{font-size:clamp(30px,3.4vw,48px);line-height:1;font-variation-settings:"wdth" 115;max-width:14ch}
+.foot-top ul{list-style:none;display:grid;gap:10px;margin-top:16px}
+.foot-top a:hover{color:var(--stake)}
+.legal{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;padding-top:28px;font-size:13px;color:var(--mute)}
+.legal p{max-width:90ch}
+
+
+
+/* ===== Hero background video ===== */
+.hero-video{min-height:min(100svh,920px);display:flex;align-items:flex-end;isolation:isolate}
+.hero-video .hero-grid{grid-template-columns:minmax(0,1fr);width:100%}
+.hero-video .hero-grid>div{max-width:820px}
+.bgv{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;background:var(--ink)}
+.bgv-shade{position:absolute;inset:0;z-index:-1;background:
+  linear-gradient(90deg,rgba(12,13,13,.88) 0%,rgba(12,13,13,.62) 38%,rgba(12,13,13,.18) 72%,rgba(12,13,13,.1) 100%),
+  linear-gradient(0deg,rgba(12,13,13,.92) 0%,rgba(12,13,13,0) 45%),
+  linear-gradient(180deg,rgba(12,13,13,.6) 0%,rgba(12,13,13,0) 22%)}
+.bgv-plan{position:absolute;z-index:-2;right:calc(var(--gutter) - 10px);top:50%;width:min(58vw,820px);transform:translateY(-44%);opacity:.42;transition:opacity .8s var(--ease)}
+.hero-video.playing .bgv-plan{opacity:0}
+.bgv{opacity:0;transition:opacity 1.2s var(--ease)}
+.hero-video.playing .bgv{opacity:1}
+.bgv-label{opacity:0;transition:opacity .8s}.hero-video.playing .bgv-label{opacity:1}
+@media (max-width:1023px){.bgv-plan{width:110vw;right:-20vw;top:30%;opacity:.22}}
+.bgv-label{position:absolute;right:var(--gutter);bottom:28px;font-size:10.5px;color:rgba(233,231,225,.55)}
+@media (max-width:720px){.bgv-shade{background:linear-gradient(0deg,rgba(12,13,13,.95) 0%,rgba(12,13,13,.7) 50%,rgba(12,13,13,.35) 100%)}.bgv-label{bottom:auto;top:92px}}
+@media (prefers-reduced-motion:reduce){.bgv{display:none}}
+
+/* ===== Pinned section 01: fixed stage, scroll steps through four frames ===== */
+.pin{height:400svh;border-bottom:1px solid var(--line)}
+.pin-stage{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;align-items:center}
+.pin-grid{position:relative;width:100%;display:grid;grid-template-columns:240px minmax(0,1fr);gap:clamp(32px,6vw,96px);align-items:center}
+.pin-rail{list-style:none;display:grid;gap:4px;position:relative;padding-left:18px}
+.pin-rail button{all:unset;cursor:pointer;display:flex;gap:14px;align-items:baseline;padding:10px 0;font-size:15px;color:var(--mute);transition:color .5s var(--ease)}
+.pin-rail button i{font-style:normal;font-family:var(--mono);font-size:11px;letter-spacing:.1em}
+.pin-rail button:hover{color:var(--bone)}
+.pin-rail button:focus-visible{outline:2px solid var(--stake);outline-offset:4px}
+.pin-rail li.on button{color:var(--bone)}
+.pin-rail li.on button i{color:var(--stake)}
+.pin-rail .meter{position:absolute;left:0;top:10px;bottom:10px;width:1px;background:var(--line)}
+.pin-rail .meter span{position:absolute;left:0;top:0;width:1px;height:0;background:var(--stake)}
+.pin-frames{display:grid;min-height:min(56svh,460px);align-items:center}
+.frame{grid-area:1/1;display:flex;flex-direction:column;align-items:flex-start;gap:22px;opacity:0;transform:translateY(40px);pointer-events:none;
+  transition:opacity 700ms var(--ease),transform 1100ms var(--ease)}
+.frame.past{transform:translateY(-40px)}
+.frame.on{opacity:1;transform:none;pointer-events:auto}
+.frame h2{font-size:clamp(38px,5.6vw,88px);line-height:.98;font-variation-settings:"wdth" 114;max-width:16ch}
+.frame p{font-family:var(--serif);font-size:clamp(19px,1.9vw,24px);line-height:1.45;font-weight:330;color:rgba(233,231,225,.8);max-width:52ch}
+.frame .cta{margin-top:8px}
+.pin-count{position:absolute;right:var(--gutter);bottom:-12svh}
+.pin-count b{color:var(--bone);font-weight:500}
+@media (max-width:1023px){
+  .pin-grid{grid-template-columns:1fr;gap:28px;align-content:center}
+  .pin-rail{display:flex;gap:18px;padding:0 0 14px;overflow-x:auto;border-bottom:1px solid var(--line)}
+  .pin-rail button{padding:4px 0;font-size:13.5px;white-space:nowrap}
+  .pin-rail .meter{left:0;right:0;top:auto;bottom:-1px;width:auto;height:1px;background:none}
+  .pin-rail .meter span{height:1px;width:0}
+  .pin-frames{min-height:58svh;align-items:start}
+  .pin-count{position:static}
+}
+@media (max-width:1023px){
+  .hero-grid{grid-template-columns:1fr}
+  .sec-head{grid-template-columns:1fr;gap:14px}
+  .journey{grid-template-columns:1fr}
+  .journey li,.journey li+li{border-right:0;border-bottom:1px solid var(--line);padding:22px 0;display:grid;grid-template-columns:60px 1fr;column-gap:16px}
+  .journey li>*:not(.n){grid-column:2}
+  .journey .n{grid-row:1/span 3}
+  .journey h3{margin-top:0}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stats>div:nth-child(2){border-right:0}
+  .stats>div:nth-child(3){padding-left:0}
+  .stats>div:nth-child(n+3){border-top:1px solid var(--line)}
+  .foot-top{grid-template-columns:1fr 1fr}
+  .foot-top>div:first-child{grid-column:1/-1}
+}
+@media (max-width:720px){
+  body{font-size:16px}
+  .hero{padding-top:124px}
+  .cols-3,.boundaries,.paths{grid-template-columns:1fr}
+  .cols-3>div,.cols-3>div+div{padding:26px 0;border-right:0;border-bottom:1px solid var(--line)}
+  .shift div{grid-template-columns:1fr;gap:6px}
+  .stack .row{grid-template-columns:1fr;gap:8px}
+  .barrow{grid-template-columns:1fr 70px;gap:8px 14px}
+  .barrow>span:first-child{grid-column:1/-1}
+  form.inquiry{grid-template-columns:1fr}
+  .titleblock{grid-template-columns:1fr 1fr}
+  .titleblock div:nth-child(2){border-right:0}
+  .titleblock div:nth-child(n+3){border-top:1px solid var(--line)}
+  .stats{grid-template-columns:1fr}
+  .stats>div,.stats>div+div{padding:24px 0;border-right:0;border-top:1px solid var(--line)}
+  .foot-top{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site" id="hdr">
+  <div class="wrap bar">
+    <a class="logo" href="#home" data-route="home" aria-label="Autonodwell home">
+      <img src="logo.png" alt="" width="38" height="36">
+      Autonodwell
+    </a>
+    <nav class="primary" aria-label="Primary">
+      <ul>
+        <li><a href="#home" data-route="home">Home</a></li>
+        <li><a href="#how-it-works" data-route="how-it-works">How it works</a></li>
+        <li><a href="#vision" data-route="vision">The vision</a></li>
+        <li><a href="#partner" data-route="partner">Partner with us</a></li>
+      </ul>
+    </nav>
+    <a class="cta head" href="#partner" data-route="partner">Try It Free</a>
+    <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu"><span></span><span></span></button>
+  </div>
+</header>
+
+<div id="mobile-menu" aria-hidden="true">
+  <div class="grain" aria-hidden="true"></div>
+  <nav aria-label="Mobile">
+    <ul>
+      <li><a class="item" href="#home" data-route="home" tabindex="-1"><span class="t"><i>01</i>Home</span><span class="s">Beautiful homes. A real path to ownership.</span></a></li>
+      <li><a class="item" href="#how-it-works" data-route="how-it-works" tabindex="-1"><span class="t"><i>02</i>How it works</span><span class="s">From dreaming to keys, in seven steps</span></a></li>
+      <li><a class="item" href="#vision" data-route="vision" tabindex="-1"><span class="t"><i>03</i>The vision</span><span class="s">Why homes outran wages, and what we are building</span></a></li>
+      <li><a class="item" href="#partner" data-route="partner" tabindex="-1"><span class="t"><i>04</i>Partner with us</span><span class="s">Homeowners, investors, lenders, builders, landowners</span></a></li>
+    </ul>
+    <div class="foot">
+      <a class="cta fill" href="#partner" data-route="partner" tabindex="-1">Try It Free</a>
+      <span class="mono">Pre-commercial · In development</span>
+    </div>
+  </nav>
+</div>
+
+<div class="wipe" id="wipe" aria-hidden="true"></div>
+
+<main id="main">
+
+<!-- ================= HOME ================= -->
+<article class="page" id="page-home" data-title="Autonodwell">
+  <section class="hero hero-video">
+    <video class="bgv" id="bgv" poster="hero-poster.jpg" autoplay muted loop playsinline preload="auto" aria-hidden="true" tabindex="-1">
+      <source src="hero.mp4" type="video/mp4">
+    </video>
+    <svg class="bgv-plan" viewBox="0 0 480 300" aria-hidden="true">
+      <g stroke="#e9e7e1" stroke-width="1" fill="none">
+        <rect x="20" y="30" width="440" height="250" stroke-width="2.4"/>
+        <line x1="150" y1="30" x2="150" y2="280" stroke-width="1.4"/>
+        <line x1="20" y1="155" x2="150" y2="155" stroke-width="1.4"/>
+        <line x1="230" y1="30" x2="230" y2="280" stroke-width="1.4"/>
+        <line x1="150" y1="110" x2="230" y2="110" stroke-width="1.4"/>
+        <line x1="150" y1="160" x2="230" y2="160" stroke-width="1.4"/>
+        <line x1="360" y1="30" x2="360" y2="280" stroke-width="1.4"/>
+        <line x1="360" y1="170" x2="460" y2="170" stroke-width="1.4"/>
+        <line x1="230" y1="120" x2="360" y2="120" stroke-dasharray="3 4" opacity=".5"/>
+        <path d="M150 196 A24 24 0 0 1 174 220" opacity=".6"/>
+        <path d="M360 196 A24 24 0 0 0 336 220" opacity=".6"/>
+        <path d="M180 280 A26 26 0 0 1 206 254" opacity=".6"/>
+      </g>
+      <g stroke="#e8643a" stroke-width="2.6">
+        <line x1="60" y1="30" x2="110" y2="30"/><line x1="60" y1="280" x2="110" y2="280"/>
+        <line x1="260" y1="30" x2="330" y2="30"/><line x1="260" y1="280" x2="330" y2="280"/>
+        <line x1="460" y1="70" x2="460" y2="130"/><line x1="20" y1="70" x2="20" y2="115"/>
+      </g>
+      <g stroke="#8d918e" stroke-width=".8">
+        <line x1="20" y1="14" x2="460" y2="14"/><line x1="472" y1="30" x2="472" y2="280"/>
+      </g>
+      <g font-family="IBM Plex Mono, monospace" font-size="9" fill="#e9e7e1" text-anchor="middle" letter-spacing=".06em">
+        <text x="85" y="95">BED 2</text><text x="85" y="221">BED 3</text><text x="190" y="72">BATH</text>
+        <text x="295" y="78">KITCHEN</text><text x="295" y="203">LIVING / DINING</text><text x="410" y="103">PRIMARY</text><text x="410" y="230">BATH 2</text>
+      </g>
+    </svg>
+    <div class="bgv-shade" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
+    <span class="bgv-label mono" aria-hidden="true">Concept visualization</span>
+    <div class="wrap hero-grid">
+      <div>
+        <h1 class="display rise">Making the American Dream <em>buildable</em> again.</h1>
+        <p class="lede rise">Autonodwell is a homebuilding platform connecting family budgets to custom home design, land, and financing in one seamless process.</p>
+        <div class="actions rise">
+          <a class="cta fill" href="#partner" data-route="partner">Try It Free</a>
+          <a class="cta ghost" href="#how-it-works" data-route="how-it-works">See how it works</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pin" id="problem" aria-label="The problem">
+    <div class="pin-stage">
+      <div class="grain" aria-hidden="true"></div>
+      <div class="wrap pin-grid">
+        <ol class="pin-rail" aria-label="Section 01 steps">
+          <li class="on"><button type="button" data-step="0"><i>01</i>The problem</button></li>
+          <li><button type="button" data-step="1"><i>02</i>Fragmented</button></li>
+          <li><button type="button" data-step="2"><i>03</i>Late surprises</button></li>
+          <li><button type="button" data-step="3"><i>04</i>Starter homes</button></li>
+          <li class="meter" aria-hidden="true"><span id="pin-meter"></span></li>
+        </ol>
+        <div class="pin-frames">
+          <div class="frame on" aria-hidden="false">
+            <span class="mono">01 · The problem</span>
+            <h2>Owning a home feels out of reach. Building one feels even harder.</h2>
+            <p>Rising costs, finding land, designing a home and securing financing. It’s hard to know where to begin, or what you can actually afford.</p>
+          </div>
+          <div class="frame" aria-hidden="true">
+            <span class="mono">02 · Fragmented</span>
+            <h2>Too many specialists, no one with the whole picture.</h2>
+            <p>Land, zoning, architects, engineers, contractors, suppliers, lenders, permits and utilities. A family can work through all of them before learning whether the home is achievable.</p>
+          </div>
+          <div class="frame" aria-hidden="true">
+            <span class="mono">03 · Late surprises</span>
+            <h2>Cost arrives after you’ve fallen in love.</h2>
+            <p>Projects die when the numbers finally catch up with the drawings. Affordability should shape the design from the beginning, not show up at the end.</p>
+          </div>
+          <div class="frame" aria-hidden="true">
+            <span class="mono">04 · Starter homes</span>
+            <h2>Attainable shouldn’t mean stripped down.</h2>
+            <p>Explore a home you love, make it your own, see what it might cost, and understand the steps from blueprint to keys. One connected experience, with the assumptions shown.</p>
+            <a class="cta fill" href="#partner" data-route="partner" tabindex="-1">Try It Free</a>
+          </div>
+        </div>
+        <span class="pin-count mono" aria-hidden="true"><b id="pin-n">01</b> / 04</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="mono">05 · Three stories</span>
+        <h2>One company. Three connected stories.</h2>
+      </div>
+      <div class="cols-3">
+        <div>
+          <span class="mono">For homeowners</span>
+          <h3>A beautiful home should feel possible to build.</h3>
+          <p>Explore homes, personalize a short list of finishes, estimate affordability, and start to understand the steps toward ownership.</p>
+        </div>
+        <div>
+          <span class="mono">The technology</span>
+          <h3>From buildable land to financeable homes.</h3>
+          <p>Site constraints, zoning feasibility, design, BIM-derived quantities, material costs, permitting, delivery and lender-relevant data, linked in one model.</p>
+        </div>
+        <div>
+          <span class="mono">For investors</span>
+          <h3>Validate the transaction before scaling production.</h3>
+          <p>Software workflows, delivery economics, customer demand and financing relationships come first. A factory comes later, if the demand supports it.</p>
+        </div>
+      </div>
+      <div class="actions" style="display:flex;flex-wrap:wrap;gap:12px;margin-top:48px">
+        <a class="cta" href="#vision" data-route="vision">Read the vision</a>
+        <a class="cta ghost" href="#partner" data-route="partner">Partner with us</a>
+      </div>
+    </div>
+  </section>
+</article>
+
+<!-- ================= HOW IT WORKS ================= -->
+<article class="page" id="page-how-it-works" data-title="How it works · Autonodwell">
+  <section class="hero">
+    <div class="grain" aria-hidden="true"></div>
+    <div class="wrap">
+      <span class="mono rise">Sheet A-100 · The customer journey</span>
+      <h1 class="display rise" style="max-width:14ch">From dreaming to keys.</h1>
+      <p class="lede rise">A complex process should feel navigable without hiding its complexity. Here is the path we are designing, step by step.</p>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <ol class="journey">
+        <li><span class="n">01</span><h3>Dream</h3><q>Show me what’s possible.</q><p>Explore a curated home collection for free, with no commitment.</p></li>
+        <li><span class="n">02</span><h3>Discover</h3><q>Could this work for my budget and location?</q><p>Property constraints, location needs and realistic options, without the overwhelm.</p></li>
+        <li><span class="n">03</span><h3>Understand</h3><q>What would this actually cost me?</q><p>Modeled purchase cost, monthly payment, financing assumptions and cash needed.</p></li>
+        <li><span class="n">04</span><h3>Qualify</h3><q>Is there a credible path to financing?</q><p>Connect with participating lenders. A calculator is not a credit decision.</p></li>
+        <li><span class="n">05</span><h3>Reserve</h3><q>I’m ready to take a real step.</q><p>Meet an Autonodwell consultant, once pricing, geography and terms are set.</p></li>
+        <li><span class="n">06</span><h3>Build</h3><q>Show me what’s happening.</q><p>Clear updates on design, approvals, procurement, construction and delivery.</p></li>
+        <li><span class="n">07</span><h3>Belong</h3><q>Help me take care of my home.</q><p>Home records, maintenance and support continue after closing.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="mono">What you’ll find</span>
+        <h2>The free Dream-Home Experience</h2>
+      </div>
+      <div class="stack">
+        <div class="row"><h3>Curated designs</h3><p>A starter-home collection led by a three-bedroom, two-bath detached home of about 1,100 square feet.</p><span class="chip dev">In development</span></div>
+        <div class="row"><h3>Make it yours</h3><p>A small, considered set of finishes and material options. Each choice maps to a real assembly and its cost.</p><span class="chip dev">In development</span></div>
+        <div class="row"><h3>Make it possible</h3><p>Enter a comfortable monthly budget and a preferred location. See purchase price and full monthly ownership cost side by side.</p><span class="chip dev">In development</span></div>
+        <div class="row"><h3>Find your place</h3><p>What makes a site eligible, and qualified land opportunities where they exist. No fictional listings.</p><span class="chip next">Planned</span></div>
+        <div class="row"><h3>See your path home</h3><p>Design, site, financing, approvals, construction, keys. Each with estimated costs, open questions and next actions.</p><span class="chip next">Planned</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="mono">Straight talk</span>
+        <h2>What an estimate is, and isn’t</h2>
+      </div>
+      <div class="boundaries">
+        <div><b>A concept image</b><span>is not a construction-ready plan.</span></div>
+        <div><b>A preliminary affordability estimate</b><span>is not mortgage preapproval.</span></div>
+        <div><b>An early price estimate</b><span>is not a binding construction quote.</span></div>
+      </div>
+      <p class="note" style="margin-top:28px">We show the assumptions, costs, exclusions and remaining uncertainties, so “affordable” is something you can check.</p>
+    </div>
+  </section>
+</article>
+
+<!-- ================= VISION ================= -->
+<article class="page" id="page-vision" data-title="The vision · Autonodwell">
+  <section class="hero">
+    <div class="grain" aria-hidden="true"></div>
+    <div class="wrap">
+      <span class="mono rise">Sheet A-200 · The vision</span>
+      <h1 class="display rise" style="max-width:16ch">We want Americans to dream again.</h1>
+      <p class="lede rise">Better design, better information, better coordination and more disciplined delivery can create a clearer path between the home people imagine and the home they can actually own. Autonodwell exists to build that path.</p>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="mono">The gap</span>
+        <h2>Homes outran wages.</h2>
+      </div>
+      <div class="stats">
+        <div><span class="mono">1970 new home, in 2025 $</span><div class="big">$220,700</div><p>Average new-home price, adjusted for inflation.</p></div>
+        <div><span class="mono">2025 new home</span><div class="big hl">$523,800</div><p>Average new-home price, latest complete annual data.</p></div>
+        <div><span class="mono">If prices tracked wages</span><div class="big">$313,000</div><p>2025 price at the 1970 home-price-to-wage ratio.</p></div>
+        <div><span class="mono">Like-for-like</span><div class="big hl">≈60%</div><p>More for a comparable new home than in 1970, after inflation.</p></div>
+      </div>
+      <div class="bars" role="img" aria-label="Average new-home price: $220,700 in 1970 (2025 dollars), $313,000 if tracking wages, $523,800 in 2025">
+        <div class="barrow"><span class="mono">1970 (2025 $)</span><span class="track"><span class="fill" style="width:42.1%"></span></span><span class="v">$220.7k</span></div>
+        <div class="barrow"><span class="mono">Tracking wages</span><span class="track"><span class="fill" style="width:59.8%"></span></span><span class="v">$313.0k</span></div>
+        <div class="barrow"><span class="mono">2025 actual</span><span class="track"><span class="fill s" style="width:100%"></span></span><span class="v">$523.8k</span></div>
+      </div>
+      <p class="source">Sources: Census/HUD new-home prices; Social Security average wage index; CPI inflation adjustment; Census constant-quality price index. Average wage rose from $51,300 (1970, in 2025 dollars) to $72,800. Headline prices include larger homes: median new-home size grew from 1,525 sf (1973) to 2,142 sf (2025).</p>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="mono">Why</span>
+        <h2>Three reasons, none of them simple</h2>
+      </div>
+      <div class="cols-3">
+        <div><span class="mono">Supply</span><h3>Building fell behind demand</h3><p>Underbuilding, restrictive zoning, minimum lot sizes and longer permitting limited new housing.</p></div>
+        <div><span class="mono">Cost</span><h3>Building got more expensive</h3><p>Construction has shown no long-run productivity growth since 1987, while land, labor and material costs rose.</p></div>
+        <div><span class="mono">Size</span><h3>New homes grew 40% larger</h3><p>Part of the increase buys more space. The starter home most families need largely stopped being built.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="mono">Beliefs</span>
+        <h2>What we’re building on</h2>
+      </div>
+      <div class="stack">
+        <div class="row"><h3>Start with the budget</h3><p>Design backward from what families can afford, not forward toward a surprise.</p><span class="mono">Design to cost</span></div>
+        <div class="row"><h3>Housing is a system</h3><p>Software, architecture, regulation, procurement, construction and financing have to work together.</p><span class="mono">Integrated</span></div>
+        <div class="row"><h3>Demand before capacity</h3><p>Manufacturing investment should follow a credible pipeline, repeatable products and proven delivery economics.</p><span class="mono">Software first</span></div>
+        <div class="row"><h3>Constraints are inputs</h3><p>Codes, structure, financing limits, materials and site conditions, understood early enough to shape better decisions.</p><span class="mono">Real constraints</span></div>
+        <div class="row"><h3>Ownership is long-term</h3><p>Maintenance, resilience, energy choices and replacement parts are part of what a home is worth.</p><span class="mono">After the keys</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="mono">Founder</span>
+        <div>
+          <p class="quote">“I don’t believe Americans stopped wanting homes. I believe we’ve made the path to owning one <em>unnecessarily difficult.</em>”</p>
+          <p class="lede" style="margin-top:28px">Sarah Sapone is an architect and housing technology operator with more than two decades in architecture and construction. She is building Autonodwell around one conviction: affordability requires redesigning the system that delivers homes, not only the homes themselves.</p>
+          <p class="mono" style="margin-top:20px">Founder &amp; CEO</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="mono">Where we are</span>
+        <h2>Ambitious about the future. Exact about the present.</h2>
+      </div>
+      <div class="stack">
+        <div class="row"><h3>Revit studio model</h3><p>A parametric building model as the source of design truth.</p><span class="chip dev">Development asset</span></div>
+        <div class="row"><h3>BIM-to-BOM</h3><p>Material quantity extraction and pricing exploration from the model.</p><span class="chip dev">Development asset</span></div>
+        <div class="row"><h3>Site feasibility compiler</h3><p>Early tooling to evaluate what a site allows.</p><span class="chip dev">Development asset</span></div>
+        <div class="row"><h3>Professional review</h3><p>Our early outputs have been reviewed by experienced development professionals.</p><span class="chip next">Feedback received</span></div>
+        <div class="row"><h3>Pilot 01</h3><p>Predict it, procure it, assemble it, measure it. A prototype home with predicted cost and schedule compared against actuals.</p><span class="chip">Next milestone</span></div>
+      </div>
+    </div>
+  </section>
+</article>
+
+<!-- ================= PARTNER ================= -->
+<article class="page" id="page-partner" data-title="Partner with us · Autonodwell">
+  <section class="hero">
+    <div class="grain" aria-hidden="true"></div>
+    <div class="wrap">
+      <span class="mono rise">Sheet A-300 · Partner with us</span>
+      <h1 class="display rise" style="max-width:15ch">Build the path with us.</h1>
+      <p class="lede rise">Homeownership depends on more than a floor plan. We’re looking for the households, capital, lenders, builders and landowners who want to help prove a better way.</p>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="paths">
+        <div class="path"><span class="mono">Future homeowners</span><h3>Try It Free</h3><p>Be first to explore the Dream-Home Experience and help shape the starter-home collection.</p><p class="msg">Beautiful homes. A real path to ownership.</p></div>
+        <div class="path"><span class="mono">Investors</span><h3>Request investor materials</h3><p>A capital-disciplined platform with milestone-based deployment, starting with the information, financing and delivery bottlenecks.</p><p class="msg">We’re starting with the bottlenecks, not with an oversized factory.</p></div>
+        <div class="path"><span class="mono">Lenders &amp; underwriters</span><h3>Shape the data package</h3><p>Help define what design, scope, cost and delivery information makes construction lending more transparent.</p><p class="msg">Better-organized project data, built with the people who underwrite it.</p></div>
+        <div class="path"><span class="mono">Builders, developers &amp; landowners</span><h3>Explore a pilot site</h3><p>Qualified projects, clear scopes and coordinated documentation. Tested on individual homes before larger programs.</p><p class="msg">Less ambiguity before work begins. Better coordination while it’s underway.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="mono">Get in touch</span>
+        <div>
+          <h2 style="font-size:clamp(30px,3.6vw,52px);margin-bottom:32px">Tell us who you are.</h2>
+          <form class="inquiry" id="inquiry" novalidate>
+            <label for="f-name">Name<input id="f-name" name="name" autocomplete="name" required></label>
+            <label for="f-email">Email<input id="f-email" name="email" type="email" autocomplete="email" required></label>
+            <label for="f-type" class="full">I’m interested as
+              <select id="f-type" name="type">
+                <option>Future homeowner: early access</option>
+                <option>Investor</option>
+                <option>Lender or underwriter</option>
+                <option>Builder or delivery partner</option>
+                <option>Developer or landowner</option>
+                <option>Other</option>
+              </select>
+            </label>
+            <label for="f-loc">Location or market<input id="f-loc" name="location" placeholder="City, state"></label>
+            <label for="f-org">Organization (optional)<input id="f-org" name="org" autocomplete="organization"></label>
+            <label for="f-msg" class="full">Message<textarea id="f-msg" name="message"></textarea></label>
+            <div class="full" style="display:flex;flex-wrap:wrap;gap:16px;align-items:center">
+              <button class="cta fill" type="submit" style="cursor:pointer;font:inherit;font-weight:560;font-size:14px">Send inquiry</button>
+              <span class="note">Joining early access is not a reservation, deposit or purchase commitment.</span>
+            </div>
+            <p class="formmsg" id="formmsg" role="status"></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</article>
+
+</main>
+
+<footer>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="foot-top">
+      <div>
+        <h2>Your home. Your future. Your way.</h2>
+        <p class="dim" style="margin-top:16px">Software before factories. Demand before capacity. Good design from day one.</p>
+      </div>
+      <div>
+        <span class="mono">Explore</span>
+        <ul>
+          <li><a href="#home" data-route="home">Home</a></li>
+          <li><a href="#how-it-works" data-route="how-it-works">How it works</a></li>
+          <li><a href="#vision" data-route="vision">The vision</a></li>
+          <li><a href="#partner" data-route="partner">Partner with us</a></li>
+        </ul>
+      </div>
+      <div>
+        <span class="mono">Company</span>
+        <ul>
+          <li><span class="dim">Privacy policy (in review)</span></li>
+          <li><span class="dim">Terms of use (in review)</span></li>
+          <li><span class="dim">Instagram</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal">
+      <span>© 2026 Autonodwell</span>
+      <p>Autonodwell is in pre-commercial development. Homes, prices, financing, sites and timelines shown are concepts and hypotheses, not offers. Nothing on this site is an offer to sell securities or a guarantee of financing, pricing or permits.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(() => {
+  const routes = ["home","how-it-works","vision","partner"];
+  const hdr = document.getElementById("hdr");
+  const burger = document.getElementById("burger");
+  const menu = document.getElementById("mobile-menu");
+  const wipe = document.getElementById("wipe");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let current = null, busy = false;
+
+  /* ---- Mobile menu (Culiene mobile behaviour) ---- */
+  const setMenu = open => {
+    burger.setAttribute("aria-expanded", String(open));
+    burger.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    menu.classList.toggle("open", open);
+    menu.setAttribute("aria-hidden", String(!open));
+    hdr.classList.toggle("menu-open", open);
+    document.documentElement.classList.toggle("lock", open);
+    menu.querySelectorAll("a").forEach(a => a.tabIndex = open ? 0 : -1);
+  };
+  burger.addEventListener("click", () => setMenu(burger.getAttribute("aria-expanded") !== "true"));
+  addEventListener("keydown", e => { if (e.key === "Escape" && menu.classList.contains("open")) { setMenu(false); burger.focus(); } });
+  matchMedia("(min-width:1024px)").addEventListener("change", e => { if (e.matches) setMenu(false); });
+
+  /* ---- Header: hide on scroll down, show on scroll up, solid after hero ---- */
+  let lastY = scrollY;
+  addEventListener("scroll", () => {
+    if (menu.classList.contains("open")) return;
+    const y = scrollY;
+    hdr.classList.toggle("solid", y > 40);
+    hdr.classList.toggle("hidden", y > 160 && y > lastY);
+    lastY = y;
+  }, { passive: true });
+
+  /* ---- Router + page transition ---- */
+  const show = (name, animate) => {
+    const next = document.getElementById("page-" + name);
+    document.querySelectorAll(".page").forEach(p => p.classList.remove("active","enter","leave"));
+    next.classList.add("active");
+    if (animate && !reduce) { void next.offsetWidth; next.classList.add("enter"); }
+    document.title = next.dataset.title;
+    document.querySelectorAll("[data-route]").forEach(a => {
+      if (a.closest("nav") && a.dataset.route === name) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current");
+    });
+    scrollTo(0,0); lastY = 0;
+    hdr.classList.remove("hidden","solid");
+    current = name;
+    const v = document.getElementById("bgv");
+    if (v) { if (name === "home" && !reduce) { const pr = v.play(); pr && pr.catch(() => {}); } else v.pause(); }
+    requestAnimationFrame(() => dispatchEvent(new Event("scroll")));
+  };
+
+  const go = name => {
+    if (!routes.includes(name)) name = "home";
+    if (name === current) { setMenu(false); scrollTo({top:0,behavior:reduce?"auto":"smooth"}); return; }
+    if (busy) return; busy = true;
+    const menuOpen = menu.classList.contains("open");
+    if (menuOpen || reduce) {
+      /* Mobile: swap the page underneath the open menu, then fade the menu away (300ms) */
+      show(name, true);
+      requestAnimationFrame(() => { setMenu(false); busy = false; });
+    } else {
+      const old = document.getElementById("page-" + current);
+      old && old.classList.add("leave");
+      wipe.classList.add("on");
+      setTimeout(() => { show(name, true); wipe.classList.remove("on"); busy = false; }, 260);
+    }
+    if (location.hash.slice(1) !== name) history.pushState(null, "", "#" + name);
+  };
+
+  document.addEventListener("click", e => {
+    const a = e.target.closest("a[data-route]");
+    if (!a || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    e.preventDefault(); go(a.dataset.route);
+  });
+  addEventListener("hashchange", () => { const n = location.hash.slice(1) || "home"; if (n !== current) go(n); });
+  addEventListener("popstate", () => { const n = location.hash.slice(1) || "home"; if (n !== current) go(n); });
+
+  show(routes.includes(location.hash.slice(1)) ? location.hash.slice(1) : "home", false);
+
+
+  /* ---- Hero video: fade in once frames are playing; floor plan shows until then ---- */
+  const bgv = document.getElementById("bgv");
+  if (bgv) bgv.addEventListener("playing", () => bgv.closest(".hero-video").classList.add("playing"), { once: true });
+
+  /* ---- Pinned section 01 ---- */
+  const pin = document.getElementById("problem");
+  const frames = [...pin.querySelectorAll(".frame")];
+  const railItems = [...pin.querySelectorAll(".pin-rail li:not(.meter)")];
+  const meter = document.getElementById("pin-meter"), pinN = document.getElementById("pin-n");
+  const vertical = matchMedia("(min-width:1024px)");
+  let step = -1;
+  const setStep = i => {
+    if (i === step) return; step = i;
+    frames.forEach((f, k) => {
+      f.classList.toggle("on", k === i); f.classList.toggle("past", k < i);
+      f.setAttribute("aria-hidden", String(k !== i));
+      f.querySelectorAll("a").forEach(a => a.tabIndex = k === i ? 0 : -1);
+    });
+    railItems.forEach((li, k) => li.classList.toggle("on", k === i));
+    pinN.textContent = "0" + (i + 1);
+    if (!vertical.matches) { const li = railItems[i], rail = li.parentElement; rail.scrollTo({ left: li.offsetLeft - 24, behavior: reduce ? "auto" : "smooth" }); }
+  };
+  const onPin = () => {
+    if (!pin.offsetParent) return;
+    const r = pin.getBoundingClientRect();
+    const span = r.height - innerHeight;
+    const p = Math.min(1, Math.max(0, -r.top / span));
+    setStep(Math.min(frames.length - 1, Math.floor(p * frames.length)));
+    const pct = (p * 100).toFixed(2) + "%";
+    if (vertical.matches) { meter.style.height = pct; meter.style.width = ""; } else { meter.style.width = pct; meter.style.height = ""; }
+  };
+  pin.querySelectorAll("[data-step]").forEach(b => b.addEventListener("click", () => {
+    const i = +b.dataset.step, r = pin.getBoundingClientRect();
+    const span = r.height - innerHeight;
+    scrollTo({ top: scrollY + r.top + span * (i + .5) / frames.length, behavior: reduce ? "auto" : "smooth" });
+  }));
+  addEventListener("scroll", onPin, { passive: true });
+  addEventListener("resize", onPin);
+  setStep(0); onPin();
+
+  /* ---- Inquiry form (preview: nothing is sent) ---- */
+  const form = document.getElementById("inquiry"), msg = document.getElementById("formmsg");
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    const name = form.name.value.trim(), email = form.email.value.trim();
+    if (!name || !/^\S+@\S+\.\S+$/.test(email)) {
+      msg.textContent = "Add your name and a valid email address so we can reply.";
+    } else {
+      msg.textContent = "Thanks, " + name.split(" ")[0] + ". This preview isn’t connected to an inbox yet, so your inquiry wasn’t sent. Once the form is wired up, it will go straight to the Autonodwell team.";
+    }
+    msg.classList.add("show");
+  });
+})();
+</script>
+</body>
+</html>
