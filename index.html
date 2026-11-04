@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Autonodwell</title>
 <meta name="description" content="Autonodwell is a homebuilding platform connecting family budgets to custom home design, land, and financing in one process.">
+<script>try{if(!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("js")}catch(e){}</script>
 <link rel="icon" type="image/png" href="logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -219,6 +220,92 @@ footer{position:relative;overflow:hidden;background:var(--ink-2);padding-block:7
 @media (max-width:720px){.bgv-shade{background:linear-gradient(0deg,rgba(12,13,13,.95) 0%,rgba(12,13,13,.7) 50%,rgba(12,13,13,.35) 100%)}.bgv-label{bottom:auto;top:92px}}
 @media (prefers-reduced-motion:reduce){.bgv{display:none}}
 
+
+/* ===== Steps: staircase left to right, each slides up from below with blur-to-clear ===== */
+.steps{list-style:none;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;align-items:start;counter-reset:s}
+.steps .step:nth-child(2){margin-top:90px}
+.steps .step:nth-child(3){margin-top:180px}
+.steps .step:nth-child(4){margin-top:270px}
+.step{display:flex;flex-direction:column;gap:22px}
+.step-copy h3{font-size:24px;line-height:1.1;font-variation-settings:"wdth" 108;margin:12px 0 6px}
+.step-copy .mono i,.finance .mono i{font-style:normal;color:var(--stake);margin-right:8px}
+.step-sub{font-family:var(--serif);font-style:italic;font-size:18px;color:var(--bone);margin-bottom:10px}
+.step-copy p:not(.step-sub){font-size:15px;color:rgba(233,231,225,.7)}
+.js .reveal{opacity:0;transform:translateY(90px);filter:blur(14px);transition:opacity 900ms var(--ease),transform 1200ms var(--ease),filter 1000ms var(--ease)}
+.js .reveal.in{opacity:1;transform:none;filter:blur(0)}
+/* Steps: copy comes in first; the iPhone scrolls up and in 1s later with its own blur-to-clear */
+.js .steps .reveal{transform:none;filter:none;opacity:1}
+.js .steps .reveal .step-copy{opacity:0;transform:translateY(40px);filter:blur(10px);transition:opacity 800ms var(--ease),transform 1000ms var(--ease),filter 900ms var(--ease)}
+.js .steps .reveal .phone{opacity:0;transform:translateY(160px) scale(.96);filter:blur(18px);transition:opacity 1000ms var(--ease) 1s,transform 1400ms var(--ease) 1s,filter 1200ms var(--ease) 1s}
+.js .steps .reveal.in .step-copy,.js .steps .reveal.in .phone{opacity:1;transform:none;filter:blur(0)}
+.finance{margin-top:72px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:40px;padding:36px;border:1px solid rgba(232,100,58,.45);background:linear-gradient(135deg,rgba(232,100,58,.08),rgba(232,100,58,0) 60%),var(--ink-2)}
+.finance h3{font-size:clamp(28px,3vw,40px);line-height:1;font-variation-settings:"wdth" 112;margin:12px 0 10px}
+.finance p:not(.step-sub){color:rgba(233,231,225,.78)}
+.finance-list{list-style:none;margin-top:18px;display:grid;gap:8px;font-size:14.5px;color:var(--mute)}
+.finance-list li::before{content:"";display:inline-block;width:14px;height:1px;background:var(--stake);vertical-align:middle;margin-right:10px}
+
+/* iPhone placeholder */
+.phone{width:100%;max-width:250px;aspect-ratio:9/19.3;border-radius:40px;padding:9px;background:linear-gradient(145deg,#3a3c3c,#161717 40%,#2b2d2d);box-shadow:0 30px 60px -20px rgba(0,0,0,.7),inset 0 0 0 1px rgba(255,255,255,.08)}
+.phone-screen{position:relative;height:100%;border-radius:32px;overflow:hidden;background:#101212;border:1px solid rgba(255,255,255,.06)}
+.island{position:absolute;top:9px;left:50%;transform:translateX(-50%);width:34%;height:20px;border-radius:12px;background:#000;z-index:2}
+.app{position:absolute;inset:0;padding:12px 15px 16px;display:flex;flex-direction:column;gap:9px;font-size:11px;color:var(--bone)}
+.app-top{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:10px;padding:2px 6px 14px}
+.app-tag{font-size:8.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--stake);border:1px solid rgba(232,100,58,.5);padding:1px 5px;border-radius:3px}
+.app-eyebrow{font-family:var(--mono);font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.app-h{font-size:17px;font-weight:600;line-height:1.1;letter-spacing:-.02em;font-variation-settings:"wdth" 108}
+.app-label{font-size:9.5px;color:var(--mute);margin-top:4px}
+.app-card{border:1px solid var(--line);border-radius:12px;padding:12px;background:#171919;display:grid;gap:8px}
+.app-card span{font-size:10px;color:rgba(233,231,225,.75)}
+.slider{position:relative;height:4px;border-radius:2px;background:rgba(233,231,225,.15);margin:6px 0}
+.slider span{position:absolute;inset:0 auto 0 0;background:var(--stake);border-radius:2px}
+.slider i{position:absolute;top:50%;width:14px;height:14px;border-radius:50%;background:var(--bone);transform:translate(-50%,-50%)}
+.app-row{display:flex;justify-content:space-between;align-items:baseline;font-size:9.5px;color:var(--mute)}
+.app-row b{font-size:13px;color:var(--bone);font-variant-numeric:tabular-nums}
+.app-btn{margin-top:auto;background:var(--stake);color:var(--ink);text-align:center;font-weight:600;font-size:11px;padding:10px;border-radius:10px}
+.swatches{display:flex;gap:8px}
+.swatches i{width:30px;height:30px;border-radius:50%;border:2px solid transparent;box-shadow:inset 0 0 0 1px rgba(255,255,255,.15)}
+.swatches i.on{border-color:var(--stake)}
+.chips{display:flex;gap:6px}
+.chips span{border:1px solid var(--line);border-radius:20px;padding:4px 10px;font-size:10px}
+.chips span.on{border-color:var(--stake);color:var(--stake)}
+.app-sum{margin-top:auto;display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--line);padding-top:10px;font-size:10px;color:var(--mute)}
+.app-sum b{font-size:13px;color:var(--bone);font-variant-numeric:tabular-nums}
+.tl{list-style:none;display:grid;gap:0;margin-top:4px}
+.tl li{position:relative;padding:0 0 11px 20px;display:grid}
+.tl li::before{content:"";position:absolute;left:3px;top:3px;width:8px;height:8px;border-radius:50%;border:1.5px solid var(--mute);background:#101212}
+.tl li::after{content:"";position:absolute;left:7px;top:13px;bottom:0;width:1px;background:var(--line)}
+.tl li:last-child::after{display:none}
+.tl li.done::before{background:var(--bone);border-color:var(--bone)}
+.tl li.now::before{background:var(--stake);border-color:var(--stake);box-shadow:0 0 0 4px rgba(232,100,58,.18)}
+.tl b{font-size:11.5px;font-weight:560}
+.tl span{font-size:9.5px;color:var(--mute)}
+.tl li.now b{color:var(--stake)}
+.est{display:grid;gap:0;border:1px solid var(--line);border-radius:12px;background:#171919}
+.est div{display:flex;justify-content:space-between;gap:8px;padding:9px 11px;border-bottom:1px solid var(--line);font-size:9.5px}
+.est div:last-child{border-bottom:0}
+.est span{color:rgba(233,231,225,.7)}
+.est b{font-variant-numeric:tabular-nums;font-weight:500}
+.app-fine{font-size:8.5px;color:var(--mute)}
+.app-sum+.app-fine{margin-top:-2px}
+.est+.app-sum{margin-top:6px}
+
+@media (max-width:1100px){
+  .steps{grid-template-columns:repeat(2,minmax(0,1fr));gap:56px 32px}
+  .steps .step:nth-child(2),.steps .step:nth-child(4){margin-top:120px}
+  .steps .step:nth-child(3){margin-top:0}
+}
+@media (max-width:640px){
+  .steps{grid-template-columns:1fr;gap:72px}
+  .steps .step:nth-child(n){margin-top:0}
+  .step{display:grid;grid-template-columns:150px 1fr;gap:20px;align-items:start}
+  .steps .step:nth-child(even) .phone{order:2}
+  .phone{border-radius:28px;padding:6px}
+  .phone-screen{border-radius:23px}
+  .app{inset:auto;left:0;top:0;transform:scale(.62);transform-origin:top left;width:161.3%;height:161.3%}
+  .finance{grid-template-columns:1fr;gap:16px;padding:26px}
+}
+@media (prefers-reduced-motion:reduce){.js .reveal,.js .steps .reveal .phone,.js .steps .reveal .step-copy{opacity:1;transform:none;filter:none}}
+
 /* ===== Pinned section 01: fixed stage, scroll steps through four frames ===== */
 .pin{height:400svh;border-bottom:1px solid var(--line)}
 .pin-stage{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;align-items:center}
@@ -418,10 +505,87 @@ footer{position:relative;overflow:hidden;background:var(--ink-2);padding-block:7
     </div>
   </section>
 
+  <section class="band steps-band" id="steps" aria-labelledby="steps-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="mono">05 · Your Dream Home</span>
+        <div>
+          <h2 id="steps-h">From blueprint to keys, in four steps.</h2>
+          <p class="lede" style="margin-top:20px">Start by dreaming for free. Then understand the real steps and costs involved.</p>
+        </div>
+      </div>
+      <ol class="steps">
+        <li class="step reveal">
+          <div class="phone" aria-hidden="true"><div class="phone-screen"><div class="island"></div><div class="app"><div class="app-top"><span>9:41</span><span class="app-tag">Example</span></div>
+<p class="app-eyebrow">Step 1 of 4</p><p class="app-h">What would home look like for you?</p>
+<div class="app-card house"><svg viewBox="0 0 120 64"><path d="M8 58V30L40 10l32 20v28" fill="none" stroke="#e9e7e1" stroke-width="1.6"/><path d="M72 58V34h40v24" fill="none" stroke="#e9e7e1" stroke-width="1.6"/><rect x="48" y="38" width="14" height="20" fill="#e8643a"/><rect x="80" y="40" width="12" height="9" fill="none" stroke="#e9e7e1"/><rect x="16" y="36" width="14" height="10" fill="none" stroke="#e9e7e1"/></svg><span>Starter home · 3 bd · 2 ba</span></div>
+<p class="app-label">Comfortable monthly budget</p>
+<div class="slider"><span style="width:58%"></span><i style="left:58%"></i></div>
+<div class="app-row"><span>$1,800</span><b>$2,400 / mo</b><span>$3,200</span></div>
+<div class="app-btn">Start designing</div></div></div></div>
+          <div class="step-copy"><span class="mono"><i>Step 01</i> Dream</span><h3>Start designing your home</h3><p class="step-sub">Build within your budget.</p><p>Explore a thoughtfully designed starter home and set a comfortable monthly budget. Your budget shapes the home from the beginning, not at the end.</p></div>
+        </li>
+        <li class="step reveal">
+          <div class="phone" aria-hidden="true"><div class="phone-screen"><div class="island"></div><div class="app"><div class="app-top"><span>9:41</span><span class="app-tag">Example</span></div>
+<p class="app-eyebrow">Step 2 of 4</p><p class="app-h">Make it yours</p>
+<p class="app-label">Exterior siding</p>
+<div class="swatches"><i class="on" style="background:#c9a77c"></i><i style="background:#3a3d3c"></i><i style="background:#d8d4cb"></i><i style="background:#7c8a7a"></i></div>
+<p class="app-label">Kitchen finish</p>
+<div class="swatches"><i style="background:#efece6"></i><i class="on" style="background:#a9825a"></i><i style="background:#2a2b2b"></i></div>
+<p class="app-label">Flooring</p>
+<div class="chips"><span class="on">Oak</span><span>Tile</span><span>Concrete</span></div>
+<div class="app-sum"><span>Indicative cost change</span><b>+ $3,150</b></div></div></div></div>
+          <div class="step-copy"><span class="mono"><i>Step 02</i> Make it yours</span><h3>Choose your materials</h3><p class="step-sub">A curated set of finishes, not endless options.</p><p>Pick a floor plan, finishes and an upgrade. Each choice updates the home and its indicative cost, so you see the tradeoff as you make it.</p></div>
+        </li>
+        <li class="step reveal">
+          <div class="phone" aria-hidden="true"><div class="phone-screen"><div class="island"></div><div class="app"><div class="app-top"><span>9:41</span><span class="app-tag">Example</span></div>
+<p class="app-eyebrow">Step 3 of 4</p><p class="app-h">Your path home</p>
+<ol class="tl">
+<li class="done"><b>Design</b><span>Architect · engineer</span></li>
+<li class="done"><b>Site</b><span>Land · zoning · utilities</span></li>
+<li class="now"><b>Financing</b><span>Participating lender</span></li>
+<li><b>Approvals</b><span>Permitting</span></li>
+<li><b>Construction</b><span>Builder · suppliers</span></li>
+<li><b>Keys</b><span>You</span></li>
+</ol></div></div></div>
+          <div class="step-copy"><span class="mono"><i>Step 03</i> Discover</span><h3>Understand who’s involved</h3><p class="step-sub">The whole process, in one view.</p><p>Design, site, financing, approvals, construction, keys. See who handles each stage, what it might cost and what comes next.</p></div>
+        </li>
+        <li class="step reveal">
+          <div class="phone" aria-hidden="true"><div class="phone-screen"><div class="island"></div><div class="app"><div class="app-top"><span>9:41</span><span class="app-tag">Example</span></div>
+<p class="app-eyebrow">Step 4 of 4</p><p class="app-h">Your estimate</p>
+<div class="est">
+<div><span>Home + delivery</span><b>$185,000</b></div>
+<div><span>Site + installation</span><b>$65,000</b></div>
+<div><span>Land allocation</span><b>$60,000</b></div>
+<div><span>Soft costs + contingency</span><b>$40,000</b></div>
+</div>
+<div class="app-sum"><span>Est. principal + interest</span><b>≈ $2,342 / mo</b></div>
+<p class="app-fine">Estimate, not a quote. Taxes and insurance extra.</p>
+<div class="app-btn">Review with a consultant</div></div></div></div>
+          <div class="step-copy"><span class="mono"><i>Step 04</i> Understand</span><h3>Calculate the estimates and review with a consultant</h3><p class="step-sub">Explain the numbers.</p><p>See modeled purchase costs, monthly payments, financing assumptions and cash needed. Then walk through them with an Autonodwell consultant.</p></div>
+        </li>
+      </ol>
+      <div class="finance reveal">
+        <div>
+          <span class="mono"><i>Next</i> Qualify</span>
+          <h3>Financing &amp; lenders</h3>
+          <p class="step-sub">Is there a credible path to financing?</p>
+        </div>
+        <div>
+          <p>When you’re ready, connect with participating lenders or other qualified financing providers. Better-organized project data can help them see the design, scope, cost and assumptions behind your home.</p>
+          <ul class="finance-list">
+            <li>A preliminary affordability estimate is not mortgage preapproval.</li>
+            <li>A calculator is not a credit decision. Lenders make their own.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="band">
     <div class="wrap">
       <div class="sec-head">
-        <span class="mono">05 · Three stories</span>
+        <span class="mono">06 · Three stories</span>
         <h2>One company. Three connected stories.</h2>
       </div>
       <div class="cols-3">
@@ -738,7 +902,8 @@ footer{position:relative;overflow:hidden;background:var(--ink-2);padding-block:7
     current = name;
     const v = document.getElementById("bgv");
     if (v) { if (name === "home" && !reduce) { const pr = v.play(); pr && pr.catch(() => {}); } else v.pause(); }
-    requestAnimationFrame(() => dispatchEvent(new Event("scroll")));
+    if (name === "home") document.querySelectorAll(".steps .reveal, .finance.reveal").forEach(el => el.classList.remove("in"));
+    requestAnimationFrame(() => requestAnimationFrame(() => dispatchEvent(new Event("scroll"))));
   };
 
   const go = name => {
@@ -773,6 +938,32 @@ footer{position:relative;overflow:hidden;background:var(--ink-2);padding-block:7
   /* ---- Hero video: fade in once frames are playing; floor plan shows until then ---- */
   const bgv = document.getElementById("bgv");
   if (bgv) bgv.addEventListener("playing", () => bgv.closest(".hero-video").classList.add("playing"), { once: true });
+
+
+  /* ---- Steps reveal: each step comes in (and resets) as you scroll; iPhone follows 1s later with blur-to-clear ---- */
+  const stepsList = document.querySelector(".steps");
+  const stepEls = [...document.querySelectorAll(".steps .reveal")];
+  const finance = document.querySelector(".finance.reveal");
+  const small = matchMedia("(max-width:640px)");
+  const onSteps = () => {
+    if (!stepsList || !stepsList.offsetParent) return;
+    const vh = innerHeight, gap = Math.max(140, vh * 0.2);
+    const top = stepsList.getBoundingClientRect().top;
+    stepEls.forEach((el, i) => {
+      const r = el.getBoundingClientRect();
+      const show = small.matches ? r.top < vh * 0.86 : top < vh * 0.82 - i * gap;
+      const hide = small.matches ? r.top > vh : top > vh * 0.95 - i * gap;
+      if (show) el.classList.add("in"); else if (hide) el.classList.remove("in");
+    });
+    if (finance) { const t = finance.getBoundingClientRect().top; if (t < vh * 0.88) finance.classList.add("in"); else if (t > vh) finance.classList.remove("in"); }
+  };
+  if (document.documentElement.classList.contains("js")) {
+    addEventListener("scroll", onSteps, { passive: true });
+    document.addEventListener("scroll", onSteps, { passive: true, capture: true });
+    addEventListener("resize", onSteps);
+    /* let the hidden state paint first, so a step already in view still animates */
+    requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(onSteps, 120)));
+  }
 
   /* ---- Pinned section 01 ---- */
   const pin = document.getElementById("problem");
