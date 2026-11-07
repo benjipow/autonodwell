@@ -28,6 +28,7 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:var(--ink);color:var(--bone)}
+html{overflow-x:clip}
 body{font-family:var(--display);font-variation-settings:"wdth" 100;font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;min-height:100%}
 a{color:inherit;text-decoration:none}
 img,svg{max-width:100%;display:block}
@@ -348,6 +349,52 @@ footer{position:relative;overflow:hidden;background:var(--ink-2);padding-block:7
 }
 @media (prefers-reduced-motion:reduce){.hslide{transition:none;filter:none}}
 
+
+/* ===== Full-width Try It Free CTA ===== */
+.bigcta{margin-top:48px;display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:24px;width:100vw;margin-left:calc(50% - 50vw);padding:clamp(32px,4.5vw,56px) var(--gutter);background:var(--stake);color:var(--ink);transition:background .35s var(--ease),color .35s var(--ease)}
+.bigcta-t{font-size:clamp(40px,6.4vw,104px);font-weight:650;letter-spacing:-.04em;line-height:.9;font-variation-settings:"wdth" 118}
+.bigcta-s{color:rgba(12,13,13,.7);font-size:13px}
+.bigcta-arrow{width:clamp(40px,5vw,72px);height:auto;transition:transform .45s var(--ease)}
+.bigcta:hover{background:var(--bone)}
+.bigcta:hover .bigcta-arrow{transform:translateX(10px)}
+.bigcta:focus-visible{outline:3px solid var(--bone);outline-offset:4px}
+@media (max-width:640px){.bigcta{grid-template-columns:1fr auto}.bigcta-s{display:none}}
+
+
+/* ===== Four audiences: slide in left to right; buttons zoom the page out to the left ===== */
+.cols-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line)}
+.aud{display:flex;flex-direction:column;align-items:flex-start;padding:32px 24px 8px 0;border-right:1px solid var(--line)}
+.aud+.aud{padding-left:24px}
+.aud:last-child{border-right:0}
+.aud h3{font-size:22px;line-height:1.15;margin:18px 0 12px;font-variation-settings:"wdth" 108}
+.aud p{color:rgba(233,231,225,.72);font-size:15.5px;margin-bottom:24px}
+.aud-btn{margin-top:auto}
+.aud-btn svg{width:18px;height:12px;transition:transform .35s var(--ease)}
+.aud-btn:hover svg{transform:translateX(4px)}
+.js .aud>*{opacity:0;transform:translateX(-56px);filter:blur(10px);transition:opacity 800ms var(--ease),transform 1100ms var(--ease),filter 900ms var(--ease)}
+.js .aud.in>*{opacity:1;transform:none;filter:blur(0)}
+.js .aud.in>*:nth-child(2){transition-delay:80ms}
+.js .aud.in>*:nth-child(3){transition-delay:160ms}
+.js .aud.in>.aud-btn{transition-delay:320ms}
+.page.zoomout{transform-origin:0% 40%;animation:zoomleft 620ms cubic-bezier(.65,0,.35,1) both}
+@keyframes zoomleft{to{transform:translateX(-14%) scale(.82);opacity:0;filter:blur(6px)}}
+@media (max-width:1100px){.cols-4{grid-template-columns:repeat(2,minmax(0,1fr))}.aud:nth-child(2){border-right:0}.aud:nth-child(3){padding-left:0}.aud:nth-child(n+3){border-top:1px solid var(--line)}}
+@media (max-width:640px){.cols-4{grid-template-columns:1fr}.aud,.aud+.aud{padding:28px 0;border-right:0;border-top:1px solid var(--line)}.aud:first-child{border-top:0}}
+@media (prefers-reduced-motion:reduce){.js .aud>*{opacity:1;transform:none;filter:none}.page.zoomout{animation:none}}
+
+
+/* ===== Partner paths: whole card is a button; hover fills orange and shows an arrow ===== */
+a.path{position:relative;cursor:pointer;transition:background .4s var(--ease),border-color .4s var(--ease),color .4s var(--ease)}
+a.path>*{transition:color .4s var(--ease),border-color .4s var(--ease)}
+.path-arrow{position:absolute;right:28px;top:28px;width:44px;height:22px;color:var(--stake);opacity:.0;transform:translateX(-12px);transition:opacity .4s var(--ease),transform .5s var(--ease),color .4s}
+a.path:hover,a.path:focus-visible{background:var(--stake);border-color:var(--stake);color:var(--ink)}
+a.path:hover .mono,a.path:focus-visible .mono,a.path:hover p,a.path:focus-visible p,a.path:hover .msg,a.path:focus-visible .msg{color:var(--ink)}
+a.path:hover .msg,a.path:focus-visible .msg{border-left-color:var(--ink)}
+a.path:hover .path-arrow,a.path:focus-visible .path-arrow{opacity:1;transform:none;color:var(--ink)}
+a.path:focus-visible{outline:2px solid var(--bone);outline-offset:3px}
+a.path h3{padding-right:64px}
+@media (hover:none){.path-arrow{opacity:1;transform:none}}
+
 /* ===== Pinned section 01: fixed stage, scroll steps through four frames ===== */
 .pin{height:400svh;border-bottom:1px solid var(--line)}
 .pin-stage{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;align-items:center}
@@ -621,30 +668,44 @@ footer{position:relative;overflow:hidden;background:var(--ink-2);padding-block:7
           </ul>
         </div>
       </div>
+      <a class="bigcta reveal" href="#how-it-works" data-route="how-it-works">
+        <span class="bigcta-t">Try It Free</span>
+        <span class="bigcta-s mono">See how it works</span>
+        <svg class="bigcta-arrow" viewBox="0 0 48 24" aria-hidden="true"><path d="M0 12h44M34 2l10 10-10 10" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+      </a>
     </div>
   </section>
 
   <section class="band">
     <div class="wrap">
       <div class="sec-head">
-        <span class="mono">06 · Three stories</span>
-        <h2>One company. Three connected stories.</h2>
+        <span class="mono">06 · Four stories</span>
+        <h2>One company. Four connected stories.</h2>
       </div>
-      <div class="cols-3">
-        <div>
+      <div class="cols-4" id="audiences">
+        <div class="aud">
           <span class="mono">For homeowners</span>
           <h3>A beautiful home should feel possible to build.</h3>
-          <p>Explore homes, personalize a short list of finishes, estimate affordability, and start to understand the steps toward ownership.</p>
+          <p>Stability, privacy, room for family life and a monthly payment you can manage. We show the assumptions, costs, exclusions and steps, so affordable is something you can check.</p>
+          <a class="cta aud-btn" href="#partner" data-route="partner" data-zoom="left">Try It Free<svg viewBox="0 0 20 12" aria-hidden="true"><path d="M0 6h17M12 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
         </div>
-        <div>
-          <span class="mono">The technology</span>
-          <h3>From buildable land to financeable homes.</h3>
-          <p>Site constraints, zoning feasibility, design, BIM-derived quantities, material costs, permitting, delivery and lender-relevant data, linked in one model.</p>
-        </div>
-        <div>
+        <div class="aud">
           <span class="mono">For investors</span>
-          <h3>Validate the transaction before scaling production.</h3>
-          <p>Software workflows, delivery economics, customer demand and financing relationships come first. A factory comes later, if the demand supports it.</p>
+          <h3>We’re starting with the bottlenecks, not an oversized factory.</h3>
+          <p>Information, financing and delivery come first. Capital goes out against milestones, with a clear account of what has been demonstrated and what hasn’t been proven yet.</p>
+          <a class="cta aud-btn" href="#partner" data-route="partner" data-zoom="left">Request investor materials<svg viewBox="0 0 20 12" aria-hidden="true"><path d="M0 6h17M12 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+        </div>
+        <div class="aud">
+          <span class="mono">For lenders &amp; underwriters</span>
+          <h3>Better-organized project data.</h3>
+          <p>Reliable project information, defensible budgets, clear documentation and identifiable risks. Better-organized data may help make construction lending decisions more transparent and repeatable.</p>
+          <a class="cta aud-btn" href="#partner" data-route="partner" data-zoom="left">Shape the data package<svg viewBox="0 0 20 12" aria-hidden="true"><path d="M0 6h17M12 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+        </div>
+        <div class="aud">
+          <span class="mono">For builders &amp; delivery partners</span>
+          <h3>Less ambiguity before work begins.</h3>
+          <p>Qualified projects, clear scopes, coordinated documentation and predictable procurement. Better coordination while the work is underway.</p>
+          <a class="cta aud-btn" href="#partner" data-route="partner" data-zoom="left">Explore a pilot<svg viewBox="0 0 20 12" aria-hidden="true"><path d="M0 6h17M12 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
         </div>
       </div>
       <div class="actions" style="display:flex;flex-wrap:wrap;gap:12px;margin-top:48px">
@@ -757,7 +818,7 @@ footer{position:relative;overflow:hidden;background:var(--ink-2);padding-block:7
         <div><span class="mono">1970 new home, in 2025 $</span><div class="big">$220,700</div><p>Average new-home price, adjusted for inflation.</p></div>
         <div><span class="mono">2025 new home</span><div class="big hl">$523,800</div><p>Average new-home price, latest complete annual data.</p></div>
         <div><span class="mono">If prices tracked wages</span><div class="big">$313,000</div><p>2025 price at the 1970 home-price-to-wage ratio.</p></div>
-        <div><span class="mono">Like-for-like</span><div class="big hl">≈60%</div><p>More for a comparable new home than in 1970, after inflation.</p></div>
+        <div><span class="mono">Like-for-like</span><div class="big hl">≈160%</div><p>What a comparable new home costs today, compared with 1970, after inflation.</p></div>
       </div>
       <div class="bars" role="img" aria-label="Average new-home price: $220,700 in 1970 (2025 dollars), $313,000 if tracking wages, $523,800 in 2025">
         <div class="barrow"><span class="mono">1970 (2025 $)</span><span class="track"><span class="fill" style="width:42.1%"></span></span><span class="v">$220.7k</span></div>
@@ -833,7 +894,7 @@ footer{position:relative;overflow:hidden;background:var(--ink-2);padding-block:7
   <section class="hero">
     <div class="grain" aria-hidden="true"></div>
     <div class="wrap">
-      <span class="mono rise">Sheet A-300 · Partner with us</span>
+      <span class="mono rise">Partner with us</span>
       <h1 class="display rise" style="max-width:15ch">Build the path with us.</h1>
       <p class="lede rise">Homeownership depends on more than a floor plan. We’re looking for the households, capital, lenders, builders and landowners who want to help prove a better way.</p>
     </div>
@@ -842,10 +903,10 @@ footer{position:relative;overflow:hidden;background:var(--ink-2);padding-block:7
   <section class="band">
     <div class="wrap">
       <div class="paths">
-        <div class="path"><span class="mono">Future homeowners</span><h3>Try It Free</h3><p>Be first to explore the Dream-Home Experience and help shape the starter-home collection.</p><p class="msg">Beautiful homes. A real path to ownership.</p></div>
-        <div class="path"><span class="mono">Investors</span><h3>Request investor materials</h3><p>A capital-disciplined platform with milestone-based deployment, starting with the information, financing and delivery bottlenecks.</p><p class="msg">We’re starting with the bottlenecks, not with an oversized factory.</p></div>
-        <div class="path"><span class="mono">Lenders &amp; underwriters</span><h3>Shape the data package</h3><p>Help define what design, scope, cost and delivery information makes construction lending more transparent.</p><p class="msg">Better-organized project data, built with the people who underwrite it.</p></div>
-        <div class="path"><span class="mono">Builders, developers &amp; landowners</span><h3>Explore a pilot site</h3><p>Qualified projects, clear scopes and coordinated documentation. Tested on individual homes before larger programs.</p><p class="msg">Less ambiguity before work begins. Better coordination while it’s underway.</p></div>
+        <a class="path" href="#"><span class="mono">Future homeowners</span><h3>Try It Free</h3><p>Be first to explore the Dream-Home Experience and help shape the starter-home collection.</p><p class="msg">Beautiful homes. A real path to ownership.</p><svg class="path-arrow" viewBox="0 0 48 24" aria-hidden="true"><path d="M0 12h44M34 2l10 10-10 10" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
+        <a class="path" href="#"><span class="mono">Investors</span><h3>Request investor materials</h3><p>A capital-disciplined platform with milestone-based deployment, starting with the information, financing and delivery bottlenecks.</p><p class="msg">We’re starting with the bottlenecks, not with an oversized factory.</p><svg class="path-arrow" viewBox="0 0 48 24" aria-hidden="true"><path d="M0 12h44M34 2l10 10-10 10" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
+        <a class="path" href="#"><span class="mono">Lenders &amp; underwriters</span><h3>Shape the data package</h3><p>Help define what design, scope, cost and delivery information makes construction lending more transparent.</p><p class="msg">Better-organized project data, built with the people who underwrite it.</p><svg class="path-arrow" viewBox="0 0 48 24" aria-hidden="true"><path d="M0 12h44M34 2l10 10-10 10" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
+        <a class="path" href="#"><span class="mono">Builders, developers &amp; landowners</span><h3>Explore a pilot site</h3><p>Qualified projects, clear scopes and coordinated documentation. Tested on individual homes before larger programs.</p><p class="msg">Less ambiguity before work begins. Better coordination while it’s underway.</p><svg class="path-arrow" viewBox="0 0 48 24" aria-hidden="true"><path d="M0 12h44M34 2l10 10-10 10" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
       </div>
     </div>
   </section>
@@ -956,7 +1017,7 @@ footer{position:relative;overflow:hidden;background:var(--ink-2);padding-block:7
   /* ---- Router + page transition ---- */
   const show = (name, animate) => {
     const next = document.getElementById("page-" + name);
-    document.querySelectorAll(".page").forEach(p => p.classList.remove("active","enter","leave"));
+    document.querySelectorAll(".page").forEach(p => p.classList.remove("active","enter","leave","zoomout"));
     next.classList.add("active");
     if (animate && !reduce) { void next.offsetWidth; next.classList.add("enter"); }
     document.title = next.dataset.title;
@@ -968,11 +1029,11 @@ footer{position:relative;overflow:hidden;background:var(--ink-2);padding-block:7
     current = name;
     const v = document.getElementById("bgv");
     if (v) { if (name === "home" && !reduce) { const pr = v.play(); pr && pr.catch(() => {}); } else v.pause(); }
-    document.querySelectorAll(".steps .reveal, .finance.reveal").forEach(el => el.classList.remove("in"));
+    document.querySelectorAll(".steps .reveal, .finance.reveal, .bigcta.reveal, .aud").forEach(el => el.classList.remove("in"));
     requestAnimationFrame(() => requestAnimationFrame(() => dispatchEvent(new Event("scroll"))));
   };
 
-  const go = name => {
+  const go = (name, mode) => {
     if (!routes.includes(name)) name = "home";
     if (name === current) { setMenu(false); scrollTo({top:0,behavior:reduce?"auto":"smooth"}); return; }
     if (busy) return; busy = true;
@@ -981,6 +1042,10 @@ footer{position:relative;overflow:hidden;background:var(--ink-2);padding-block:7
       /* Mobile: swap the page underneath the open menu, then fade the menu away (300ms) */
       show(name, true);
       requestAnimationFrame(() => { setMenu(false); busy = false; });
+    } else if (mode === "zoom-left") {
+      const old = document.getElementById("page-" + current);
+      old && old.classList.add("zoomout");
+      setTimeout(() => { show(name, true); busy = false; }, 600);
     } else {
       const old = document.getElementById("page-" + current);
       old && old.classList.add("leave");
@@ -991,9 +1056,10 @@ footer{position:relative;overflow:hidden;background:var(--ink-2);padding-block:7
   };
 
   document.addEventListener("click", e => {
+    if (e.target.closest('a[href="#"]')) { e.preventDefault(); return; }
     const a = e.target.closest("a[data-route]");
     if (!a || e.metaKey || e.ctrlKey || e.shiftKey) return;
-    e.preventDefault(); go(a.dataset.route);
+    e.preventDefault(); go(a.dataset.route, a.dataset.zoom === "left" && !reduce ? "zoom-left" : null);
   });
   addEventListener("hashchange", () => { const n = location.hash.slice(1) || "home"; if (n !== current) go(n); });
   addEventListener("popstate", () => { const n = location.hash.slice(1) || "home"; if (n !== current) go(n); });
@@ -1021,7 +1087,7 @@ footer{position:relative;overflow:hidden;background:var(--ink-2);padding-block:7
       const hide = small.matches ? r.top > vh : top > vh * 0.95 - i * gap;
       if (show) el.classList.add("in"); else if (hide) el.classList.remove("in");
     });
-    if (finance) { const t = finance.getBoundingClientRect().top; if (t < vh * 0.88) finance.classList.add("in"); else if (t > vh) finance.classList.remove("in"); }
+    [finance, document.querySelector(".bigcta.reveal")].forEach(el => { if (!el) return; const t = el.getBoundingClientRect().top; if (t < vh * 0.9) el.classList.add("in"); else if (t > vh) el.classList.remove("in"); });
   };
   if (document.documentElement.classList.contains("js")) {
     addEventListener("scroll", onSteps, { passive: true });
@@ -1055,6 +1121,25 @@ footer{position:relative;overflow:hidden;background:var(--ink-2);padding-block:7
   addEventListener("scroll", onH, { passive: true });
   addEventListener("resize", onH);
   setH(0); onH();
+
+  /* ---- Audiences: slide in left to right as the row comes into view ---- */
+  const auds = [...document.querySelectorAll(".aud")];
+  const onAud = () => {
+    if (!auds.length || !auds[0].offsetParent) return;
+    const vh = innerHeight, top = auds[0].parentElement.getBoundingClientRect().top;
+    const stacked = matchMedia("(max-width:1100px)").matches;
+    auds.forEach((el, i) => {
+      const t = stacked ? el.getBoundingClientRect().top : top;
+      const show = stacked ? t < vh * 0.86 : t < vh * 0.85 - i * 70;
+      const hide = t > vh;
+      if (show) el.classList.add("in"); else if (hide) el.classList.remove("in");
+    });
+  };
+  if (document.documentElement.classList.contains("js")) {
+    addEventListener("scroll", onAud, { passive: true });
+    addEventListener("resize", onAud);
+    requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(onAud, 120)));
+  }
 
   /* ---- Pinned section 01 ---- */
   const pin = document.getElementById("problem");
