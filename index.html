@@ -257,7 +257,7 @@ footer{position:relative;overflow:hidden;background:var(--ink-2);padding-block:7
 .app-label{font-size:9.5px;color:var(--mute);margin-top:4px}
 .app-card{border:1px solid var(--line);border-radius:12px;padding:12px;background:#171919;display:grid;gap:8px}
 .app-card span{font-size:10px;color:rgba(233,231,225,.75)}
-.slider{position:relative;height:4px;border-radius:2px;background:rgba(233,231,225,.15);margin:6px 0}
+.slider{position:relative;width:100%;flex:none;height:4px;border-radius:2px;background:rgba(233,231,225,.15);margin:6px 0}
 .slider span{position:absolute;inset:0 auto 0 0;background:var(--stake);border-radius:2px}
 .slider i{position:absolute;top:50%;width:14px;height:14px;border-radius:50%;background:var(--bone);transform:translate(-50%,-50%)}
 .app-row{display:flex;justify-content:space-between;align-items:baseline;font-size:9.5px;color:var(--mute)}
@@ -395,6 +395,140 @@ a.path:focus-visible{outline:2px solid var(--bone);outline-offset:3px}
 a.path h3{padding-right:64px}
 @media (hover:none){.path-arrow{opacity:1;transform:none}}
 
+
+/* ===== New step-screen bits ===== */
+.chips.col{flex-direction:column;gap:5px}
+.chips.col span{border-radius:8px;padding:6px 9px}
+.app-input{border:1px solid rgba(233,231,225,.25);border-radius:10px;padding:9px 10px;color:var(--mute);font-size:10.5px}
+.checks{display:grid;gap:7px;margin-top:4px}
+.checks div{display:flex;gap:8px;align-items:center;font-size:10.5px}
+.checks b{width:16px;height:16px;border-radius:50%;display:grid;place-items:center;font-size:9px;flex:none}
+.checks .ok{background:rgba(233,231,225,.9);color:var(--ink)}
+.checks .warn{background:var(--stake);color:var(--ink)}
+.checks .q{border:1px solid var(--mute);color:var(--mute)}
+.est b.al{color:var(--stake)}
+.after{margin-top:20px;display:grid;grid-template-columns:120px 1fr 1fr;gap:24px;align-items:baseline;padding:22px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.after div{font-size:18px;font-weight:560;font-variation-settings:"wdth" 108}
+.after b{font-family:var(--mono);font-size:12px;color:var(--stake);font-weight:500;margin-right:8px}
+.after span{display:block;font-size:14.5px;font-weight:400;color:var(--mute);margin-top:4px}
+@media (max-width:720px){.after{grid-template-columns:1fr;gap:14px}}
+/* How it works: detailed slide copy */
+.hcopy{max-height:100%;overflow-y:auto;scrollbar-width:none}
+.hcopy::-webkit-scrollbar{display:none}
+.hcopy h3{font-size:clamp(28px,3.3vw,54px)}
+.hlead{font-family:var(--serif);font-style:italic;font-size:clamp(19px,1.7vw,25px);line-height:1.3;color:var(--bone);margin-bottom:8px}
+.hcopy>p:not(.hlead){font-size:clamp(14.5px,1.05vw,17px)}
+.hteam{margin-top:20px;padding-top:16px;border-top:1px solid var(--line)}
+.hteam .mono{color:var(--stake);font-size:11px}
+.hteam p{margin-top:8px;font-size:clamp(13.5px,.95vw,15px);color:rgba(233,231,225,.66)}
+/* FAQ */
+.faq-list{border-top:1px solid var(--line);max-width:1000px;margin-left:auto}
+.faq-item{border-bottom:1px solid var(--line)}
+.faq-item summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:24px;padding:22px 0}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary h3{font-size:clamp(18px,1.6vw,22px);font-weight:560;font-variation-settings:"wdth" 106;letter-spacing:-.01em}
+.faq-item summary:hover h3{color:var(--stake)}
+.faq-item summary:focus-visible{outline:2px solid var(--stake);outline-offset:4px}
+.faq-plus{position:relative;width:16px;height:16px;flex:none}
+.faq-plus::before,.faq-plus::after{content:"";position:absolute;left:0;right:0;top:50%;height:1.5px;background:var(--stake);transition:transform .35s var(--ease)}
+.faq-plus::after{transform:rotate(90deg)}
+.faq-item[open] .faq-plus::after{transform:rotate(0)}
+.faq-item p{padding:0 48px 24px 0;color:rgba(233,231,225,.75);max-width:72ch}
+
+
+/* How it works slides: words above and below the photo */
+.hslide{grid-template-columns:1fr;grid-template-rows:auto minmax(0,1fr) auto;align-items:stretch;gap:clamp(12px,2svh,22px)}
+.htop{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(16px,4vw,64px);align-items:end}
+.htitle .hn{margin-bottom:10px}
+.htitle h3{font-size:clamp(26px,3vw,48px);letter-spacing:-.01em;text-transform:uppercase;font-variation-settings:"wdth" 120;line-height:.95;margin:0}
+.htext .hlead{font-family:var(--serif);font-style:italic;font-size:clamp(17px,1.5vw,22px);line-height:1.3;color:var(--bone);margin-bottom:4px}
+.htext p:not(.hlead){font-size:clamp(14px,1vw,16px);color:rgba(233,231,225,.75)}
+.hslide .himg{height:100%;min-height:0}
+.hslide .hteam{margin:0;padding:0;border:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(16px,4vw,64px);align-items:start}
+.hslide .hteam p{margin:0;max-width:none}
+@media (max-width:1023px){
+  .htop,.hslide .hteam{grid-template-columns:1fr;gap:6px}
+  .hslide{grid-template-rows:auto minmax(80px,1fr) auto}
+  .hhead h1{font-size:clamp(32px,8vw,44px)}
+}
+
+
+
+/* ===== Behind every step: winding customer-journey path ===== */
+.snake{position:relative}
+.snake-path{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.snake-path path{fill:none;stroke-width:2;stroke-linecap:round}
+#snake-base{stroke:rgba(233,231,225,.12)}
+#snake-draw{stroke:var(--stake)}
+.snake-list{list-style:none;position:relative}
+.sn{display:grid;grid-template-columns:120px minmax(0,1fr);gap:clamp(20px,3vw,48px);align-items:center;padding:clamp(40px,5vw,64px) clamp(70px,9vw,140px) clamp(40px,5vw,64px) clamp(28px,4vw,64px);min-height:260px}
+.sn.alt{grid-template-columns:minmax(0,1fr) 120px;padding-left:clamp(70px,9vw,140px);padding-right:clamp(28px,4vw,64px)}
+.sn.alt .sn-icon{order:2;justify-self:end}
+.sn.alt .sn-text{text-align:right;justify-self:end}
+.sn.alt .sn-text p{margin-left:auto}
+.sn-icon{width:120px;height:120px;border-radius:50%;display:grid;place-items:center;background:var(--ink-2);border:1px solid var(--line)}
+.sn-icon svg{width:64px;height:64px}
+.sn-text{max-width:720px}
+.sn-n{font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--stake)}
+.sn-text h3{font-size:clamp(26px,2.8vw,42px);line-height:1;letter-spacing:-.02em;font-variation-settings:"wdth" 116;margin:8px 0 10px}
+.sn-who{display:block;font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--bone);margin-bottom:10px}
+.sn-text p{font-size:clamp(15px,1.15vw,17px);color:rgba(233,231,225,.72);max-width:62ch}
+.js .sn .sn-icon,.js .sn .sn-text{opacity:0;filter:blur(10px);transform:translateY(24px);transition:opacity 800ms var(--ease),filter 900ms var(--ease),transform 1100ms var(--ease)}
+.js .sn .sn-text{transition-delay:120ms}
+.js .sn.in .sn-icon,.js .sn.in .sn-text{opacity:1;filter:blur(0);transform:none}
+@media (max-width:820px){
+  .sn,.sn.alt{grid-template-columns:72px minmax(0,1fr);padding:28px 0 28px 44px;min-height:0;align-items:start}
+  .sn.alt .sn-icon{order:0;justify-self:start}
+  .sn.alt .sn-text{text-align:left;justify-self:start}
+  .sn.alt .sn-text p{margin-left:0}
+  .sn-icon{width:72px;height:72px}
+  .sn-icon svg{width:40px;height:40px}
+}
+@media (prefers-reduced-motion:reduce){.js .sn .sn-icon,.js .sn .sn-text{opacity:1;filter:none;transform:none}}
+
+
+/* ===== Your Dream Home: side-by-side scroll slider (list left, media right) ===== */
+.cv{height:calc(100svh + 7 * 45svh);margin-top:8px}
+.cv-stage{position:sticky;top:0;height:100svh;display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:center;padding-block:clamp(72px,9svh,96px) clamp(16px,3svh,32px)}
+.cv-panel{position:relative;height:min(78svh,46vw);border-radius:22px;overflow:hidden}
+.cv-left{background:var(--ink-2);border:1px solid var(--line);display:flex;flex-direction:column;justify-content:center;padding:clamp(28px,5vw,80px)}
+.cv-count{position:absolute;top:24px;left:clamp(28px,5vw,80px);font-size:11px}
+.cv-count b{color:var(--stake);font-weight:500}
+.cv-list{list-style:none;display:grid;gap:2px}
+.cv-item button{all:unset;cursor:pointer;display:block}
+.cv-name{display:block;font-size:clamp(26px,3vw,48px);line-height:1.12;letter-spacing:-.025em;font-weight:520;font-variation-settings:"wdth" 108;color:rgba(233,231,225,.22);transition:color 600ms var(--ease)}
+.cv-item button:hover .cv-name{color:rgba(233,231,225,.5)}
+.cv-item button:focus-visible{outline:2px solid var(--stake);outline-offset:4px}
+.cv-item.on .cv-name{color:var(--bone)}
+.cv-desc{max-height:0;opacity:0;overflow:hidden;font-size:clamp(14px,1.05vw,16px);color:rgba(233,231,225,.7);max-width:44ch;transition:max-height 700ms var(--ease),opacity 600ms var(--ease),margin 700ms var(--ease)}
+.cv-item.on .cv-desc{max-height:6em;opacity:1;margin:6px 0 12px}
+.cv-right{background:var(--ink-2)}
+.cv-slide{position:absolute;inset:0;margin:0;opacity:0;transform:scale(1.04);filter:blur(10px);transition:opacity 800ms var(--ease),transform 1200ms var(--ease),filter 900ms var(--ease)}
+.cv-slide.on{opacity:1;transform:none;filter:none}
+.cv-slide>img{width:100%;height:100%;object-fit:cover}
+.cv-slide .phone{position:absolute;right:7%;bottom:6%;width:min(230px,calc(min(78svh,46vw) * .4));max-width:none;transform:translateY(30px);transition:transform 1200ms var(--ease) 200ms}
+.cv-slide.on .phone{transform:none}
+.cv-tag{position:absolute;left:18px;bottom:14px;font-size:10px;color:rgba(233,231,225,.75);text-shadow:0 1px 6px rgba(0,0,0,.6)}
+@media (max-width:820px){
+  .cv{height:calc(100svh + 7 * 40svh)}
+  .cv-stage{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) auto;gap:12px;align-items:stretch;padding-top:84px}
+  .cv-right{order:-1;height:auto;min-height:0}
+  .cv-left{height:auto;padding:22px 22px 18px}
+  .cv-count{position:static;margin-bottom:10px}
+  .cv-name{font-size:21px}
+  .cv-item.on .cv-desc{margin:4px 0 8px}
+  .cv-slide .phone{width:150px;right:6%;bottom:5%}
+}
+@media (prefers-reduced-motion:reduce){.cv-slide,.cv-name,.cv-desc{transition:none}}
+
+
+/* Your Dream Home: tighter spacing between title, slider and CTA */
+.steps-band .sec-head{margin-bottom:0}
+.steps-band .cv{margin-top:0;height:calc(100svh + 7 * 45svh)}
+.steps-band .cv-stage{align-items:start;padding-top:clamp(84px,10svh,104px)}
+.steps-band .bigcta{margin-top:calc(min(78svh,46vw) + clamp(84px,10svh,104px) - 100svh + 40px)}
+@media (max-width:820px){.steps-band .bigcta{margin-top:24px}}
+
 /* ===== Pinned section 01: fixed stage, scroll steps through four frames ===== */
 .pin{height:400svh;border-bottom:1px solid var(--line)}
 .pin-stage{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;align-items:center}
@@ -463,6 +597,8 @@ a.path h3{padding-right:64px}
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
 }
 </style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "name": "Autonodwell", "url": "https://www.autonodwell.com", "logo": "https://www.autonodwell.com/logo.png", "description": "Autonodwell is a homebuilding platform connecting family budgets to custom home design, land, and financing in one seamless process."}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is Autonodwell?", "acceptedAnswer": {"@type": "Answer", "text": "Autonodwell is a homebuilding platform that connects your budget to custom home design, land and financing in one process. You start with what you can afford, check or find a lot, pick a home that fits, and follow it through permits, construction and move-in."}}, {"@type": "Question", "name": "How do I start if I don’t know my budget?", "acceptedAnswer": {"@type": "Answer", "text": "Answer two questions: do you have land, and do you know your budget? “I don’t know yet” is an option for both. If you need help with both, we start with a budget range and use it to guide the lot search."}}, {"@type": "Question", "name": "Do I need to own land to build with Autonodwell?", "acceptedAnswer": {"@type": "Answer", "text": "No. If you own a lot, we use it from the first step. If you’re looking at a lot, we check it before you buy. If you need land, your budget sets the lot price range for your search."}}, {"@type": "Question", "name": "What does the budget include?", "acceptedAnswer": {"@type": "Answer", "text": "The preliminary budget is all-in: land, site work, the house, design, permits, utility connections, financing costs and contingency. It is a starting range, not a quote."}}, {"@type": "Question", "name": "Can you tell me if a lot will work before I buy it?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, that is the point of step two. We check parcel records, zoning, allowed use, setbacks, height, lot coverage, easements, access, slope, hazards and utility availability, and flag when a survey, soils report or utility estimate is needed."}}, {"@type": "Question", "name": "Is the price I see final?", "acceptedAnswer": {"@type": "Answer", "text": "Not at first. Early estimates show what could still change the cost. When you approve the design and price, you see which amounts are quoted, which are still allowances, and what is excluded. If an estimate runs over budget, we revise the home or revisit the lot before you pay for a full drawing set."}}, {"@type": "Question", "name": "Who is involved in building my home?", "acceptedAnswer": {"@type": "Answer", "text": "Depending on the step: a lender, a feasibility lead, an architect or designer, engineers, a general contractor or estimator, and trades such as plumbers. You see what is happening; the professional team coordinates the work behind it."}}, {"@type": "Question", "name": "How does construction financing work?", "acceptedAnswer": {"@type": "Answer", "text": "Your lender checks borrowing capacity and explains construction financing early. If you own land, they check whether its equity can count. Before work starts, they review the plans, contract, appraisal and draw schedule. A preliminary affordability estimate is not mortgage preapproval; lenders make their own credit decisions."}}, {"@type": "Question", "name": "What happens during construction?", "acceptedAnswer": {"@type": "Answer", "text": "The general contractor schedules site work, foundation, framing, rough-ins, finishes and inspections, and manages trade coordination, change orders and draw requests. You see what is happening now, what is next, and whether anything needs your decision."}}, {"@type": "Question", "name": "What do I get when I move in?", "acceptedAnswer": {"@type": "Answer", "text": "A walkthrough, a punch list that gets resolved, your keys, and your warranty, manuals and maintenance information after final inspections and occupancy sign-off."}}, {"@type": "Question", "name": "Is it free to start?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Exploring homes and getting a starting budget range is free, with no commitment."}}, {"@type": "Question", "name": "How do lenders fit into the Autonodwell process?", "acceptedAnswer": {"@type": "Answer", "text": "From the first step. The lender checks borrowing capacity, explains construction financing and checks whether owned land can count as equity. Before construction, the lender reviews the plans, contract, appraisal and draw schedule, and at the end handles any final draw or loan conversion."}}, {"@type": "Question", "name": "What project information can a lender or underwriter expect?", "acceptedAnswer": {"@type": "Answer", "text": "An all-in budget, a lot feasibility screen, drawings, a construction contract and a price breakdown that separates quoted amounts from allowances and exclusions. We want to shape this package with lenders. Autonodwell outputs have not yet been validated by a lender for underwriting."}}, {"@type": "Question", "name": "When do builders and contractors get involved?", "acceptedAnswer": {"@type": "Answer", "text": "Early. The contractor or estimator prices the house and site work while the home is being fitted to the lot, then gathers trade bids, reconciles them with the estimate and finalizes the contract as scope is confirmed. During construction, the contractor manages trades, change orders and draw requests."}}, {"@type": "Question", "name": "What does the feasibility lead or architect do?", "acceptedAnswer": {"@type": "Answer", "text": "The feasibility lead screens a lot before purchase: zoning, setbacks, easements, access, slope, hazards and utilities, plus the likely approval path. The architect or designer tests the home on the site, develops the drawings, and often leads permit submissions and responses."}}, {"@type": "Question", "name": "How are trades such as plumbers involved?", "acceptedAnswer": {"@type": "Answer", "text": "A plumber can advise during design when sewer routing, connection costs or fixture placement could affect it. On site, the plumber typically handles below-slab work if needed, rough-in before walls close, and final fixtures."}}, {"@type": "Question", "name": "How does Autonodwell reduce scope ambiguity before work begins?", "acceptedAnswer": {"@type": "Answer", "text": "Budget and lot are checked before a home is picked, the home is priced on its actual site before full drawings, and the final price separates quoted amounts, allowances and exclusions. If an estimate exceeds the budget, the home or the lot is revisited first."}}, {"@type": "Question", "name": "How is Autonodwell approaching capital?", "acceptedAnswer": {"@type": "Answer", "text": "We’re starting with the information, financing and delivery bottlenecks, not with an oversized factory. Capital is deployed against milestones, with a clear account of what has and hasn’t been proven yet."}}, {"@type": "Question", "name": "Can developers or landowners bring a site?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Sites go through the same feasibility screen, and the delivery system is tested on individual homes before larger programs."}}, {"@type": "Question", "name": "How do I start a conversation?", "acceptedAnswer": {"@type": "Answer", "text": "Use the inquiry form on this page and choose the option that describes you. We’ll follow up by email."}}]}</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -599,73 +735,62 @@ a.path h3{padding-right:64px}
       <div class="sec-head">
         <span class="mono">05 · Your Dream Home</span>
         <div>
-          <h2 id="steps-h">From blueprint to keys, in four steps.</h2>
-          <p class="lede" style="margin-top:20px">Start by dreaming for free. Then understand the real steps and costs involved.</p>
+          <h2 id="steps-h">Every step connected.<br>Every home made possible.</h2>
         </div>
       </div>
-      <ol class="steps">
-        <li class="step reveal">
-          <div class="phone" aria-hidden="true"><div class="phone-screen"><div class="island"></div><div class="app"><div class="app-top"><span>9:41</span><span class="app-tag">Example</span></div>
-<p class="app-eyebrow">Step 1 of 4</p><p class="app-h">What would home look like for you?</p>
-<div class="app-card house"><svg viewBox="0 0 120 64"><path d="M8 58V30L40 10l32 20v28" fill="none" stroke="#e9e7e1" stroke-width="1.6"/><path d="M72 58V34h40v24" fill="none" stroke="#e9e7e1" stroke-width="1.6"/><rect x="48" y="38" width="14" height="20" fill="#e8643a"/><rect x="80" y="40" width="12" height="9" fill="none" stroke="#e9e7e1"/><rect x="16" y="36" width="14" height="10" fill="none" stroke="#e9e7e1"/></svg><span>Starter home · 3 bd · 2 ba</span></div>
-<p class="app-label">Comfortable monthly budget</p>
-<div class="slider"><span style="width:58%"></span><i style="left:58%"></i></div>
-<div class="app-row"><span>$1,800</span><b>$2,400 / mo</b><span>$3,200</span></div>
-<div class="app-btn">Start designing</div></div></div></div>
-          <div class="step-copy"><span class="mono"><i>Step 01</i> Dream</span><h3>Start designing your home</h3><p class="step-sub">Build within your budget.</p><p>Explore a thoughtfully designed starter home and set a comfortable monthly budget. Your budget shapes the home from the beginning, not at the end.</p></div>
-        </li>
-        <li class="step reveal">
-          <div class="phone" aria-hidden="true"><div class="phone-screen"><div class="island"></div><div class="app"><div class="app-top"><span>9:41</span><span class="app-tag">Example</span></div>
-<p class="app-eyebrow">Step 2 of 4</p><p class="app-h">Make it yours</p>
-<p class="app-label">Exterior siding</p>
-<div class="swatches"><i class="on" style="background:#c9a77c"></i><i style="background:#3a3d3c"></i><i style="background:#d8d4cb"></i><i style="background:#7c8a7a"></i></div>
-<p class="app-label">Kitchen finish</p>
-<div class="swatches"><i style="background:#efece6"></i><i class="on" style="background:#a9825a"></i><i style="background:#2a2b2b"></i></div>
-<p class="app-label">Flooring</p>
-<div class="chips"><span class="on">Oak</span><span>Tile</span><span>Concrete</span></div>
-<div class="app-sum"><span>Indicative cost change</span><b>+ $3,150</b></div></div></div></div>
-          <div class="step-copy"><span class="mono"><i>Step 02</i> Make it yours</span><h3>Choose your materials</h3><p class="step-sub">A curated set of finishes, not endless options.</p><p>Pick a floor plan, finishes and an upgrade. Each choice updates the home and its indicative cost, so you see the tradeoff as you make it.</p></div>
-        </li>
-        <li class="step reveal">
-          <div class="phone" aria-hidden="true"><div class="phone-screen"><div class="island"></div><div class="app"><div class="app-top"><span>9:41</span><span class="app-tag">Example</span></div>
-<p class="app-eyebrow">Step 3 of 4</p><p class="app-h">Your path home</p>
-<ol class="tl">
-<li class="done"><b>Design</b><span>Architect · engineer</span></li>
-<li class="done"><b>Site</b><span>Land · zoning · utilities</span></li>
-<li class="now"><b>Financing</b><span>Participating lender</span></li>
-<li><b>Approvals</b><span>Permitting</span></li>
-<li><b>Construction</b><span>Builder · suppliers</span></li>
-<li><b>Keys</b><span>You</span></li>
-</ol></div></div></div>
-          <div class="step-copy"><span class="mono"><i>Step 03</i> Discover</span><h3>Understand who’s involved</h3><p class="step-sub">The whole process, in one view.</p><p>Design, site, financing, approvals, construction, keys. See who handles each stage, what it might cost and what comes next.</p></div>
-        </li>
-        <li class="step reveal">
-          <div class="phone" aria-hidden="true"><div class="phone-screen"><div class="island"></div><div class="app"><div class="app-top"><span>9:41</span><span class="app-tag">Example</span></div>
-<p class="app-eyebrow">Step 4 of 4</p><p class="app-h">Your estimate</p>
-<div class="est">
-<div><span>Home + delivery</span><b>$185,000</b></div>
-<div><span>Site + installation</span><b>$65,000</b></div>
-<div><span>Land allocation</span><b>$60,000</b></div>
-<div><span>Soft costs + contingency</span><b>$40,000</b></div>
+      <div class="cv" id="cv">
+        <div class="cv-stage">
+          <div class="cv-panel cv-left">
+            <span class="mono cv-count"><b id="cv-n">01</b> / 07</span>
+            <ol class="cv-list">
+            <li class="cv-item on"><button type="button" data-cv="0"><span class="cv-name">Find my budget</span></button><p class="cv-desc">Tell us your comfortable monthly payment, cash and whether you have land. “I don’t know yet” works too.</p></li>
+            <li class="cv-item"><button type="button" data-cv="1"><span class="cv-name">Check my lot</span></button><p class="cv-desc">Enter an address, or tell us where you want to live. See what could fit and what could make the lot expensive.</p></li>
+            <li class="cv-item"><button type="button" data-cv="2"><span class="cv-name">Pick a home that fits</span></button><p class="cv-desc">Choose a layout that fits your lot and budget, with the estimated total project cost.</p></li>
+            <li class="cv-item"><button type="button" data-cv="3"><span class="cv-name">Approve design &amp; price</span></button><p class="cv-desc">Review the home, finishes and price. See what’s quoted and what’s still an allowance.</p></li>
+            <li class="cv-item"><button type="button" data-cv="4"><span class="cv-name">Permits &amp; financing</span></button><p class="cv-desc">Sign what needs your approval. See what’s cleared and what’s holding up the start date.</p></li>
+            <li class="cv-item"><button type="button" data-cv="5"><span class="cv-name">Build my home</span></button><p class="cv-desc">See what’s happening now, what’s next, and whether anything needs your decision.</p></li>
+            <li class="cv-item"><button type="button" data-cv="6"><span class="cv-name">Move in</span></button><p class="cv-desc">Walk through, review the punch list, and get your keys and warranty information.</p></li>
+            </ol>
+          </div>
+          <div class="cv-panel cv-right">
+          <figure class="cv-slide on"><img src="img/step-4.jpg" alt="Sunlit open kitchen and living room" width="1280" height="720" loading="eager"><div class="phone" aria-hidden="true"><div class="phone-screen"><div class="island"></div><div class="app"><div class="app-top"><span>9:41</span><span class="app-tag">Example</span></div><p class="app-eyebrow">Step 1 of 7</p><p class="app-h">Find my budget</p>
+<p class="app-label">Do you know your budget?</p>
+<div class="chips col"><span>I know my total budget</span><span class="on">I know my monthly payment</span><span>I need help figuring it out</span></div>
+<div class="slider"><span style="width:55%"></span><i style="left:55%"></i></div>
+<div class="app-row"><span>Comfortable monthly</span><b>$2,400</b></div>
+<p class="app-label">Do you have land?</p>
+<div class="chips col"><span>I own a lot</span><span>I’m looking at a lot</span><span class="on">I need help finding land</span></div>
+<div class="app-btn">See my starting range</div></div></div></div></figure>
+          <figure class="cv-slide"><img src="img/step-7.jpg" alt="A finished home on its lot" width="1280" height="720" loading="lazy"><div class="phone" aria-hidden="true"><div class="phone-screen"><div class="island"></div><div class="app"><div class="app-top"><span>9:41</span><span class="app-tag">Example</span></div><p class="app-eyebrow">Step 2 of 7</p><p class="app-h">Check my lot</p>
+<div class="app-input">Enter an address</div>
+<div class="checks">
+<div><b class="ok">✓</b><span>Zoning allows a home</span></div>
+<div><b class="ok">✓</b><span>Setbacks and lot coverage</span></div>
+<div><b class="ok">✓</b><span>Access and easements</span></div>
+<div><b class="warn">!</b><span>Slope: survey may be needed</span></div>
+<div><b class="q">?</b><span>Utilities: estimate needed</span></div>
 </div>
-<div class="app-sum"><span>Est. principal + interest</span><b>≈ $2,342 / mo</b></div>
-<p class="app-fine">Estimate, not a quote. Taxes and insurance extra.</p>
-<div class="app-btn">Review with a consultant</div></div></div></div>
-          <div class="step-copy"><span class="mono"><i>Step 04</i> Understand</span><h3>Calculate the estimates and review with a consultant</h3><p class="step-sub">Explain the numbers.</p><p>See modeled purchase costs, monthly payments, financing assumptions and cash needed. Then walk through them with an Autonodwell consultant.</p></div>
-        </li>
-      </ol>
-      <div class="finance reveal">
-        <div>
-          <span class="mono"><i>Next</i> Qualify</span>
-          <h3>Financing &amp; lenders</h3>
-          <p class="step-sub">Is there a credible path to financing?</p>
-        </div>
-        <div>
-          <p>When you’re ready, connect with participating lenders or other qualified financing providers. Better-organized project data can help them see the design, scope, cost and assumptions behind your home.</p>
-          <ul class="finance-list">
-            <li>A preliminary affordability estimate is not mortgage preapproval.</li>
-            <li>A calculator is not a credit decision. Lenders make their own.</li>
-          </ul>
+<div class="app-sum"><span>Could make this lot expensive</span><b>2 items</b></div></div></div></div></figure>
+          <figure class="cv-slide"><img src="img/step-1.jpg" alt="Concept model of the starter home on its plan" width="1280" height="720" loading="lazy"><div class="phone" aria-hidden="true"><div class="phone-screen"><div class="island"></div><div class="app"><div class="app-top"><span>9:41</span><span class="app-tag">Example</span></div><p class="app-eyebrow">Step 3 of 7</p><p class="app-h">Pick a home that fits</p>
+<div class="app-card house"><svg viewBox="0 0 120 64"><path d="M8 58V30L40 10l32 20v28" fill="none" stroke="#e9e7e1" stroke-width="1.6"/><path d="M72 58V34h40v24" fill="none" stroke="#e9e7e1" stroke-width="1.6"/><rect x="48" y="38" width="14" height="20" fill="#e8643a"/><rect x="80" y="40" width="12" height="9" fill="none" stroke="#e9e7e1"/><rect x="16" y="36" width="14" height="10" fill="none" stroke="#e9e7e1"/></svg><span>3 bd · 2 ba · fits your lot</span></div>
+<div class="app-row"><span>Est. total project cost</span><b>$350k</b></div>
+<p class="app-label">What could still change it</p>
+<div class="chips"><span>Grading</span><span>Driveway</span><span>Utility hookup</span></div>
+<div class="app-btn">Choose this home</div></div></div></div></figure>
+          <figure class="cv-slide"><img src="img/step-2.jpg" alt="Hand drafting the floor plan" width="1280" height="720" loading="lazy"><div class="phone" aria-hidden="true"><div class="phone-screen"><div class="island"></div><div class="app"><div class="app-top"><span>9:41</span><span class="app-tag">Example</span></div><p class="app-eyebrow">Step 4 of 7</p><p class="app-h">Approve design &amp; price</p>
+<div class="est">
+<div><span>House</span><b>Quoted</b></div>
+<div><span>Site work</span><b>Quoted</b></div>
+<div><span>Kitchen finishes</span><b class="al">Allowance</b></div>
+<div><span>Utility connections</span><b class="al">Allowance</b></div>
+<div><span>Permits + design</span><b>Quoted</b></div>
+</div>
+<p class="app-fine">Allowances can still change. Exclusions listed.</p>
+<div class="app-btn">Review with a consultant</div></div></div></div></figure>
+          <figure class="cv-slide"><img src="img/step-3.jpg" alt="Wireframe model rising from the plan" width="1280" height="720" loading="lazy"></figure>
+          <figure class="cv-slide"><img src="img/step-6.jpg" alt="Walls filling in with wood siding" width="1280" height="720" loading="lazy"></figure>
+          <figure class="cv-slide"><img src="img/step-5.jpg" alt="Keys handed to a couple at their new home" width="1280" height="720" loading="lazy"></figure>
+          </div>
         </div>
       </div>
       <a class="bigcta reveal" href="#how-it-works" data-route="how-it-works">
@@ -714,6 +839,28 @@ a.path h3{padding-right:64px}
       </div>
     </div>
   </section>
+
+  <section class="band faq" id="faq" aria-labelledby="faq-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="mono">07 · FAQ</span>
+        <h2 id="faq-h">Questions about building your home</h2>
+      </div>
+      <div class="faq-list">
+          <details class="faq-item"><summary><h3>What is Autonodwell?</h3><span class="faq-plus" aria-hidden="true"></span></summary><p>Autonodwell is a homebuilding platform that connects your budget to custom home design, land and financing in one process. You start with what you can afford, check or find a lot, pick a home that fits, and follow it through permits, construction and move-in.</p></details>
+          <details class="faq-item"><summary><h3>How do I start if I don’t know my budget?</h3><span class="faq-plus" aria-hidden="true"></span></summary><p>Answer two questions: do you have land, and do you know your budget? “I don’t know yet” is an option for both. If you need help with both, we start with a budget range and use it to guide the lot search.</p></details>
+          <details class="faq-item"><summary><h3>Do I need to own land to build with Autonodwell?</h3><span class="faq-plus" aria-hidden="true"></span></summary><p>No. If you own a lot, we use it from the first step. If you’re looking at a lot, we check it before you buy. If you need land, your budget sets the lot price range for your search.</p></details>
+          <details class="faq-item"><summary><h3>What does the budget include?</h3><span class="faq-plus" aria-hidden="true"></span></summary><p>The preliminary budget is all-in: land, site work, the house, design, permits, utility connections, financing costs and contingency. It is a starting range, not a quote.</p></details>
+          <details class="faq-item"><summary><h3>Can you tell me if a lot will work before I buy it?</h3><span class="faq-plus" aria-hidden="true"></span></summary><p>Yes, that is the point of step two. We check parcel records, zoning, allowed use, setbacks, height, lot coverage, easements, access, slope, hazards and utility availability, and flag when a survey, soils report or utility estimate is needed.</p></details>
+          <details class="faq-item"><summary><h3>Is the price I see final?</h3><span class="faq-plus" aria-hidden="true"></span></summary><p>Not at first. Early estimates show what could still change the cost. When you approve the design and price, you see which amounts are quoted, which are still allowances, and what is excluded. If an estimate runs over budget, we revise the home or revisit the lot before you pay for a full drawing set.</p></details>
+          <details class="faq-item"><summary><h3>Who is involved in building my home?</h3><span class="faq-plus" aria-hidden="true"></span></summary><p>Depending on the step: a lender, a feasibility lead, an architect or designer, engineers, a general contractor or estimator, and trades such as plumbers. You see what is happening; the professional team coordinates the work behind it.</p></details>
+          <details class="faq-item"><summary><h3>How does construction financing work?</h3><span class="faq-plus" aria-hidden="true"></span></summary><p>Your lender checks borrowing capacity and explains construction financing early. If you own land, they check whether its equity can count. Before work starts, they review the plans, contract, appraisal and draw schedule. A preliminary affordability estimate is not mortgage preapproval; lenders make their own credit decisions.</p></details>
+          <details class="faq-item"><summary><h3>What happens during construction?</h3><span class="faq-plus" aria-hidden="true"></span></summary><p>The general contractor schedules site work, foundation, framing, rough-ins, finishes and inspections, and manages trade coordination, change orders and draw requests. You see what is happening now, what is next, and whether anything needs your decision.</p></details>
+          <details class="faq-item"><summary><h3>What do I get when I move in?</h3><span class="faq-plus" aria-hidden="true"></span></summary><p>A walkthrough, a punch list that gets resolved, your keys, and your warranty, manuals and maintenance information after final inspections and occupancy sign-off.</p></details>
+          <details class="faq-item"><summary><h3>Is it free to start?</h3><span class="faq-plus" aria-hidden="true"></span></summary><p>Yes. Exploring homes and getting a starting budget range is free, with no commitment.</p></details>
+      </div>
+    </div>
+  </section>
 </article>
 
 <!-- ================= HOW IT WORKS ================= -->
@@ -726,58 +873,126 @@ a.path h3{padding-right:64px}
           <span class="mono rise">Build Your Dream Home</span>
           <h1 class="display rise">From dreaming to keys.</h1>
         </div>
-        <p class="lede rise">A complex process should feel navigable without hiding its complexity. Here is the path we are designing, step by step.</p>
+        <p class="lede rise">Start with budget, then bring in the land immediately. Here is what you see at each step.</p>
       </div>
       <ol class="htrack" id="htrack">
           <li class="hslide in" aria-roledescription="slide" aria-label="Step 01 of 7">
-            <img class="himg" src="img/step-1.jpg" alt="Finished concept model of the starter home on its floor plan" width="1280" height="720" loading="eager">
-            <div class="hcopy"><span class="hn">01<i>/07</i></span><h3>Dream</h3><q>Show me what’s possible.</q><p>Explore a curated home collection for free, with no commitment.</p></div>
+            <div class="htop"><div class="htitle"><span class="hn">01<i>/07</i></span><h3>Find my budget</h3></div><div class="htext"><p class="hlead">“What could I afford per month, and how much cash would I need?”</p><p>Tell us your comfortable monthly payment, available cash and whether you have land. Two questions start it: Do you have land? Do you know your budget? “I don’t know yet” works for both.</p></div></div>
+            <img class="himg" src="img/step-4.jpg" alt="Sunlit open kitchen and living room" width="1280" height="720" loading="eager">
           </li>
           <li class="hslide" aria-roledescription="slide" aria-label="Step 02 of 7">
-            <img class="himg" src="img/step-2.jpg" alt="Hand drafting the floor plan" width="1280" height="720" loading="lazy">
-            <div class="hcopy"><span class="hn">02<i>/07</i></span><h3>Discover</h3><q>Could this work for my budget and location?</q><p>Property constraints, location needs and realistic options, without the overwhelm.</p></div>
+            <div class="htop"><div class="htitle"><span class="hn">02<i>/07</i></span><h3>Check my lot or help me find one</h3></div><div class="htext"><p class="hlead">Enter an address or tell us where you want to live.</p><p>Get a first answer on what could fit, and what could make the lot expensive. If you need land, your budget sets the lot price range.</p></div></div>
+            <img class="himg" src="img/step-7.jpg" alt="A finished home on its lot with a family on the lawn" width="1280" height="720" loading="lazy">
           </li>
           <li class="hslide" aria-roledescription="slide" aria-label="Step 03 of 7">
-            <img class="himg" src="img/step-3.jpg" alt="Wireframe model of the home rising from the plan" width="1280" height="720" loading="lazy">
-            <div class="hcopy"><span class="hn">03<i>/07</i></span><h3>Understand</h3><q>What would this actually cost me?</q><p>Modeled purchase cost, monthly payment, financing assumptions and cash needed.</p></div>
+            <div class="htop"><div class="htitle"><span class="hn">03<i>/07</i></span><h3>Pick a home that fits</h3></div><div class="htext"><p class="hlead">Choose a layout that fits your lot and budget.</p><p>See the estimated total project cost, and what could still change it.</p></div></div>
+            <img class="himg" src="img/step-1.jpg" alt="Concept model of the starter home on its floor plan" width="1280" height="720" loading="lazy">
           </li>
           <li class="hslide" aria-roledescription="slide" aria-label="Step 04 of 7">
-            <img class="himg" src="img/step-4.jpg" alt="Sunlit open kitchen and living room" width="1280" height="720" loading="lazy">
-            <div class="hcopy"><span class="hn">04<i>/07</i></span><h3>Qualify</h3><q>Is there a credible path to financing?</q><p>Connect with participating lenders. A calculator is not a credit decision.</p></div>
+            <div class="htop"><div class="htitle"><span class="hn">04<i>/07</i></span><h3>Approve the design and price</h3></div><div class="htext"><p class="hlead">Review the home, major finishes and price breakdown.</p><p>See which amounts are quoted, and which are still allowances.</p></div></div>
+            <img class="himg" src="img/step-2.jpg" alt="Hand drafting the floor plan" width="1280" height="720" loading="lazy">
           </li>
           <li class="hslide" aria-roledescription="slide" aria-label="Step 05 of 7">
-            <img class="himg" src="img/step-5.jpg" alt="Agent handing house keys to a couple" width="1280" height="720" loading="lazy">
-            <div class="hcopy"><span class="hn">05<i>/07</i></span><h3>Reserve</h3><q>I’m ready to take a real step.</q><p>Meet an Autonodwell consultant, once pricing, geography and terms are set.</p></div>
+            <div class="htop"><div class="htitle"><span class="hn">05<i>/07</i></span><h3>Get permits and financing ready</h3></div><div class="htext"><p class="hlead">Sign the documents that need your approval.</p><p>See what’s cleared, and what’s holding up the start date.</p></div></div>
+            <img class="himg" src="img/step-3.jpg" alt="Wireframe model of the home rising from the plan" width="1280" height="720" loading="lazy">
           </li>
           <li class="hslide" aria-roledescription="slide" aria-label="Step 06 of 7">
+            <div class="htop"><div class="htitle"><span class="hn">06<i>/07</i></span><h3>Build my home</h3></div><div class="htext"><p class="hlead">See what’s happening now and what’s next.</p><p>And whether anything needs your decision.</p></div></div>
             <img class="himg" src="img/step-6.jpg" alt="Wireframe walls filling in with wood siding" width="1280" height="720" loading="lazy">
-            <div class="hcopy"><span class="hn">06<i>/07</i></span><h3>Build</h3><q>Show me what’s happening.</q><p>Clear updates on design, approvals, procurement, construction and delivery.</p></div>
           </li>
           <li class="hslide" aria-roledescription="slide" aria-label="Step 07 of 7">
-            <img class="himg" src="img/step-7.jpg" alt="Family playing on the lawn in front of their home" width="1280" height="720" loading="lazy">
-            <div class="hcopy"><span class="hn">07<i>/07</i></span><h3>Belong</h3><q>Help me take care of my home.</q><p>Home records, maintenance and support continue after closing.</p></div>
+            <div class="htop"><div class="htitle"><span class="hn">07<i>/07</i></span><h3>Move in</h3></div><div class="htext"><p class="hlead">Walk through the home and review the punch list.</p><p>Get your keys and warranty information.</p></div></div>
+            <img class="himg" src="img/step-5.jpg" alt="Agent handing house keys to a couple" width="1280" height="720" loading="lazy">
           </li>
       </ol>
       <div class="wrap hfoot">
-        <ol class="hticks" id="hticks" aria-label="Journey steps"><li><button type="button" data-h="0"><i>01</i>Dream</button></li><li><button type="button" data-h="1"><i>02</i>Discover</button></li><li><button type="button" data-h="2"><i>03</i>Understand</button></li><li><button type="button" data-h="3"><i>04</i>Qualify</button></li><li><button type="button" data-h="4"><i>05</i>Reserve</button></li><li><button type="button" data-h="5"><i>06</i>Build</button></li><li><button type="button" data-h="6"><i>07</i>Belong</button></li></ol>
-        <span class="mono hlabel" aria-hidden="true">Concept visualization</span>
+        <ol class="hticks" id="hticks" aria-label="Journey steps"><li><button type="button" data-h="0"><i>01</i>Budget</button></li><li><button type="button" data-h="1"><i>02</i>Lot</button></li><li><button type="button" data-h="2"><i>03</i>Home</button></li><li><button type="button" data-h="3"><i>04</i>Design &amp; price</button></li><li><button type="button" data-h="4"><i>05</i>Permits &amp; financing</button></li><li><button type="button" data-h="5"><i>06</i>Build</button></li><li><button type="button" data-h="6"><i>07</i>Move in</button></li></ol>
       </div>
     </div>
   </section>
 
-  <section class="band">
+  <section class="band snake-band" id="who-does-what" aria-labelledby="snake-h">
     <div class="wrap">
       <div class="sec-head">
-        <span class="mono">What you’ll find</span>
-        <h2>The free Dream-Home Experience</h2>
+        <span class="mono">Behind every step</span>
+        <div>
+          <h2 id="snake-h">Who does the work, from budget to keys.</h2>
+          <p class="lede" style="margin-top:20px">You see a clear next step. Here is the professional team doing the work behind each of the seven stages.</p>
+        </div>
       </div>
-      <div class="stack">
-        <div class="row"><h3>Curated designs</h3><p>A starter-home collection led by a three-bedroom, two-bath detached home of about 1,100 square feet.</p><span class="chip dev">In development</span></div>
-        <div class="row"><h3>Make it yours</h3><p>A small, considered set of finishes and material options. Each choice maps to a real assembly and its cost.</p><span class="chip dev">In development</span></div>
-        <div class="row"><h3>Make it possible</h3><p>Enter a comfortable monthly budget and a preferred location. See purchase price and full monthly ownership cost side by side.</p><span class="chip dev">In development</span></div>
-        <div class="row"><h3>Find your place</h3><p>What makes a site eligible, and qualified land opportunities where they exist. No fictional listings.</p><span class="chip next">Planned</span></div>
-        <div class="row"><h3>See your path home</h3><p>Design, site, financing, approvals, construction, keys. Each with estimated costs, open questions and next actions.</p><span class="chip next">Planned</span></div>
+      <div class="snake" id="snake">
+        <svg class="snake-path" id="snake-svg" aria-hidden="true"><path id="snake-base"/><path id="snake-draw"/></svg>
+        <ol class="snake-list">
+        <li class="sn">
+          <div class="sn-icon" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none" stroke="#e9e7e1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="14" y="6" width="36" height="52" rx="4"/><rect x="20" y="12" width="24" height="10" stroke="#e8643a"/><circle cx="24" cy="32" r="1.6"/><circle cx="32" cy="32" r="1.6"/><circle cx="40" cy="32" r="1.6"/><circle cx="24" cy="41" r="1.6"/><circle cx="32" cy="41" r="1.6"/><circle cx="40" cy="41" r="1.6"/><circle cx="24" cy="50" r="1.6"/><circle cx="32" cy="50" r="1.6"/><path d="M38 47v6h4" stroke="#e8643a"/></svg></div>
+          <div class="sn-text">
+            <span class="sn-n">01</span>
+            <h3>Find my budget</h3>
+            <span class="sn-who">Who’s involved · Autonodwell + lender</span>
+            <p>We build a preliminary all-in budget: land, site work, the house, design, permits, utility connections, financing costs and contingency. The lender checks borrowing capacity and explains construction financing. If you own land, the lender checks whether its equity can count toward financing.</p>
+          </div>
+        </li>
+        <li class="sn alt">
+          <div class="sn-icon" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none" stroke="#e9e7e1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 44l18-8 18 8 16-7v17l-16 7-18-8-18 8z"/><path d="M24 36v17M42 44v17"/><path d="M42 30c-6-7-9-11-9-15a9 9 0 0118 0c0 4-3 8-9 15z" stroke="#e8643a"/><circle cx="42" cy="15" r="3" stroke="#e8643a"/></svg></div>
+          <div class="sn-text">
+            <span class="sn-n">02</span>
+            <h3>Check my lot or help me find one</h3>
+            <span class="sn-who">Who’s involved · Feasibility lead + architect as needed</span>
+            <p>We check parcel records, zoning, allowed use, setbacks, height, lot coverage, easements, access, slope, hazards and utility availability. We identify the likely approval path and questions for planning, building or utility staff, and flag when a survey, soils report or utility estimate is needed. This screen runs before you commit to buying a lot.</p>
+          </div>
+        </li>
+        <li class="sn">
+          <div class="sn-icon" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none" stroke="#e9e7e1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 54h52" stroke="#e8643a"/><path d="M12 54V30L32 14l20 16v24"/><path d="M27 54V40h10v14"/><path d="M16 30h6v6h-6zM42 30h6v6h-6z"/><path d="M4 58h8M52 58h8" stroke="#e8643a"/></svg></div>
+          <div class="sn-text">
+            <span class="sn-n">03</span>
+            <h3>Pick a home that fits</h3>
+            <span class="sn-who">Who’s involved · Architect or designer + contractor or estimator</span>
+            <p>We test how the home sits on the site: entry, driveway, grading and utility connections, adapting the layout as needed. The contractor gives early pricing on the house and site work. If the estimate runs over budget, we revise the home or revisit the lot before you pay for a full drawing set.</p>
+          </div>
+        </li>
+        <li class="sn alt">
+          <div class="sn-icon" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none" stroke="#e9e7e1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8h34l10 10v40H8z"/><path d="M42 8v10h10"/><path d="M22 18l-8 30M22 18l8 30M22 18v-4" stroke="#e8643a"/><circle cx="22" cy="18" r="2.5" stroke="#e8643a"/><path d="M16 38h12"/><path d="M38 30h8M38 38h8M38 46h8"/></svg></div>
+          <div class="sn-text">
+            <span class="sn-n">04</span>
+            <h3>Approve the design and price</h3>
+            <span class="sn-who">Who’s involved · Architect + engineers + contractor</span>
+            <p>The drawings are developed and structure, energy, plumbing, mechanical and electrical layouts are coordinated. A plumber can advise when sewer routing, connection costs or fixture placement could affect the design. The contractor gathers trade bids, reconciles them with the estimate, and identifies exclusions and allowances.</p>
+          </div>
+        </li>
+        <li class="sn">
+          <div class="sn-icon" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none" stroke="#e9e7e1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6h30l10 10v28"/><path d="M10 6v52h22"/><path d="M16 18h18M16 26h24M16 34h20"/><circle cx="46" cy="48" r="10" stroke="#e8643a"/><path d="M41 48l4 4 7-8" stroke="#e8643a"/></svg></div>
+          <div class="sn-text">
+            <span class="sn-n">05</span>
+            <h3>Get permits and financing ready</h3>
+            <span class="sn-who">Who’s involved · Architect or permit lead + contractor + lender</span>
+            <p>Plans are submitted, reviews coordinated and comments answered. In parallel, the construction contract and pricing are finalized as scope is confirmed. The lender reviews the plans, contract, appraisal and draw schedule. Permits and funding are confirmed before work starts.</p>
+          </div>
+        </li>
+        <li class="sn alt">
+          <div class="sn-icon" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none" stroke="#e9e7e1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 40a24 24 0 0148 0"/><path d="M4 40h56v6H4z"/><path d="M28 18v12M36 18v12M24 18h16"/><path d="M14 56l12-8M50 56l-12-8" stroke="#e8643a"/></svg></div>
+          <div class="sn-text">
+            <span class="sn-n">06</span>
+            <h3>Build my home</h3>
+            <span class="sn-who">Who’s involved · General contractor + trades</span>
+            <p>Site work, foundation, framing, rough-ins, finishes and inspections are scheduled. The plumber typically handles below-slab work if needed, rough-in before walls close, and final fixtures. The contractor manages trade coordination, change orders and draw requests.</p>
+          </div>
+        </li>
+        <li class="sn">
+          <div class="sn-icon" aria-hidden="true"><svg viewBox="0 0 64 64" fill="none" stroke="#e9e7e1" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="20" cy="36" r="10"/><circle cx="20" cy="36" r="3.5" stroke="#e8643a"/><path d="M30 36h26M48 36v7M54 36v5"/><path d="M44 10v8M40 14h8M54 20v5M51.5 22.5h5M14 12v6M11 15h6" stroke="#e8643a"/></svg></div>
+          <div class="sn-text">
+            <span class="sn-n">07</span>
+            <h3>Move in</h3>
+            <span class="sn-who">Who’s involved · Contractor + project team</span>
+            <p>Final inspections and occupancy sign-off are completed, punch-list items resolved, and warranties, manuals and maintenance information handed over. The lender handles any final draw or loan conversion that applies.</p>
+          </div>
+        </li>
+        </ol>
       </div>
+      <a class="bigcta reveal" href="#partner" data-route="partner" data-anchor="inquiry">
+        <span class="bigcta-t">Try It Free</span>
+        <span class="bigcta-s mono">Get early access</span>
+        <svg class="bigcta-arrow" viewBox="0 0 48 24" aria-hidden="true"><path d="M0 12h44M34 2l10 10-10 10" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+      </a>
     </div>
   </section>
 
@@ -793,6 +1008,20 @@ a.path h3{padding-right:64px}
         <div><b>An early price estimate</b><span>is not a binding construction quote.</span></div>
       </div>
       <p class="note" style="margin-top:28px">We show the assumptions, costs, exclusions and remaining uncertainties, so “affordable” is something you can check.</p>
+      <div class="finance reveal">
+        <div>
+          <span class="mono"><i>Step 05</i> Qualify</span>
+          <h3>Financing &amp; lenders</h3>
+          <p class="step-sub">Get permits and financing ready.</p>
+        </div>
+        <div>
+          <p>Your lender checks borrowing capacity and explains construction financing from the start. If you own land, they check whether its equity can count. Before work begins, they review the plans, contract, appraisal and draw schedule, while permits move through review.</p>
+          <ul class="finance-list">
+            <li>A preliminary affordability estimate is not mortgage preapproval.</li>
+            <li>A calculator is not a credit decision. Lenders make their own.</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </section>
 </article>
@@ -943,6 +1172,26 @@ a.path h3{padding-right:64px}
       </div>
     </div>
   </section>
+
+  <section class="band faq" id="partner-faq" aria-labelledby="pfaq-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="mono">Partner FAQ</span>
+        <h2 id="pfaq-h">Questions from lenders, builders and partners</h2>
+      </div>
+      <div class="faq-list">
+          <details class="faq-item"><summary><h3>How do lenders fit into the Autonodwell process?</h3><span class="faq-plus" aria-hidden="true"></span></summary><p>From the first step. The lender checks borrowing capacity, explains construction financing and checks whether owned land can count as equity. Before construction, the lender reviews the plans, contract, appraisal and draw schedule, and at the end handles any final draw or loan conversion.</p></details>
+          <details class="faq-item"><summary><h3>What project information can a lender or underwriter expect?</h3><span class="faq-plus" aria-hidden="true"></span></summary><p>An all-in budget, a lot feasibility screen, drawings, a construction contract and a price breakdown that separates quoted amounts from allowances and exclusions. We want to shape this package with lenders. Autonodwell outputs have not yet been validated by a lender for underwriting.</p></details>
+          <details class="faq-item"><summary><h3>When do builders and contractors get involved?</h3><span class="faq-plus" aria-hidden="true"></span></summary><p>Early. The contractor or estimator prices the house and site work while the home is being fitted to the lot, then gathers trade bids, reconciles them with the estimate and finalizes the contract as scope is confirmed. During construction, the contractor manages trades, change orders and draw requests.</p></details>
+          <details class="faq-item"><summary><h3>What does the feasibility lead or architect do?</h3><span class="faq-plus" aria-hidden="true"></span></summary><p>The feasibility lead screens a lot before purchase: zoning, setbacks, easements, access, slope, hazards and utilities, plus the likely approval path. The architect or designer tests the home on the site, develops the drawings, and often leads permit submissions and responses.</p></details>
+          <details class="faq-item"><summary><h3>How are trades such as plumbers involved?</h3><span class="faq-plus" aria-hidden="true"></span></summary><p>A plumber can advise during design when sewer routing, connection costs or fixture placement could affect it. On site, the plumber typically handles below-slab work if needed, rough-in before walls close, and final fixtures.</p></details>
+          <details class="faq-item"><summary><h3>How does Autonodwell reduce scope ambiguity before work begins?</h3><span class="faq-plus" aria-hidden="true"></span></summary><p>Budget and lot are checked before a home is picked, the home is priced on its actual site before full drawings, and the final price separates quoted amounts, allowances and exclusions. If an estimate exceeds the budget, the home or the lot is revisited first.</p></details>
+          <details class="faq-item"><summary><h3>How is Autonodwell approaching capital?</h3><span class="faq-plus" aria-hidden="true"></span></summary><p>We’re starting with the information, financing and delivery bottlenecks, not with an oversized factory. Capital is deployed against milestones, with a clear account of what has and hasn’t been proven yet.</p></details>
+          <details class="faq-item"><summary><h3>Can developers or landowners bring a site?</h3><span class="faq-plus" aria-hidden="true"></span></summary><p>Yes. Sites go through the same feasibility screen, and the delivery system is tested on individual homes before larger programs.</p></details>
+          <details class="faq-item"><summary><h3>How do I start a conversation?</h3><span class="faq-plus" aria-hidden="true"></span></summary><p>Use the inquiry form on this page and choose the option that describes you. We’ll follow up by email.</p></details>
+      </div>
+    </div>
+  </section>
 </article>
 
 </main>
@@ -962,6 +1211,8 @@ a.path h3{padding-right:64px}
           <li><a href="#how-it-works" data-route="how-it-works">How it works</a></li>
           <li><a href="#vision" data-route="vision">The vision</a></li>
           <li><a href="#partner" data-route="partner">Partner with us</a></li>
+          <li><a href="#home" data-route="home" data-anchor="faq">FAQ</a></li>
+          <li><a href="#partner" data-route="partner" data-anchor="partner-faq">Partner FAQ</a></li>
         </ul>
       </div>
       <div>
@@ -1029,8 +1280,8 @@ a.path h3{padding-right:64px}
     current = name;
     const v = document.getElementById("bgv");
     if (v) { if (name === "home" && !reduce) { const pr = v.play(); pr && pr.catch(() => {}); } else v.pause(); }
-    document.querySelectorAll(".steps .reveal, .finance.reveal, .bigcta.reveal, .aud").forEach(el => el.classList.remove("in"));
-    requestAnimationFrame(() => requestAnimationFrame(() => dispatchEvent(new Event("scroll"))));
+    document.querySelectorAll(".finance.reveal, .bigcta.reveal, .aud").forEach(el => el.classList.remove("in"));
+    requestAnimationFrame(() => requestAnimationFrame(() => { dispatchEvent(new Event("scroll")); dispatchEvent(new Event("resize")); }));
   };
 
   const go = (name, mode) => {
@@ -1060,6 +1311,7 @@ a.path h3{padding-right:64px}
     const a = e.target.closest("a[data-route]");
     if (!a || e.metaKey || e.ctrlKey || e.shiftKey) return;
     e.preventDefault(); go(a.dataset.route, a.dataset.zoom === "left" && !reduce ? "zoom-left" : null);
+    if (a.dataset.anchor) setTimeout(() => { const t = document.getElementById(a.dataset.anchor); t && t.scrollIntoView({ behavior: reduce ? "auto" : "smooth" }); }, 700);
   });
   addEventListener("hashchange", () => { const n = location.hash.slice(1) || "home"; if (n !== current) go(n); });
   addEventListener("popstate", () => { const n = location.hash.slice(1) || "home"; if (n !== current) go(n); });
@@ -1078,16 +1330,12 @@ a.path h3{padding-right:64px}
   const finance = document.querySelector(".finance.reveal");
   const small = matchMedia("(max-width:640px)");
   const onSteps = () => {
-    if (!stepsList || !stepsList.offsetParent) return;
-    const vh = innerHeight, gap = Math.max(140, vh * 0.2);
-    const top = stepsList.getBoundingClientRect().top;
-    stepEls.forEach((el, i) => {
-      const r = el.getBoundingClientRect();
-      const show = small.matches ? r.top < vh * 0.86 : top < vh * 0.82 - i * gap;
-      const hide = small.matches ? r.top > vh : top > vh * 0.95 - i * gap;
-      if (show) el.classList.add("in"); else if (hide) el.classList.remove("in");
+    const vh = innerHeight;
+    document.querySelectorAll(".bigcta.reveal, .finance.reveal").forEach(el => {
+      if (!el.offsetParent) return;
+      const t = el.getBoundingClientRect().top;
+      if (t < vh * 0.9) el.classList.add("in"); else if (t > vh) el.classList.remove("in");
     });
-    [finance, document.querySelector(".bigcta.reveal")].forEach(el => { if (!el) return; const t = el.getBoundingClientRect().top; if (t < vh * 0.9) el.classList.add("in"); else if (t > vh) el.classList.remove("in"); });
   };
   if (document.documentElement.classList.contains("js")) {
     addEventListener("scroll", onSteps, { passive: true });
@@ -1106,6 +1354,7 @@ a.path h3{padding-right:64px}
     if (i === hCur) return; hCur = i;
     hSlides.forEach((el, k) => { el.classList.toggle("in", k === i); el.classList.toggle("past", k < i); el.setAttribute("aria-hidden", String(k !== i)); });
     hTicks.forEach((li, k) => li.classList.toggle("on", k === i));
+
     document.getElementById("hticks").style.setProperty("--hp", ((i + 1) / hSlides.length * 100) + "%");
   };
   const onH = () => {
@@ -1140,6 +1389,79 @@ a.path h3{padding-right:64px}
     addEventListener("resize", onAud);
     requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(onAud, 120)));
   }
+
+  /* ---- Behind every step: build the winding path from the rows, draw it as you scroll ---- */
+  const snake = document.getElementById("snake");
+  const snRows = snake ? [...snake.querySelectorAll(".sn")] : [];
+  let snLen = 0;
+  const buildSnake = () => {
+    if (!snake || !snake.offsetParent) return;
+    const W = snake.clientWidth, H = snake.clientHeight, narrow = innerWidth <= 820;
+    const svg = document.getElementById("snake-svg");
+    svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    let d;
+    if (narrow) {
+      d = `M 20 0 V ${H}`;
+    } else {
+      const tops = snRows.map(r => r.offsetTop);
+      tops.push(H);
+      const inset = 2, L = inset, R = W - inset;
+      d = `M ${L + 40} ${tops[0]}`;
+      for (let i = 0; i < snRows.length; i++) {
+        const y = tops[i], y2 = tops[i + 1], r = (y2 - y) / 2;
+        const goRight = i % 2 === 0;
+        if (i === snRows.length - 1) { d += ` H ${goRight ? R - 40 : L + 40}`; break; }
+        d += goRight ? ` H ${R - r} A ${r} ${r} 0 0 1 ${R - r} ${y2}` : ` H ${L + r} A ${r} ${r} 0 0 0 ${L + r} ${y2}`;
+      }
+    }
+    document.getElementById("snake-base").setAttribute("d", d);
+    const draw = document.getElementById("snake-draw");
+    draw.setAttribute("d", d);
+    snLen = draw.getTotalLength();
+    draw.style.strokeDasharray = snLen;
+    onSnake();
+  };
+  const onSnake = () => {
+    if (!snake || !snake.offsetParent || !snLen) return;
+    const r = snake.getBoundingClientRect(), vh = innerHeight;
+    const p = Math.min(1, Math.max(0, (vh * 0.65 - r.top) / r.height));
+    document.getElementById("snake-draw").style.strokeDashoffset = reduce ? 0 : snLen * (1 - p);
+    snRows.forEach(row => {
+      const t = row.getBoundingClientRect().top;
+      if (t < vh * 0.78) row.classList.add("in"); else if (t > vh) row.classList.remove("in");
+    });
+  };
+  if (snake) {
+    addEventListener("scroll", onSnake, { passive: true });
+    addEventListener("resize", buildSnake);
+    addEventListener("load", buildSnake);
+    document.fonts && document.fonts.ready.then(buildSnake);
+    requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(buildSnake, 120)));
+  }
+
+  /* ---- Your Dream Home: side-by-side slider, one step per scroll increment ---- */
+  const cv = document.getElementById("cv");
+  const cvItems = cv ? [...cv.querySelectorAll(".cv-item")] : [];
+  const cvSlides = cv ? [...cv.querySelectorAll(".cv-slide")] : [];
+  let cvCur = 0;
+  const setCv = i => {
+    if (i === cvCur) return; cvCur = i;
+    cvItems.forEach((el, k) => el.classList.toggle("on", k === i));
+    cvSlides.forEach((el, k) => el.classList.toggle("on", k === i));
+    document.getElementById("cv-n").textContent = String(i + 1).padStart(2, "0");
+  };
+  const onCv = () => {
+    if (!cv || !cv.offsetParent) return;
+    const r = cv.getBoundingClientRect(), span = r.height - innerHeight;
+    setCv(Math.min(cvItems.length - 1, Math.max(0, Math.floor((-r.top / span) * cvItems.length))));
+  };
+  cv && cv.querySelectorAll("[data-cv]").forEach(b => b.addEventListener("click", () => {
+    const i = +b.dataset.cv, r = cv.getBoundingClientRect(), span = r.height - innerHeight;
+    scrollTo({ top: scrollY + r.top + span * (i + .5) / cvItems.length, behavior: reduce ? "auto" : "smooth" });
+  }));
+  addEventListener("scroll", onCv, { passive: true });
+  addEventListener("resize", onCv);
+  onCv();
 
   /* ---- Pinned section 01 ---- */
   const pin = document.getElementById("problem");
