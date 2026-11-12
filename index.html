@@ -529,6 +529,27 @@ a.path h3{padding-right:64px}
 .steps-band .bigcta{margin-top:calc(min(78svh,46vw) + clamp(84px,10svh,104px) - 100svh + 40px)}
 @media (max-width:820px){.steps-band .bigcta{margin-top:24px}}
 
+
+/* Section 05: pull the slider up under the title */
+.steps-band .cv{margin-top:-56px}
+/* Section 05 on phones: media card on top, plain step list below (Cover model) */
+@media (max-width:820px){
+  .steps-band .cv{margin-top:-40px;height:calc(100svh + 7 * 38svh)}
+  .steps-band .cv-stage{display:flex;flex-direction:column;justify-content:flex-start;gap:clamp(18px,3svh,28px);padding-top:76px;padding-bottom:12px}
+  .steps-band .cv-right{order:0;flex:none;width:100%;height:min(48svh,92vw);border-radius:18px}
+  .steps-band .cv-left{order:1;flex:none;height:auto;background:none;border:0;border-radius:0;padding:0;overflow:visible}
+  .steps-band .cv-count{display:none}
+  .steps-band .cv-list{gap:0}
+  .steps-band .cv-name{font-size:clamp(24px,7.4vw,34px);line-height:1.12;letter-spacing:-.03em;color:rgba(233,231,225,.2)}
+  .steps-band .cv-item.on .cv-name{color:var(--bone)}
+  .steps-band .cv-desc{display:none}
+  .steps-band .cv-slide .phone{width:min(30vw,17svh);right:5%;bottom:5%}
+}
+@media (max-width:820px) and (max-height:700px){
+  .steps-band .cv-right{height:min(46svh,92vw)}
+  .steps-band .cv-name{font-size:clamp(20px,6.2vw,28px)}
+}
+
 /* ===== Pinned section 01: fixed stage, scroll steps through four frames ===== */
 .pin{height:400svh;border-bottom:1px solid var(--line)}
 .pin-stage{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;align-items:center}
