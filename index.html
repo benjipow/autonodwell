@@ -676,6 +676,22 @@ a.path:hover .msg,a.path:focus-visible .msg{border-left-color:#121212}
 .r-u{display:block;margin-top:8px;font-size:clamp(16px,1.3vw,19px);font-weight:600;color:var(--cassis)}
 .results p{margin-top:6px;font-size:15px;color:var(--mute);max-width:34ch}
 @media (max-width:820px){.results{grid-template-columns:1fr;gap:26px}}
+/* Increase stats */
+.incr{list-style:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(16px,3vw,40px);margin-top:clamp(40px,5vw,64px);padding-top:clamp(28px,4vw,48px);border-top:1px solid var(--line)}
+.incr li{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:start}
+.incr-n{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--cassis);display:grid;place-items:center;font-weight:600;color:var(--cassis);margin-top:14px}
+.incr b{display:block;font-size:clamp(56px,7.4vw,120px);font-weight:640;letter-spacing:-.05em;line-height:.95;color:var(--cassis);font-variant-numeric:tabular-nums}
+.incr b.hot{color:var(--stake)}
+.incr-l{display:block;margin-top:8px;font-size:clamp(18px,1.6vw,24px);font-weight:600;color:var(--cassis)}
+.incr p{margin-top:6px;font-size:15px;color:var(--mute);max-width:30ch}
+@media (max-width:820px){.incr{grid-template-columns:1fr;gap:28px}.incr b{font-size:clamp(64px,20vw,96px)}}
+/* Increase stats: highlighted full-width band */
+.incr{background:var(--wasabi);border-top:0;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);padding:clamp(48px,6vw,88px) max(var(--gutter),calc(50vw - 720px + var(--gutter)));gap:clamp(20px,3vw,56px)}
+.incr li{grid-template-columns:1fr;gap:14px}
+.incr-n{margin-top:0;border-color:#121212;color:#121212}
+.incr b,.incr b.hot,.incr-l{color:#121212}
+.incr p{color:rgba(18,18,18,.72)}
+@media (min-width:821px){.incr b{font-size:clamp(72px,8vw,150px)}.incr-l{font-size:clamp(20px,1.8vw,28px)}.incr p{font-size:17px}}
 .palette-note{position:fixed;left:16px;bottom:16px;z-index:60;display:flex;gap:6px;align-items:center;background:rgba(255,255,255,.85);backdrop-filter:blur(8px);border:1px solid var(--line);padding:8px 10px;border-radius:999px;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--cassis)}
 .palette-note i{width:14px;height:14px;border-radius:50%;display:block;box-shadow:inset 0 0 0 1px rgba(53,30,40,.2)}
 
@@ -918,7 +934,7 @@ a.path:hover .msg,a.path:focus-visible .msg{border-left-color:#121212}
 <div><b class="q">?</b><span>Utilities: estimate needed</span></div>
 </div>
 <div class="app-sum"><span>Could make this lot expensive</span><b>2 items</b></div></div></div></div></figure>
-          <figure class="cv-slide"><img src="img/step-1.jpg" alt="Concept model of the starter home on its plan" width="1280" height="720" loading="lazy"><div class="phone" aria-hidden="true"><div class="phone-screen"><div class="island"></div><div class="app"><div class="app-top"><span>9:41</span><span class="app-tag">Example</span></div><p class="app-h">Pick a home that fits</p>
+          <figure class="cv-slide"><img src="img/home-white.jpg" alt="Modern white single-story starter home at golden hour" width="1280" height="720" loading="lazy"><div class="phone" aria-hidden="true"><div class="phone-screen"><div class="island"></div><div class="app"><div class="app-top"><span>9:41</span><span class="app-tag">Example</span></div><p class="app-h">Pick a home that fits</p>
 <div class="app-card house"><svg viewBox="0 0 120 64"><path d="M8 58V30L40 10l32 20v28" fill="none" stroke="#351E28" stroke-width="1.6"/><path d="M72 58V34h40v24" fill="none" stroke="#351E28" stroke-width="1.6"/><rect x="48" y="38" width="14" height="20" fill="#FF5C34"/><rect x="80" y="40" width="12" height="9" fill="none" stroke="#351E28"/><rect x="16" y="36" width="14" height="10" fill="none" stroke="#351E28"/></svg><span>3 bd · 2 ba · fits your lot</span></div>
 <div class="app-row"><span>Est. total project cost</span><b>$350k</b></div>
 <p class="app-label">What could still change it</p>
@@ -1035,7 +1051,7 @@ a.path:hover .msg,a.path:focus-visible .msg{border-left-color:#121212}
           </li>
           <li class="hslide" aria-roledescription="slide" aria-label="Step 03 of 7">
             <div class="htop"><div class="htitle"><h3>Pick a home that fits</h3></div><div class="htext"><p class="hlead">Choose a layout that fits your lot and budget.</p><p>See the estimated total project cost, and what could still change it.</p></div></div>
-            <img class="himg" src="img/step-1.jpg" alt="Concept model of the starter home on its floor plan" width="1280" height="720" loading="lazy">
+            <img class="himg" src="img/home-white.jpg" alt="Modern white single-story starter home at golden hour" width="1280" height="720" loading="lazy">
           </li>
           <li class="hslide" aria-roledescription="slide" aria-label="Step 04 of 7">
             <div class="htop"><div class="htitle"><h3>Approve the design and price</h3></div><div class="htext"><p class="hlead">Review the home, major finishes and price breakdown.</p><p>See which amounts are quoted, and which are still allowances.</p></div></div>
@@ -1230,9 +1246,9 @@ a.path:hover .msg,a.path:focus-visible .msg{border-left-color:#121212}
         <div class="barrow"><span class="mono">2025 actual</span><span class="track"><span class="fill s" style="width:100%"></span></span><span class="v">$523.8k</span></div>
       </div>
       <ol class="incr" aria-label="Increases since 1970">
-        <li><span class="incr-n">1</span><div><b class="hot">+137%</b><span class="incr-l">Home price</span><p>Average new home, after inflation: $220,700 → $523,800.</p></div></li>
-        <li><span class="incr-n">2</span><div><b>+40%</b><span class="incr-l">Home size</span><p>Median new home: 1,525 sf (1973) → 2,142 sf (2025).</p></div></li>
-        <li><span class="incr-n">3</span><div><b>+42%</b><span class="incr-l">Wages</span><p>Average yearly wage, after inflation: $51,300 → $72,800.</p></div></li>
+        <li><div><b class="hot">+137%</b><span class="incr-l">Home price</span><p>Average new home, after inflation: $220,700 → $523,800.</p></div></li>
+        <li><div><b>+40%</b><span class="incr-l">Home size</span><p>Median new home: 1,525 sf (1973) → 2,142 sf (2025).</p></div></li>
+        <li><div><b>+42%</b><span class="incr-l">Wages</span><p>Average yearly wage, after inflation: $51,300 → $72,800.</p></div></li>
       </ol>
       <p class="source">Sources: Census/HUD new-home prices; Social Security average wage index; CPI inflation adjustment; Census constant-quality price index. Average wage rose from $51,300 (1970, in 2025 dollars) to $72,800. Headline prices include larger homes: median new-home size grew from 1,525 sf (1973) to 2,142 sf (2025).</p>
     </div>
@@ -1409,7 +1425,7 @@ a.path:hover .msg,a.path:focus-visible .msg{border-left-color:#121212}
     </div>
     <div class="legal">
       <span>© 2026 Autonodwell</span>
-      <p>Autonodwell is in pre-commercial development. Homes, prices, financing, sites and timelines shown are concepts and hypotheses, not offers. Nothing on this site is an offer to sell securities or a guarantee of financing, pricing or permits.</p>
+      <p>Autonodwell is in pre-commercial development. Homes, prices, financing, sites and timelines shown are concepts and hypotheses, not offers. Nothing on this site is an offer to sell securities or a guarantee of financing, pricing or permits. Homes and people shown are concept visualizations.</p>
     </div>
   </div>
 </footer>
