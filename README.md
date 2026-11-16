@@ -6,12 +6,20 @@ Static site. No build step.
 - `hero.mp4` / `hero-poster.jpg`: home hero background video and its poster image
 - `logo.png`: header logo and favicon
 
-## Deploy on Vercel
+## Deploy on Cloudflare Pages
 
-Import this repo in Vercel and choose the "Other" framework preset. Leave the build command empty and set the output directory to the repo root.
+Connect this repo in Cloudflare Pages. Framework preset: None. Build command: empty. Output directory: `/`.
+
+### Inquiry form
+
+`functions/api/inquiry.js` receives the Partner form and emails it through Resend. Add these in Pages > Settings > Environment variables (encrypted):
+
+- `RESEND_API_KEY`: Resend API key
+- `INQUIRY_TO`: inbox that receives inquiries
+- `INQUIRY_FROM`: sender on a Resend-verified domain, e.g. `Autonodwell <inquiries@autonodwell.com>`
 
 ## Before launch
 
-- The partner inquiry form doesn't send anything yet. Connect it to an inbox or CRM.
+- Finish the Resend setup so the inquiry form sends.
 - Privacy Policy and Terms of Use are still waiting on legal review.
 - Verify the founder bio details.
