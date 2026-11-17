@@ -1,0 +1,4533 @@
+{
+ "openapi": "3.1.0",
+ "info": {
+  "title": "Autonodwell API",
+  "description": "Single API for the Autonodwell web app, sales console and future native apps.",
+  "version": "0.1.0"
+ },
+ "paths": {
+  "/api/v1/catalog": {
+   "get": {
+    "tags": [
+     "catalog"
+    ],
+    "summary": "Catalog",
+    "operationId": "catalog",
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/CatalogOut"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/estimate": {
+   "post": {
+    "tags": [
+     "catalog"
+    ],
+    "summary": "Estimate Preview",
+    "operationId": "estimate_preview",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/EstimateIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/EstimateOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/land-budget": {
+   "post": {
+    "tags": [
+     "catalog"
+    ],
+    "summary": "Land Budget",
+    "operationId": "land_budget",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/LandBudgetIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/LandBudgetOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/me": {
+   "get": {
+    "tags": [
+     "customer"
+    ],
+    "summary": "Me",
+    "operationId": "me",
+    "parameters": [
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "default": "",
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/MeOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "patch": {
+    "tags": [
+     "customer"
+    ],
+    "summary": "Update Me",
+    "operationId": "update_me",
+    "parameters": [
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "default": "",
+       "title": "Authorization"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/MePatch"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/MeOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "delete": {
+    "tags": [
+     "customer"
+    ],
+    "summary": "Delete Me",
+    "description": "Right-to-delete: removes designs and profile, strips personal data from leads.\nThe (anonymised) lead row is kept so sales reporting totals stay correct.",
+    "operationId": "delete_me",
+    "parameters": [
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "default": "",
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "204": {
+      "description": "Successful Response"
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/me/export": {
+   "get": {
+    "tags": [
+     "customer"
+    ],
+    "summary": "Export My Data",
+    "description": "Right-to-know: everything we store about the signed-in person, as JSON.",
+    "operationId": "export_my_data",
+    "parameters": [
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "default": "",
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/designs": {
+   "get": {
+    "tags": [
+     "customer"
+    ],
+    "summary": "List Designs",
+    "operationId": "list_designs",
+    "parameters": [
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "default": "",
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "array",
+         "items": {
+          "$ref": "#/components/schemas/DesignSummary"
+         },
+         "title": "Response List Designs"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "post": {
+    "tags": [
+     "customer"
+    ],
+    "summary": "Create Design",
+    "operationId": "create_design",
+    "parameters": [
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "default": "",
+       "title": "Authorization"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/DesignIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "201": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/DesignOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/designs/{design_id}": {
+   "get": {
+    "tags": [
+     "customer"
+    ],
+    "summary": "Get Design",
+    "operationId": "get_design",
+    "parameters": [
+     {
+      "name": "design_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Design Id"
+      }
+     },
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "default": "",
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/DesignOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "patch": {
+    "tags": [
+     "customer"
+    ],
+    "summary": "Update Design",
+    "operationId": "update_design",
+    "parameters": [
+     {
+      "name": "design_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Design Id"
+      }
+     },
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "default": "",
+       "title": "Authorization"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/DesignPatch"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/DesignOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "delete": {
+    "tags": [
+     "customer"
+    ],
+    "summary": "Delete Design",
+    "operationId": "delete_design",
+    "parameters": [
+     {
+      "name": "design_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Design Id"
+      }
+     },
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "default": "",
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "204": {
+      "description": "Successful Response"
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/designs/{design_id}/duplicate": {
+   "post": {
+    "tags": [
+     "customer"
+    ],
+    "summary": "Duplicate Design",
+    "operationId": "duplicate_design",
+    "parameters": [
+     {
+      "name": "design_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Design Id"
+      }
+     },
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "default": "",
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "201": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/DesignOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/designs/{design_id}/submit": {
+   "post": {
+    "tags": [
+     "customer"
+    ],
+    "summary": "Submit Design",
+    "description": "Step 4 \u2192 'Review with a consultant'. Creates (or updates) the sales lead and syncs it to the CRM.",
+    "operationId": "submit_design",
+    "parameters": [
+     {
+      "name": "design_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Design Id"
+      }
+     },
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "default": "",
+       "title": "Authorization"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/SubmitIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/DesignOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/sales/team": {
+   "get": {
+    "tags": [
+     "sales"
+    ],
+    "summary": "Team",
+    "operationId": "team",
+    "parameters": [
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "default": "",
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "array",
+         "items": {
+          "$ref": "#/components/schemas/StaffOut"
+         },
+         "title": "Response Team"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/sales/leads": {
+   "get": {
+    "tags": [
+     "sales"
+    ],
+    "summary": "List Leads",
+    "operationId": "list_leads",
+    "parameters": [
+     {
+      "name": "status",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "$ref": "#/components/schemas/LeadStatus"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Status"
+      }
+     },
+     {
+      "name": "assigned",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string",
+         "pattern": "^(me|none)$"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Assigned"
+      }
+     },
+     {
+      "name": "q",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Q"
+      }
+     },
+     {
+      "name": "page",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "integer",
+       "minimum": 1,
+       "default": 1,
+       "title": "Page"
+      }
+     },
+     {
+      "name": "page_size",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "integer",
+       "maximum": 100,
+       "minimum": 1,
+       "default": 25,
+       "title": "Page Size"
+      }
+     },
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "default": "",
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/LeadPage"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/sales/leads.csv": {
+   "get": {
+    "tags": [
+     "sales"
+    ],
+    "summary": "Export Leads",
+    "operationId": "export_leads",
+    "parameters": [
+     {
+      "name": "status",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "$ref": "#/components/schemas/LeadStatus"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Status"
+      }
+     },
+     {
+      "name": "assigned",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Assigned"
+      }
+     },
+     {
+      "name": "q",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Q"
+      }
+     },
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "default": "",
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/sales/leads/{lead_id}": {
+   "get": {
+    "tags": [
+     "sales"
+    ],
+    "summary": "Get Lead",
+    "operationId": "get_lead",
+    "parameters": [
+     {
+      "name": "lead_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Lead Id"
+      }
+     },
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "default": "",
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/LeadDetail"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "patch": {
+    "tags": [
+     "sales"
+    ],
+    "summary": "Update Lead",
+    "operationId": "update_lead",
+    "parameters": [
+     {
+      "name": "lead_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Lead Id"
+      }
+     },
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "default": "",
+       "title": "Authorization"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/LeadPatch"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/LeadDetail"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/sales/leads/{lead_id}/notes": {
+   "post": {
+    "tags": [
+     "sales"
+    ],
+    "summary": "Add Note",
+    "operationId": "add_note",
+    "parameters": [
+     {
+      "name": "lead_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Lead Id"
+      }
+     },
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "default": "",
+       "title": "Authorization"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/NoteIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/LeadDetail"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/sales/leads/{lead_id}/crm-sync": {
+   "post": {
+    "tags": [
+     "sales"
+    ],
+    "summary": "Resync",
+    "description": "Manual retry \u2014 runs synchronously so the rep sees the result immediately.",
+    "operationId": "resync",
+    "parameters": [
+     {
+      "name": "lead_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "Lead Id"
+      }
+     },
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "default": "",
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/LeadDetail"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/admin/home-models": {
+   "get": {
+    "tags": [
+     "admin"
+    ],
+    "summary": "List Models",
+    "operationId": "list_models",
+    "parameters": [
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "default": "",
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "array",
+         "items": {
+          "$ref": "#/components/schemas/HomeModelOut"
+         },
+         "title": "Response List Models"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/admin/home-models/{model_id}": {
+   "patch": {
+    "tags": [
+     "admin"
+    ],
+    "summary": "Patch Model",
+    "operationId": "patch_model",
+    "parameters": [
+     {
+      "name": "model_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "integer",
+       "title": "Model Id"
+      }
+     },
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "default": "",
+       "title": "Authorization"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/HomeModelPatch"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HomeModelOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/admin/options/{option_id}": {
+   "patch": {
+    "tags": [
+     "admin"
+    ],
+    "summary": "Patch Option",
+    "operationId": "patch_option",
+    "parameters": [
+     {
+      "name": "option_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "integer",
+       "title": "Option Id"
+      }
+     },
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "default": "",
+       "title": "Authorization"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/OptionPatch"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OptionOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/admin/assumptions": {
+   "get": {
+    "tags": [
+     "admin"
+    ],
+    "summary": "Get Assumptions",
+    "operationId": "get_assumptions",
+    "parameters": [
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "default": "",
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/AssumptionsOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   },
+   "post": {
+    "tags": [
+     "admin"
+    ],
+    "summary": "New Assumptions",
+    "operationId": "new_assumptions",
+    "parameters": [
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "default": "",
+       "title": "Authorization"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/AssumptionsIn"
+       }
+      }
+     }
+    },
+    "responses": {
+     "201": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/AssumptionsOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/admin/markets": {
+   "get": {
+    "tags": [
+     "admin"
+    ],
+    "summary": "List Markets",
+    "operationId": "list_markets",
+    "parameters": [
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "default": "",
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "array",
+         "items": {
+          "$ref": "#/components/schemas/MarketOut"
+         },
+         "title": "Response List Markets"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/admin/markets/{market_id}": {
+   "patch": {
+    "tags": [
+     "admin"
+    ],
+    "summary": "Patch Market",
+    "operationId": "patch_market",
+    "parameters": [
+     {
+      "name": "market_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "integer",
+       "title": "Market Id"
+      }
+     },
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "default": "",
+       "title": "Authorization"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/MarketPatch"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/MarketOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/admin/users": {
+   "get": {
+    "tags": [
+     "admin"
+    ],
+    "summary": "List Users",
+    "operationId": "list_users",
+    "parameters": [
+     {
+      "name": "q",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Q"
+      }
+     },
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "default": "",
+       "title": "Authorization"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "type": "array",
+         "items": {
+          "$ref": "#/components/schemas/MeOut"
+         },
+         "title": "Response List Users"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/admin/users/{user_id}": {
+   "patch": {
+    "tags": [
+     "admin"
+    ],
+    "summary": "Set Role",
+    "operationId": "set_role",
+    "parameters": [
+     {
+      "name": "user_id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "format": "uuid",
+       "title": "User Id"
+      }
+     },
+     {
+      "name": "authorization",
+      "in": "header",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "default": "",
+       "title": "Authorization"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": true,
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/UserRolePatch"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Successful Response",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/MeOut"
+        }
+       }
+      }
+     },
+     "422": {
+      "description": "Validation Error",
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ },
+ "components": {
+  "schemas": {
+   "ActivityOut": {
+    "properties": {
+     "id": {
+      "type": "integer",
+      "title": "Id"
+     },
+     "kind": {
+      "type": "string",
+      "title": "Kind"
+     },
+     "body": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Body"
+     },
+     "data": {
+      "anyOf": [
+       {
+        "additionalProperties": true,
+        "type": "object"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Data"
+     },
+     "actor": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/StaffOut"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Created At"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "kind",
+     "body",
+     "data",
+     "actor",
+     "created_at"
+    ],
+    "title": "ActivityOut"
+   },
+   "AssumptionsIn": {
+    "properties": {
+     "name": {
+      "type": "string",
+      "title": "Name"
+     },
+     "interest_rate_bps": {
+      "type": "integer",
+      "maximum": 3000.0,
+      "minimum": 0.0,
+      "title": "Interest Rate Bps"
+     },
+     "term_years": {
+      "type": "integer",
+      "maximum": 40.0,
+      "minimum": 5.0,
+      "title": "Term Years"
+     },
+     "down_payment_bps": {
+      "type": "integer",
+      "maximum": 10000.0,
+      "minimum": 0.0,
+      "title": "Down Payment Bps"
+     },
+     "closing_cost_bps": {
+      "type": "integer",
+      "maximum": 1500.0,
+      "minimum": 0.0,
+      "title": "Closing Cost Bps"
+     },
+     "soft_cost_bps": {
+      "type": "integer",
+      "maximum": 5000.0,
+      "minimum": 0.0,
+      "title": "Soft Cost Bps"
+     },
+     "contingency_bps": {
+      "type": "integer",
+      "maximum": 5000.0,
+      "minimum": 0.0,
+      "title": "Contingency Bps"
+     },
+     "delivery_cents": {
+      "type": "integer",
+      "minimum": 0.0,
+      "title": "Delivery Cents"
+     },
+     "two_story_premium_cents": {
+      "type": "integer",
+      "minimum": 0.0,
+      "title": "Two Story Premium Cents",
+      "default": 8500000
+     },
+     "notes": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Notes"
+     }
+    },
+    "type": "object",
+    "required": [
+     "name",
+     "interest_rate_bps",
+     "term_years",
+     "down_payment_bps",
+     "closing_cost_bps",
+     "soft_cost_bps",
+     "contingency_bps",
+     "delivery_cents"
+    ],
+    "title": "AssumptionsIn",
+    "description": "Saving creates a NEW assumption set and activates it (old estimates stay traceable)."
+   },
+   "AssumptionsOut": {
+    "properties": {
+     "id": {
+      "type": "integer",
+      "title": "Id"
+     },
+     "name": {
+      "type": "string",
+      "title": "Name"
+     },
+     "interest_rate_bps": {
+      "type": "integer",
+      "title": "Interest Rate Bps"
+     },
+     "term_years": {
+      "type": "integer",
+      "title": "Term Years"
+     },
+     "down_payment_bps": {
+      "type": "integer",
+      "title": "Down Payment Bps"
+     },
+     "closing_cost_bps": {
+      "type": "integer",
+      "title": "Closing Cost Bps"
+     },
+     "soft_cost_bps": {
+      "type": "integer",
+      "title": "Soft Cost Bps"
+     },
+     "contingency_bps": {
+      "type": "integer",
+      "title": "Contingency Bps"
+     },
+     "delivery_cents": {
+      "type": "integer",
+      "title": "Delivery Cents"
+     },
+     "two_story_premium_cents": {
+      "type": "integer",
+      "title": "Two Story Premium Cents"
+     },
+     "notes": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Notes"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "name",
+     "interest_rate_bps",
+     "term_years",
+     "down_payment_bps",
+     "closing_cost_bps",
+     "soft_cost_bps",
+     "contingency_bps",
+     "delivery_cents",
+     "two_story_premium_cents",
+     "notes"
+    ],
+    "title": "AssumptionsOut"
+   },
+   "BudgetFit": {
+    "properties": {
+     "monthly_budget_cents": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Monthly Budget Cents"
+     },
+     "fit": {
+      "anyOf": [
+       {
+        "type": "string",
+        "enum": [
+         "within",
+         "stretch",
+         "over"
+        ]
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Fit"
+     }
+    },
+    "type": "object",
+    "required": [
+     "monthly_budget_cents",
+     "fit"
+    ],
+    "title": "BudgetFit"
+   },
+   "CatalogOut": {
+    "properties": {
+     "home_models": {
+      "items": {
+       "$ref": "#/components/schemas/HomeModelOut"
+      },
+      "type": "array",
+      "title": "Home Models"
+     },
+     "categories": {
+      "items": {
+       "$ref": "#/components/schemas/OptionCategoryOut"
+      },
+      "type": "array",
+      "title": "Categories"
+     },
+     "disclaimer": {
+      "type": "string",
+      "title": "Disclaimer"
+     }
+    },
+    "type": "object",
+    "required": [
+     "home_models",
+     "categories",
+     "disclaimer"
+    ],
+    "title": "CatalogOut"
+   },
+   "DesignIn": {
+    "properties": {
+     "name": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 120
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Name"
+     },
+     "home_model_id": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Home Model Id"
+     },
+     "monthly_budget_cents": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "maximum": 10000000.0,
+        "minimum": 0.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Monthly Budget Cents"
+     },
+     "zip_code": {
+      "anyOf": [
+       {
+        "type": "string",
+        "pattern": "^\\d{5}$"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Zip Code"
+     },
+     "option_ids": {
+      "anyOf": [
+       {
+        "items": {
+         "type": "integer"
+        },
+        "type": "array"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Option Ids"
+     },
+     "current_step": {
+      "type": "integer",
+      "maximum": 5.0,
+      "minimum": 1.0,
+      "title": "Current Step",
+      "default": 1
+     },
+     "land_status": {
+      "anyOf": [
+       {
+        "type": "string",
+        "enum": [
+         "own_lot",
+         "looking_at_lot",
+         "need_land"
+        ]
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Land Status"
+     },
+     "budget_mode": {
+      "anyOf": [
+       {
+        "type": "string",
+        "enum": [
+         "total",
+         "monthly",
+         "need_help"
+        ]
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Budget Mode"
+     },
+     "total_budget_cents": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "maximum": 1000000000.0,
+        "minimum": 0.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Total Budget Cents"
+     },
+     "cash_available_cents": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "maximum": 1000000000.0,
+        "minimum": 0.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Cash Available Cents"
+     },
+     "site_address": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 200
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Site Address"
+     },
+     "lot_price_cents": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "maximum": 1000000000.0,
+        "minimum": 0.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Lot Price Cents"
+     },
+     "style": {
+      "anyOf": [
+       {
+        "type": "string",
+        "enum": [
+         "pop",
+         "mcm",
+         "craftsman"
+        ]
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Style"
+     },
+     "stories": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "enum": [
+         1,
+         2
+        ]
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Stories"
+     }
+    },
+    "type": "object",
+    "title": "DesignIn"
+   },
+   "DesignOut": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Id"
+     },
+     "name": {
+      "type": "string",
+      "title": "Name"
+     },
+     "home_model": {
+      "$ref": "#/components/schemas/HomeModelOut"
+     },
+     "monthly_budget_cents": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Monthly Budget Cents"
+     },
+     "zip_code": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Zip Code"
+     },
+     "land_status": {
+      "anyOf": [
+       {
+        "type": "string",
+        "enum": [
+         "own_lot",
+         "looking_at_lot",
+         "need_land"
+        ]
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Land Status"
+     },
+     "budget_mode": {
+      "anyOf": [
+       {
+        "type": "string",
+        "enum": [
+         "total",
+         "monthly",
+         "need_help"
+        ]
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Budget Mode"
+     },
+     "total_budget_cents": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "maximum": 1000000000.0,
+        "minimum": 0.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Total Budget Cents"
+     },
+     "cash_available_cents": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "maximum": 1000000000.0,
+        "minimum": 0.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Cash Available Cents"
+     },
+     "site_address": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Site Address"
+     },
+     "lot_price_cents": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "maximum": 1000000000.0,
+        "minimum": 0.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Lot Price Cents"
+     },
+     "style": {
+      "anyOf": [
+       {
+        "type": "string",
+        "enum": [
+         "pop",
+         "mcm",
+         "craftsman"
+        ]
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Style"
+     },
+     "stories": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "enum": [
+         1,
+         2
+        ]
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Stories"
+     },
+     "status": {
+      "$ref": "#/components/schemas/DesignStatus"
+     },
+     "current_step": {
+      "type": "integer",
+      "title": "Current Step"
+     },
+     "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Created At"
+     },
+     "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Updated At"
+     },
+     "option_ids": {
+      "items": {
+       "type": "integer"
+      },
+      "type": "array",
+      "title": "Option Ids"
+     },
+     "estimate": {
+      "$ref": "#/components/schemas/Estimate"
+     },
+     "path_home": {
+      "items": {
+       "$ref": "#/components/schemas/PathStageOut"
+      },
+      "type": "array",
+      "title": "Path Home"
+     },
+     "lead_status": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/LeadStatus"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "name",
+     "home_model",
+     "monthly_budget_cents",
+     "zip_code",
+     "status",
+     "current_step",
+     "created_at",
+     "updated_at",
+     "option_ids",
+     "estimate",
+     "path_home"
+    ],
+    "title": "DesignOut"
+   },
+   "DesignPatch": {
+    "properties": {
+     "name": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 120
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Name"
+     },
+     "home_model_id": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Home Model Id"
+     },
+     "monthly_budget_cents": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "maximum": 10000000.0,
+        "minimum": 0.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Monthly Budget Cents"
+     },
+     "zip_code": {
+      "anyOf": [
+       {
+        "type": "string",
+        "pattern": "^\\d{5}$"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Zip Code"
+     },
+     "option_ids": {
+      "anyOf": [
+       {
+        "items": {
+         "type": "integer"
+        },
+        "type": "array"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Option Ids"
+     },
+     "current_step": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "maximum": 5.0,
+        "minimum": 1.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Current Step"
+     },
+     "land_status": {
+      "anyOf": [
+       {
+        "type": "string",
+        "enum": [
+         "own_lot",
+         "looking_at_lot",
+         "need_land"
+        ]
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Land Status"
+     },
+     "budget_mode": {
+      "anyOf": [
+       {
+        "type": "string",
+        "enum": [
+         "total",
+         "monthly",
+         "need_help"
+        ]
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Budget Mode"
+     },
+     "total_budget_cents": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "maximum": 1000000000.0,
+        "minimum": 0.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Total Budget Cents"
+     },
+     "cash_available_cents": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "maximum": 1000000000.0,
+        "minimum": 0.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Cash Available Cents"
+     },
+     "site_address": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 200
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Site Address"
+     },
+     "lot_price_cents": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "maximum": 1000000000.0,
+        "minimum": 0.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Lot Price Cents"
+     },
+     "style": {
+      "anyOf": [
+       {
+        "type": "string",
+        "enum": [
+         "pop",
+         "mcm",
+         "craftsman"
+        ]
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Style"
+     },
+     "stories": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "enum": [
+         1,
+         2
+        ]
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Stories"
+     }
+    },
+    "type": "object",
+    "title": "DesignPatch"
+   },
+   "DesignStatus": {
+    "type": "string",
+    "enum": [
+     "draft",
+     "submitted"
+    ],
+    "title": "DesignStatus"
+   },
+   "DesignSummary": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Id"
+     },
+     "name": {
+      "type": "string",
+      "title": "Name"
+     },
+     "home_model": {
+      "$ref": "#/components/schemas/HomeModelOut"
+     },
+     "monthly_budget_cents": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Monthly Budget Cents"
+     },
+     "zip_code": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Zip Code"
+     },
+     "land_status": {
+      "anyOf": [
+       {
+        "type": "string",
+        "enum": [
+         "own_lot",
+         "looking_at_lot",
+         "need_land"
+        ]
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Land Status"
+     },
+     "budget_mode": {
+      "anyOf": [
+       {
+        "type": "string",
+        "enum": [
+         "total",
+         "monthly",
+         "need_help"
+        ]
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Budget Mode"
+     },
+     "total_budget_cents": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "maximum": 1000000000.0,
+        "minimum": 0.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Total Budget Cents"
+     },
+     "cash_available_cents": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "maximum": 1000000000.0,
+        "minimum": 0.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Cash Available Cents"
+     },
+     "site_address": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Site Address"
+     },
+     "lot_price_cents": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "maximum": 1000000000.0,
+        "minimum": 0.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Lot Price Cents"
+     },
+     "style": {
+      "anyOf": [
+       {
+        "type": "string",
+        "enum": [
+         "pop",
+         "mcm",
+         "craftsman"
+        ]
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Style"
+     },
+     "stories": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "enum": [
+         1,
+         2
+        ]
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Stories"
+     },
+     "status": {
+      "$ref": "#/components/schemas/DesignStatus"
+     },
+     "current_step": {
+      "type": "integer",
+      "title": "Current Step"
+     },
+     "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Created At"
+     },
+     "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Updated At"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "name",
+     "home_model",
+     "monthly_budget_cents",
+     "zip_code",
+     "status",
+     "current_step",
+     "created_at",
+     "updated_at"
+    ],
+    "title": "DesignSummary"
+   },
+   "Estimate": {
+    "properties": {
+     "lines": {
+      "items": {
+       "$ref": "#/components/schemas/EstimateLine"
+      },
+      "type": "array",
+      "title": "Lines"
+     },
+     "options_total_cents": {
+      "type": "integer",
+      "title": "Options Total Cents"
+     },
+     "total_cents": {
+      "type": "integer",
+      "title": "Total Cents"
+     },
+     "down_payment_cents": {
+      "type": "integer",
+      "title": "Down Payment Cents"
+     },
+     "loan_cents": {
+      "type": "integer",
+      "title": "Loan Cents"
+     },
+     "cash_needed_cents": {
+      "type": "integer",
+      "title": "Cash Needed Cents"
+     },
+     "monthly": {
+      "$ref": "#/components/schemas/Monthly"
+     },
+     "budget": {
+      "$ref": "#/components/schemas/BudgetFit"
+     },
+     "assumptions": {
+      "additionalProperties": true,
+      "type": "object",
+      "title": "Assumptions"
+     },
+     "market": {
+      "$ref": "#/components/schemas/MarketInfo"
+     },
+     "disclaimer": {
+      "type": "string",
+      "title": "Disclaimer"
+     }
+    },
+    "type": "object",
+    "required": [
+     "lines",
+     "options_total_cents",
+     "total_cents",
+     "down_payment_cents",
+     "loan_cents",
+     "cash_needed_cents",
+     "monthly",
+     "budget",
+     "assumptions",
+     "market",
+     "disclaimer"
+    ],
+    "title": "Estimate"
+   },
+   "EstimateIn": {
+    "properties": {
+     "home_model_id": {
+      "type": "integer",
+      "title": "Home Model Id"
+     },
+     "option_ids": {
+      "items": {
+       "type": "integer"
+      },
+      "type": "array",
+      "title": "Option Ids",
+      "default": []
+     },
+     "zip_code": {
+      "anyOf": [
+       {
+        "type": "string",
+        "pattern": "^\\d{5}$"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Zip Code"
+     },
+     "monthly_budget_cents": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "maximum": 10000000.0,
+        "minimum": 0.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Monthly Budget Cents"
+     },
+     "land_status": {
+      "anyOf": [
+       {
+        "type": "string",
+        "enum": [
+         "own_lot",
+         "looking_at_lot",
+         "need_land"
+        ]
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Land Status"
+     },
+     "lot_price_cents": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "maximum": 1000000000.0,
+        "minimum": 0.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Lot Price Cents"
+     },
+     "stories": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "enum": [
+         1,
+         2
+        ]
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Stories"
+     }
+    },
+    "type": "object",
+    "required": [
+     "home_model_id"
+    ],
+    "title": "EstimateIn"
+   },
+   "EstimateLine": {
+    "properties": {
+     "key": {
+      "type": "string",
+      "title": "Key"
+     },
+     "label": {
+      "type": "string",
+      "title": "Label"
+     },
+     "cents": {
+      "type": "integer",
+      "title": "Cents"
+     }
+    },
+    "type": "object",
+    "required": [
+     "key",
+     "label",
+     "cents"
+    ],
+    "title": "EstimateLine"
+   },
+   "EstimateOut": {
+    "properties": {
+     "estimate": {
+      "$ref": "#/components/schemas/Estimate"
+     },
+     "path_home": {
+      "items": {
+       "$ref": "#/components/schemas/PathStageOut"
+      },
+      "type": "array",
+      "title": "Path Home"
+     }
+    },
+    "type": "object",
+    "required": [
+     "estimate",
+     "path_home"
+    ],
+    "title": "EstimateOut"
+   },
+   "HTTPValidationError": {
+    "properties": {
+     "detail": {
+      "items": {
+       "$ref": "#/components/schemas/ValidationError"
+      },
+      "type": "array",
+      "title": "Detail"
+     }
+    },
+    "type": "object",
+    "title": "HTTPValidationError"
+   },
+   "HomeModelOut": {
+    "properties": {
+     "id": {
+      "type": "integer",
+      "title": "Id"
+     },
+     "slug": {
+      "type": "string",
+      "title": "Slug"
+     },
+     "name": {
+      "type": "string",
+      "title": "Name"
+     },
+     "tagline": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Tagline"
+     },
+     "sq_ft": {
+      "type": "integer",
+      "title": "Sq Ft"
+     },
+     "bedrooms": {
+      "type": "integer",
+      "title": "Bedrooms"
+     },
+     "bathrooms": {
+      "type": "number",
+      "title": "Bathrooms"
+     },
+     "base_price_cents": {
+      "type": "integer",
+      "title": "Base Price Cents"
+     },
+     "floor_plan_key": {
+      "type": "string",
+      "title": "Floor Plan Key"
+     },
+     "image_url": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Image Url"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "slug",
+     "name",
+     "tagline",
+     "sq_ft",
+     "bedrooms",
+     "bathrooms",
+     "base_price_cents",
+     "floor_plan_key",
+     "image_url"
+    ],
+    "title": "HomeModelOut"
+   },
+   "HomeModelPatch": {
+    "properties": {
+     "name": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Name"
+     },
+     "tagline": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Tagline"
+     },
+     "base_price_cents": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "minimum": 0.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Base Price Cents"
+     },
+     "is_active": {
+      "anyOf": [
+       {
+        "type": "boolean"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Is Active"
+     },
+     "image_url": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Image Url"
+     }
+    },
+    "type": "object",
+    "title": "HomeModelPatch"
+   },
+   "LandBudgetIn": {
+    "properties": {
+     "budget_mode": {
+      "type": "string",
+      "enum": [
+       "total",
+       "monthly",
+       "need_help"
+      ],
+      "title": "Budget Mode"
+     },
+     "total_budget_cents": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "minimum": 0.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Total Budget Cents"
+     },
+     "monthly_budget_cents": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "minimum": 0.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Monthly Budget Cents"
+     },
+     "cash_available_cents": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "minimum": 0.0
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Cash Available Cents"
+     },
+     "zip_code": {
+      "anyOf": [
+       {
+        "type": "string",
+        "pattern": "^\\d{5}$"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Zip Code"
+     },
+     "stories": {
+      "anyOf": [
+       {
+        "type": "integer",
+        "enum": [
+         1,
+         2
+        ]
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Stories"
+     }
+    },
+    "type": "object",
+    "required": [
+     "budget_mode"
+    ],
+    "title": "LandBudgetIn"
+   },
+   "LandBudgetModel": {
+    "properties": {
+     "home_model_id": {
+      "type": "integer",
+      "title": "Home Model Id"
+     },
+     "name": {
+      "type": "string",
+      "title": "Name"
+     },
+     "land_budget_cents": {
+      "type": "integer",
+      "title": "Land Budget Cents"
+     }
+    },
+    "type": "object",
+    "required": [
+     "home_model_id",
+     "name",
+     "land_budget_cents"
+    ],
+    "title": "LandBudgetModel"
+   },
+   "LandBudgetOut": {
+    "properties": {
+     "affordable_total_cents": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Affordable Total Cents"
+     },
+     "limited_by": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Limited By"
+     },
+     "per_model": {
+      "items": {
+       "$ref": "#/components/schemas/LandBudgetModel"
+      },
+      "type": "array",
+      "title": "Per Model"
+     },
+     "market": {
+      "$ref": "#/components/schemas/MarketInfo"
+     },
+     "disclaimer": {
+      "type": "string",
+      "title": "Disclaimer"
+     }
+    },
+    "type": "object",
+    "required": [
+     "affordable_total_cents",
+     "limited_by",
+     "per_model",
+     "market",
+     "disclaimer"
+    ],
+    "title": "LandBudgetOut"
+   },
+   "LeadDetail": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Id"
+     },
+     "status": {
+      "$ref": "#/components/schemas/LeadStatus"
+     },
+     "full_name": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Full Name"
+     },
+     "email": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Email"
+     },
+     "phone": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Phone"
+     },
+     "zip_code": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Zip Code"
+     },
+     "estimate_total_cents": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Estimate Total Cents"
+     },
+     "monthly_budget_cents": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Monthly Budget Cents"
+     },
+     "assigned_to": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/StaffOut"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "crm_synced_at": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date-time"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Crm Synced At"
+     },
+     "crm_sync_error": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Crm Sync Error"
+     },
+     "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Created At"
+     },
+     "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Updated At"
+     },
+     "preferred_contact": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Preferred Contact"
+     },
+     "message": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Message"
+     },
+     "contact_consent": {
+      "type": "boolean",
+      "title": "Contact Consent"
+     },
+     "consent_text": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Consent Text"
+     },
+     "source": {
+      "type": "string",
+      "title": "Source"
+     },
+     "crm_provider": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Crm Provider"
+     },
+     "crm_contact_id": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Crm Contact Id"
+     },
+     "design_id": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "uuid"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Design Id"
+     },
+     "design_name": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Design Name"
+     },
+     "home_model_name": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Home Model Name"
+     },
+     "submitted_estimate": {
+      "anyOf": [
+       {
+        "additionalProperties": true,
+        "type": "object"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Submitted Estimate"
+     },
+     "activities": {
+      "items": {
+       "$ref": "#/components/schemas/ActivityOut"
+      },
+      "type": "array",
+      "title": "Activities"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "status",
+     "full_name",
+     "email",
+     "phone",
+     "zip_code",
+     "estimate_total_cents",
+     "monthly_budget_cents",
+     "assigned_to",
+     "crm_synced_at",
+     "crm_sync_error",
+     "created_at",
+     "updated_at",
+     "preferred_contact",
+     "message",
+     "contact_consent",
+     "consent_text",
+     "source",
+     "crm_provider",
+     "crm_contact_id",
+     "design_id",
+     "activities"
+    ],
+    "title": "LeadDetail"
+   },
+   "LeadPage": {
+    "properties": {
+     "items": {
+      "items": {
+       "$ref": "#/components/schemas/LeadSummary"
+      },
+      "type": "array",
+      "title": "Items"
+     },
+     "total": {
+      "type": "integer",
+      "title": "Total"
+     },
+     "page": {
+      "type": "integer",
+      "title": "Page"
+     },
+     "page_size": {
+      "type": "integer",
+      "title": "Page Size"
+     },
+     "counts_by_status": {
+      "additionalProperties": {
+       "type": "integer"
+      },
+      "type": "object",
+      "title": "Counts By Status"
+     }
+    },
+    "type": "object",
+    "required": [
+     "items",
+     "total",
+     "page",
+     "page_size",
+     "counts_by_status"
+    ],
+    "title": "LeadPage"
+   },
+   "LeadPatch": {
+    "properties": {
+     "status": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/LeadStatus"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "assigned_to_id": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "uuid"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Assigned To Id"
+     },
+     "unassign": {
+      "type": "boolean",
+      "title": "Unassign",
+      "default": false
+     }
+    },
+    "type": "object",
+    "title": "LeadPatch"
+   },
+   "LeadStatus": {
+    "type": "string",
+    "enum": [
+     "new",
+     "contacted",
+     "consultation_scheduled",
+     "qualified",
+     "financing",
+     "won",
+     "lost"
+    ],
+    "title": "LeadStatus"
+   },
+   "LeadSummary": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Id"
+     },
+     "status": {
+      "$ref": "#/components/schemas/LeadStatus"
+     },
+     "full_name": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Full Name"
+     },
+     "email": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Email"
+     },
+     "phone": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Phone"
+     },
+     "zip_code": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Zip Code"
+     },
+     "estimate_total_cents": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Estimate Total Cents"
+     },
+     "monthly_budget_cents": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Monthly Budget Cents"
+     },
+     "assigned_to": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/StaffOut"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "crm_synced_at": {
+      "anyOf": [
+       {
+        "type": "string",
+        "format": "date-time"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Crm Synced At"
+     },
+     "crm_sync_error": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Crm Sync Error"
+     },
+     "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Created At"
+     },
+     "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "title": "Updated At"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "status",
+     "full_name",
+     "email",
+     "phone",
+     "zip_code",
+     "estimate_total_cents",
+     "monthly_budget_cents",
+     "assigned_to",
+     "crm_synced_at",
+     "crm_sync_error",
+     "created_at",
+     "updated_at"
+    ],
+    "title": "LeadSummary"
+   },
+   "MarketInfo": {
+    "properties": {
+     "slug": {
+      "type": "string",
+      "title": "Slug"
+     },
+     "name": {
+      "type": "string",
+      "title": "Name"
+     },
+     "matched_zip": {
+      "type": "boolean",
+      "title": "Matched Zip"
+     },
+     "is_sample": {
+      "type": "boolean",
+      "title": "Is Sample"
+     },
+     "data_source": {
+      "type": "string",
+      "title": "Data Source"
+     },
+     "permit_weeks": {
+      "items": {
+       "type": "integer"
+      },
+      "type": "array",
+      "title": "Permit Weeks"
+     },
+     "land_source": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Land Source"
+     },
+     "area_label": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Area Label"
+     },
+     "area_type": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Area Type"
+     },
+     "construction_source": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Construction Source"
+     }
+    },
+    "type": "object",
+    "required": [
+     "slug",
+     "name",
+     "matched_zip",
+     "is_sample",
+     "data_source",
+     "permit_weeks"
+    ],
+    "title": "MarketInfo"
+   },
+   "MarketOut": {
+    "properties": {
+     "id": {
+      "type": "integer",
+      "title": "Id"
+     },
+     "slug": {
+      "type": "string",
+      "title": "Slug"
+     },
+     "name": {
+      "type": "string",
+      "title": "Name"
+     },
+     "state": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "State"
+     },
+     "is_default": {
+      "type": "boolean",
+      "title": "Is Default"
+     },
+     "is_sample": {
+      "type": "boolean",
+      "title": "Is Sample"
+     },
+     "construction_cost_index_bps": {
+      "type": "integer",
+      "title": "Construction Cost Index Bps"
+     },
+     "site_install_cents": {
+      "type": "integer",
+      "title": "Site Install Cents"
+     },
+     "land_allocation_cents": {
+      "type": "integer",
+      "title": "Land Allocation Cents"
+     },
+     "permit_fees_cents": {
+      "type": "integer",
+      "title": "Permit Fees Cents"
+     },
+     "permit_weeks_low": {
+      "type": "integer",
+      "title": "Permit Weeks Low"
+     },
+     "permit_weeks_high": {
+      "type": "integer",
+      "title": "Permit Weeks High"
+     },
+     "property_tax_bps": {
+      "type": "integer",
+      "title": "Property Tax Bps"
+     },
+     "insurance_annual_cents": {
+      "type": "integer",
+      "title": "Insurance Annual Cents"
+     },
+     "data_source": {
+      "type": "string",
+      "title": "Data Source"
+     },
+     "zip_prefixes": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array",
+      "title": "Zip Prefixes",
+      "default": []
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "slug",
+     "name",
+     "state",
+     "is_default",
+     "is_sample",
+     "construction_cost_index_bps",
+     "site_install_cents",
+     "land_allocation_cents",
+     "permit_fees_cents",
+     "permit_weeks_low",
+     "permit_weeks_high",
+     "property_tax_bps",
+     "insurance_annual_cents",
+     "data_source"
+    ],
+    "title": "MarketOut"
+   },
+   "MarketPatch": {
+    "properties": {
+     "construction_cost_index_bps": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Construction Cost Index Bps"
+     },
+     "site_install_cents": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Site Install Cents"
+     },
+     "land_allocation_cents": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Land Allocation Cents"
+     },
+     "permit_fees_cents": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Permit Fees Cents"
+     },
+     "permit_weeks_low": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Permit Weeks Low"
+     },
+     "permit_weeks_high": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Permit Weeks High"
+     },
+     "property_tax_bps": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Property Tax Bps"
+     },
+     "insurance_annual_cents": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Insurance Annual Cents"
+     },
+     "data_source": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Data Source"
+     },
+     "is_sample": {
+      "anyOf": [
+       {
+        "type": "boolean"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Is Sample"
+     }
+    },
+    "type": "object",
+    "title": "MarketPatch"
+   },
+   "MeOut": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Id"
+     },
+     "email": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Email"
+     },
+     "full_name": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Full Name"
+     },
+     "phone": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Phone"
+     },
+     "role": {
+      "$ref": "#/components/schemas/Role"
+     },
+     "is_anonymous": {
+      "type": "boolean",
+      "title": "Is Anonymous"
+     },
+     "marketing_opt_in": {
+      "type": "boolean",
+      "title": "Marketing Opt In"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "email",
+     "full_name",
+     "phone",
+     "role",
+     "is_anonymous",
+     "marketing_opt_in"
+    ],
+    "title": "MeOut"
+   },
+   "MePatch": {
+    "properties": {
+     "full_name": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 200
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Full Name"
+     },
+     "phone": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 40
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Phone"
+     },
+     "marketing_opt_in": {
+      "anyOf": [
+       {
+        "type": "boolean"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Marketing Opt In"
+     }
+    },
+    "type": "object",
+    "title": "MePatch"
+   },
+   "Monthly": {
+    "properties": {
+     "principal_interest_cents": {
+      "type": "integer",
+      "title": "Principal Interest Cents"
+     },
+     "taxes_cents": {
+      "type": "integer",
+      "title": "Taxes Cents"
+     },
+     "insurance_cents": {
+      "type": "integer",
+      "title": "Insurance Cents"
+     },
+     "total_cents": {
+      "type": "integer",
+      "title": "Total Cents"
+     }
+    },
+    "type": "object",
+    "required": [
+     "principal_interest_cents",
+     "taxes_cents",
+     "insurance_cents",
+     "total_cents"
+    ],
+    "title": "Monthly"
+   },
+   "NoteIn": {
+    "properties": {
+     "body": {
+      "type": "string",
+      "maxLength": 4000,
+      "minLength": 1,
+      "title": "Body"
+     }
+    },
+    "type": "object",
+    "required": [
+     "body"
+    ],
+    "title": "NoteIn"
+   },
+   "OptionCategoryOut": {
+    "properties": {
+     "id": {
+      "type": "integer",
+      "title": "Id"
+     },
+     "slug": {
+      "type": "string",
+      "title": "Slug"
+     },
+     "name": {
+      "type": "string",
+      "title": "Name"
+     },
+     "description": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Description"
+     },
+     "selection_type": {
+      "$ref": "#/components/schemas/SelectionType"
+     },
+     "display": {
+      "type": "string",
+      "title": "Display"
+     },
+     "options": {
+      "items": {
+       "$ref": "#/components/schemas/OptionOut"
+      },
+      "type": "array",
+      "title": "Options"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "slug",
+     "name",
+     "description",
+     "selection_type",
+     "display",
+     "options"
+    ],
+    "title": "OptionCategoryOut"
+   },
+   "OptionOut": {
+    "properties": {
+     "id": {
+      "type": "integer",
+      "title": "Id"
+     },
+     "slug": {
+      "type": "string",
+      "title": "Slug"
+     },
+     "name": {
+      "type": "string",
+      "title": "Name"
+     },
+     "description": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Description"
+     },
+     "pricing_mode": {
+      "$ref": "#/components/schemas/PricingMode"
+     },
+     "price_cents": {
+      "type": "integer",
+      "title": "Price Cents"
+     },
+     "swatch_hex": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Swatch Hex"
+     },
+     "is_default": {
+      "type": "boolean",
+      "title": "Is Default"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "slug",
+     "name",
+     "description",
+     "pricing_mode",
+     "price_cents",
+     "swatch_hex",
+     "is_default"
+    ],
+    "title": "OptionOut"
+   },
+   "OptionPatch": {
+    "properties": {
+     "name": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Name"
+     },
+     "price_cents": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Price Cents"
+     },
+     "is_active": {
+      "anyOf": [
+       {
+        "type": "boolean"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Is Active"
+     },
+     "is_default": {
+      "anyOf": [
+       {
+        "type": "boolean"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Is Default"
+     }
+    },
+    "type": "object",
+    "title": "OptionPatch"
+   },
+   "PathStageOut": {
+    "properties": {
+     "slug": {
+      "type": "string",
+      "title": "Slug"
+     },
+     "name": {
+      "type": "string",
+      "title": "Name"
+     },
+     "who": {
+      "type": "string",
+      "title": "Who"
+     },
+     "description": {
+      "type": "string",
+      "title": "Description"
+     },
+     "next_action": {
+      "type": "string",
+      "title": "Next Action"
+     },
+     "weeks": {
+      "items": {
+       "type": "integer"
+      },
+      "type": "array",
+      "title": "Weeks"
+     },
+     "cost_cents": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Cost Cents"
+     }
+    },
+    "type": "object",
+    "required": [
+     "slug",
+     "name",
+     "who",
+     "description",
+     "next_action",
+     "weeks",
+     "cost_cents"
+    ],
+    "title": "PathStageOut"
+   },
+   "PricingMode": {
+    "type": "string",
+    "enum": [
+     "flat",
+     "per_sq_ft"
+    ],
+    "title": "PricingMode"
+   },
+   "Role": {
+    "type": "string",
+    "enum": [
+     "customer",
+     "sales",
+     "admin"
+    ],
+    "title": "Role"
+   },
+   "SelectionType": {
+    "type": "string",
+    "enum": [
+     "single",
+     "multi"
+    ],
+    "title": "SelectionType"
+   },
+   "StaffOut": {
+    "properties": {
+     "id": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Id"
+     },
+     "email": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Email"
+     },
+     "full_name": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Full Name"
+     },
+     "role": {
+      "$ref": "#/components/schemas/Role"
+     }
+    },
+    "type": "object",
+    "required": [
+     "id",
+     "email",
+     "full_name",
+     "role"
+    ],
+    "title": "StaffOut"
+   },
+   "SubmitIn": {
+    "properties": {
+     "full_name": {
+      "type": "string",
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Full Name"
+     },
+     "email": {
+      "type": "string",
+      "format": "email",
+      "title": "Email"
+     },
+     "phone": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 40
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Phone"
+     },
+     "preferred_contact": {
+      "type": "string",
+      "enum": [
+       "email",
+       "phone",
+       "text"
+      ],
+      "title": "Preferred Contact",
+      "default": "email"
+     },
+     "message": {
+      "anyOf": [
+       {
+        "type": "string",
+        "maxLength": 4000
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Message"
+     },
+     "contact_consent": {
+      "type": "boolean",
+      "title": "Contact Consent"
+     },
+     "consent_text": {
+      "type": "string",
+      "maxLength": 2000,
+      "title": "Consent Text"
+     }
+    },
+    "type": "object",
+    "required": [
+     "full_name",
+     "email",
+     "contact_consent",
+     "consent_text"
+    ],
+    "title": "SubmitIn"
+   },
+   "UserRolePatch": {
+    "properties": {
+     "role": {
+      "$ref": "#/components/schemas/Role"
+     }
+    },
+    "type": "object",
+    "required": [
+     "role"
+    ],
+    "title": "UserRolePatch"
+   },
+   "ValidationError": {
+    "properties": {
+     "loc": {
+      "items": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "integer"
+        }
+       ]
+      },
+      "type": "array",
+      "title": "Location"
+     },
+     "msg": {
+      "type": "string",
+      "title": "Message"
+     },
+     "type": {
+      "type": "string",
+      "title": "Error Type"
+     },
+     "input": {
+      "title": "Input"
+     },
+     "ctx": {
+      "type": "object",
+      "title": "Context"
+     }
+    },
+    "type": "object",
+    "required": [
+     "loc",
+     "msg",
+     "type"
+    ],
+    "title": "ValidationError"
+   }
+  }
+ }
+}

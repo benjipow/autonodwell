@@ -1,0 +1,3 @@
+# Keep the app source in /autonodwell-app out of the public website
+/autonodwell-app /  302
+/autonodwell-app/* /  302

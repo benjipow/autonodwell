@@ -1,0 +1,61 @@
+# Build → migrate → deploy. Trigger from GitHub (Cloud Build trigger on main) or run:
+#   gcloud builds submit --config deploy/cloudbuild.yaml --substitutions=_REGION=us-central1
+serviceAccount: projects/$PROJECT_ID/serviceAccounts/autonodwell-deployer@$PROJECT_ID.iam.gserviceaccount.com
+options:
+  logging: CLOUD_LOGGING_ONLY
+substitutions:
+  _REGION: us-central1
+  _REPO: autonodwell
+  _SERVICE: autonodwell-api
+  _SQL_INSTANCE: autonodwell-db          # Cloud SQL instance name
+  _RUNTIME_SA: autonodwell-api           # service account (without @domain)
+  _TAG: manual
+  _FIREBASE_API_KEY: ""
+  _FIREBASE_APP_ID: ""
+  _FIREBASE_MEASUREMENT_ID: ""
+  _CRM_PROVIDER: webhook
+images: ["${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/api:${_TAG}"]
+steps:
+  - id: build
+    name: gcr.io/cloud-builders/docker
+    args: ["build", "-t", "${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/api:${_TAG}", "api"]
+  - id: push
+    name: gcr.io/cloud-builders/docker
+    args: ["push", "${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/api:${_TAG}"]
+  - id: migrate   # Cloud Run Job runs `alembic upgrade head` against Cloud SQL before traffic moves
+    name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        gcloud run jobs deploy autonodwell-migrate --region ${_REGION} \
+          --image ${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/api:${_TAG} \
+          --service-account ${_RUNTIME_SA}@$PROJECT_ID.iam.gserviceaccount.com \
+          --set-cloudsql-instances $PROJECT_ID:${_REGION}:${_SQL_INSTANCE} \
+          --set-secrets DATABASE_URL=DATABASE_URL:latest \
+          --command sh --args="-c,alembic upgrade head && python -m app.seed && python -m app.load_land" && \
+        gcloud run jobs execute autonodwell-migrate --region ${_REGION} --wait
+  - id: deploy
+    name: gcr.io/google.com/cloudsdktool/cloud-sdk
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - ${_SERVICE}
+      - --region=${_REGION}
+      - --image=${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/api:${_TAG}
+      - --service-account=${_RUNTIME_SA}@$PROJECT_ID.iam.gserviceaccount.com
+      - --add-cloudsql-instances=$PROJECT_ID:${_REGION}:${_SQL_INSTANCE}
+      - --set-env-vars=ENV=production,AUTH_MODE=firebase,FIREBASE_PROJECT_ID=$PROJECT_ID,CRM_PROVIDER=${_CRM_PROVIDER},CORS_ORIGINS=,APP_BASE_URL=https://app.autonodwell.com
+      - --set-secrets=DATABASE_URL=DATABASE_URL:latest,ADMIN_EMAILS=ADMIN_EMAILS:latest,CRM_WEBHOOK_URL=CRM_WEBHOOK_URL:latest
+      - --allow-unauthenticated   # the API checks Firebase tokens itself; public endpoints are catalog/estimate
+      - --min-instances=0
+      - --max-instances=10
+  - id: web
+    name: node:22
+    entrypoint: bash
+    args: ["-c", "cd web && npm ci && npm run build"]
+    env: ["VITE_FIREBASE_API_KEY=$_FIREBASE_API_KEY", "VITE_FIREBASE_AUTH_DOMAIN=$PROJECT_ID.firebaseapp.com", "VITE_FIREBASE_PROJECT_ID=$PROJECT_ID", "VITE_FIREBASE_APP_ID=$_FIREBASE_APP_ID", "VITE_FIREBASE_MEASUREMENT_ID=$_FIREBASE_MEASUREMENT_ID"]
+  - id: hosting
+    name: us-docker.pkg.dev/firebase-cli/us/firebase
+    args: ["deploy", "--only", "hosting", "--project", "$PROJECT_ID"]

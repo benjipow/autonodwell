@@ -1,0 +1,35 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  api:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env: { POSTGRES_PASSWORD: postgres, POSTGRES_DB: autonodwell_test }
+        ports: ["5432:5432"]
+        options: --health-cmd pg_isready --health-interval 2s --health-retries 20
+    env:
+      DATABASE_URL: postgresql+psycopg://postgres:postgres@localhost:5432/autonodwell_test
+    defaults: { run: { working-directory: api } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.13" }
+      - run: pip install -r requirements-dev.txt
+      - run: pytest -q
+      - name: Models and migrations agree (no un-migrated schema changes)
+        run: alembic upgrade head && alembic check
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.13" }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - run: pip install -r api/requirements.txt
+      - run: cd web && npm ci
+      - name: Generated API client is up to date with the API
+        run: cd web && npm run gen:api && git diff --exit-code src/api/schema.d.ts openapi.json
+      - run: cd web && npm run build

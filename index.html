@@ -2206,6 +2206,11 @@ San Francisco, CA 94117</p>
 <script>
 (() => {
   const root = document.getElementById("quiz"), card = document.getElementById("quiz-card");
+  /* The questionnaire is step 1 of the Autonodwell app. "Pick your home" hands the answers to the app
+     (APP_URL/design/new?…), which creates the design (POST /api/v1/designs) and continues at step 2,
+     exactly like answering inside the app. Leave APP_URL empty to email the answers through
+     /api/inquiry instead (for use before the app is live). */
+  const APP_URL = "https://app.autonodwell.com";
   const LAND = [["own_lot","I own a lot"],["looking_at_lot","I’m looking at a lot"],["need_land","I need help finding land"]];
   const BUDGET = [["total","A total budget"],["monthly","A monthly payment"],["need_help","Help me figure it out"]];
   const SLIDER = { min: 1200, max: 5000, step: 50, initial: 2400 };
@@ -2220,7 +2225,8 @@ San Francisco, CA 94117</p>
     if (hasLot(a.land)) s.push("lot");
     s.push("budget");
     if (a.mode === "total" || a.mode === "monthly") s.push("amount");
-    s.push("result", "contact");
+    s.push("result");
+    if (!APP_URL) s.push("contact");
     return s;
   };
   const QUESTIONS = {
@@ -2274,7 +2280,7 @@ San Francisco, CA 94117</p>
         <div class="quiz-nav">
           ${i > 0 && !isDone ? '<button type="button" class="quiz-back" data-back aria-label="Back">←</button>' : "<span></span>"}
           ${isDone ? '<button type="button" class="quiz-go wide" data-close>Done</button>'
-            : isResult ? '<button type="submit" class="quiz-go wide">Talk with Sarah’s team</button>'
+            : isResult ? `<button type="submit" class="quiz-go wide">${APP_URL ? "Pick your home" : "Talk with Sarah’s team"}</button>`
             : last ? `<button type="submit" class="quiz-go wide" ${sending ? "disabled" : ""}>${sending ? "Sending…" : "Send my answers"}</button>`
             : '<button type="submit" class="quiz-go" aria-label="Next"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>'}
         </div>
@@ -2308,6 +2314,18 @@ San Francisco, CA 94117</p>
     return lines.join("\n");
   };
 
+  /* Same field rules as the app's startingFields(): address and lot price only with a lot, amount only for its budget mode. */
+  const handoff = () => {
+    const q = new URLSearchParams();
+    if (a.zip) q.set("zip", a.zip);
+    q.set("land", a.land); q.set("budget", a.mode);
+    if (hasLot(a.land) && a.address.trim()) q.set("address", a.address.trim());
+    if (a.land === "looking_at_lot" && a.lotPrice != null) q.set("lot_price", String(a.lotPrice));
+    if (a.mode === "total" && a.total != null) q.set("total", String(a.total));
+    if (a.mode === "monthly") q.set("monthly", String(a.monthly));
+    if (a.cash != null) q.set("cash", String(a.cash));
+    location.href = APP_URL.replace(/\/$/, "") + "/design/new?" + q.toString();
+  };
   const send = async () => {
     if (/claudeusercontent\.com$|^$/.test(location.hostname) || location.protocol === "file:") {
       error = "This is a preview, so nothing was sent. On the live site your answers go straight to the Autonodwell team."; step = "done"; render(true); return;
@@ -2329,7 +2347,9 @@ San Francisco, CA 94117</p>
   card.addEventListener("submit", e => {
     e.preventDefault();
     if (sending || !ready()) return;
-    if (step === "contact") send(); else advance();
+    if (step === "contact") send();
+    else if (step === "result" && APP_URL) handoff();
+    else advance();
   });
   card.addEventListener("click", e => {
     const t = e.target.closest("button"); if (!t) return;
