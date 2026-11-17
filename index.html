@@ -676,6 +676,14 @@ a.path:hover .msg,a.path:focus-visible .msg{border-left-color:#121212}
 .r-u{display:block;margin-top:8px;font-size:clamp(16px,1.3vw,19px);font-weight:600;color:var(--cassis)}
 .results p{margin-top:6px;font-size:15px;color:var(--mute);max-width:34ch}
 @media (max-width:820px){.results{grid-template-columns:1fr;gap:26px}}
+/* Home: split big CTA (Try It Free | Learn How It Works) */
+.bigcta-split{margin-top:48px;display:grid;grid-template-columns:1fr 1fr;width:100vw;margin-left:calc(50% - 50vw)}
+.bigcta-split .bigcta{margin:0;width:auto;grid-template-columns:1fr auto}
+.bigcta-split .bigcta-t{font-size:clamp(30px,3.4vw,60px)}
+@media (min-width:821px){.bigcta-split .bigcta-t{white-space:nowrap}}
+.bigcta.alt{background:var(--wasabi)}
+.bigcta.alt:hover{background:var(--cassis)}
+@media (max-width:820px){.bigcta-split{grid-template-columns:1fr}}
 /* Legal pages */
 .legal-page{padding:clamp(120px,14vw,180px) 0 clamp(64px,8vw,120px)}
 .legal-h1{margin-top:14px;font-size:clamp(44px,6vw,88px)}
@@ -966,11 +974,16 @@ a.path:hover .msg,a.path:focus-visible .msg{border-left-color:#121212}
           </div>
         </div>
       </div>
-      <a class="bigcta reveal" href="#how-it-works" data-route="how-it-works">
-        <span class="bigcta-t">Try It Free</span>
-        <span class="bigcta-s mono">See how it works</span>
-        <svg class="bigcta-arrow" viewBox="0 0 48 24" aria-hidden="true"><path d="M0 12h44M34 2l10 10-10 10" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-      </a>
+      <div class="bigcta-split">
+        <a class="bigcta reveal" href="#start" data-quiz>
+          <span class="bigcta-t">Try It Free</span>
+          <svg class="bigcta-arrow" viewBox="0 0 48 24" aria-hidden="true"><path d="M0 12h44M34 2l10 10-10 10" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        </a>
+        <a class="bigcta alt reveal" href="#how-it-works" data-route="how-it-works">
+          <span class="bigcta-t">Learn How It Works</span>
+          <svg class="bigcta-arrow" viewBox="0 0 48 24" aria-hidden="true"><path d="M0 12h44M34 2l10 10-10 10" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        </a>
+      </div>
     </div>
   </section>
 
@@ -985,7 +998,7 @@ a.path:hover .msg,a.path:focus-visible .msg{border-left-color:#121212}
           <span class="mono">For homeowners</span>
           <h3>A beautiful home should feel possible to build.</h3>
           <p>Stability, privacy, room for family life and a monthly payment you can manage. We show the assumptions, costs, exclusions and steps, so affordable is something you can check.</p>
-          <a class="cta aud-btn" href="#partner" data-route="partner" data-zoom="left">Try It Free<svg viewBox="0 0 20 12" aria-hidden="true"><path d="M0 6h17M12 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
+          <a class="cta aud-btn" href="#start" data-quiz>Try It Free<svg viewBox="0 0 20 12" aria-hidden="true"><path d="M0 6h17M12 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.5"/></svg></a>
         </div>
         <div class="aud">
           <span class="mono">For investors</span>
@@ -1048,7 +1061,6 @@ a.path:hover .msg,a.path:focus-visible .msg{border-left-color:#121212}
           <span class="mono rise">Build Your Dream Home</span>
           <h1 class="display rise">From dreaming to keys.</h1>
         </div>
-        <p class="lede rise">Start with budget, then bring in the land immediately. Here is what you see at each step.</p>
       </div>
       <ol class="htrack" id="htrack">
           <li class="hslide in" aria-roledescription="slide" aria-label="Step 01 of 7">
@@ -1163,9 +1175,8 @@ a.path:hover .msg,a.path:focus-visible .msg{border-left-color:#121212}
         </li>
         </ol>
       </div>
-      <a class="bigcta reveal" href="#partner" data-route="partner" data-anchor="inquiry">
+      <a class="bigcta reveal" href="#start" data-quiz>
         <span class="bigcta-t">Try It Free</span>
-        <span class="bigcta-s mono">Get early access</span>
         <svg class="bigcta-arrow" viewBox="0 0 48 24" aria-hidden="true"><path d="M0 12h44M34 2l10 10-10 10" fill="none" stroke="currentColor" stroke-width="2"/></svg>
       </a>
     </div>
@@ -1799,7 +1810,7 @@ San Francisco, CA 94117</p>
       apply(cur);
       timer = setTimeout(() => { timer = null; tick(); }, reduce ? 0 : hold);
     };
-    return { to: i => { target = i; tick(); }, now: () => cur };
+    return { to: i => { target = i; tick(); }, now: () => cur, want: () => target };
   };
 
   /* ---- How it works: horizontal journey, one full-width step per scroll increment ---- */
@@ -1957,6 +1968,35 @@ San Francisco, CA 94117</p>
   addEventListener("resize", onPin);
   const pinPace = pace(setStep);
   setStep(0); onPin();
+
+  /* ---- Pinned sliders: one gesture moves exactly one slide (wheel and touch) ---- */
+  const stepLock = (el, count, cur) => {
+    if (!el) return;
+    let locked = false, lockAt = 0, lastEv = 0, ty = null, tDone = false;
+    const pinned = () => { if (!el.offsetParent) return false; const r = el.getBoundingClientRect(); return r.top <= 2 && r.bottom >= innerHeight - 2; };
+    const goTo = i => { const r = el.getBoundingClientRect(), span = r.height - innerHeight; scrollTo({ top: scrollY + r.top + span * (i + .5) / count, behavior: "auto" }); };
+    const release = () => { if (!locked) return; const now = performance.now(); if (now - lockAt > 850 && now - lastEv > 180) locked = false; else setTimeout(release, 60); };
+    const move = dir => { const n = cur() + dir; if (n < 0 || n >= count) return false; locked = true; lockAt = performance.now(); goTo(n); setTimeout(release, 60); return true; };
+    addEventListener("wheel", e => {
+      if (!pinned() || e.ctrlKey || Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
+      lastEv = performance.now();
+      if (locked) { e.preventDefault(); return; }
+      if (Math.abs(e.deltaY) < 2) return;
+      if (move(e.deltaY > 0 ? 1 : -1)) e.preventDefault();
+    }, { passive: false });
+    addEventListener("touchstart", e => { ty = pinned() ? e.touches[0].clientY : null; tDone = false; }, { passive: true });
+    addEventListener("touchmove", e => {
+      if (ty == null) return;
+      const dy = ty - e.touches[0].clientY, dir = dy > 0 ? 1 : -1, n = cur() + dir;
+      if (n < 0 || n >= count) { if (!tDone) ty = null; else e.preventDefault(); return; }
+      e.preventDefault(); lastEv = performance.now();
+      if (!tDone && !locked && Math.abs(dy) > 30) { tDone = true; move(dir); }
+    }, { passive: false });
+    addEventListener("touchend", () => { ty = null; }, { passive: true });
+  };
+  stepLock(hPin, hSlides.length, () => hPace.want());
+  stepLock(cv, cvItems.length, () => cvPace.want());
+  stepLock(pin, frames.length, () => pinPace.want());
 
   /* ---- Inquiry form: posts to /api/inquiry (Cloudflare Pages Function), which emails the team ---- */
   const form = document.getElementById("inquiry"), msg = document.getElementById("formmsg");
