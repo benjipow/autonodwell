@@ -19,15 +19,19 @@ Connect this repo in Cloudflare Pages. Framework preset: None. Build command: em
 - `INQUIRY_TO`: inbox that receives inquiries
 - `INQUIRY_FROM`: sender on a Resend-verified domain, e.g. `Autonodwell <inquiries@autonodwell.com>`
 
-### Dream home questionnaire
+### Dream home design pop-up
 
-The "Try It Free" and "Design Your Dream Home, FREE!" buttons open a pop-up that asks the app's step 1 questions (ZIP, land, lot, budget). Its "Pick your home" button hands the answers to the app at `APP_URL/design/new?zip=…&land=…&budget=…`. The app (`autonodwell-app/web/src/pages/design/DesignFlow.tsx`, `prefillFromUrl`) fills in step 1 and continues the normal path: "Pick your home" creates the design (`POST /api/v1/designs`), then plan & style, finishes, site, estimate, and "Review with a consultant" (`POST /api/v1/designs/{id}/submit`), which creates the sales lead and syncs it to the CRM.
+The "Try It Free" and "Design Your Dream Home, FREE!" buttons open the app's customer flow inside a pop-up:
+01 Start (ZIP, land, lot, budget, land budget), 02 Plan & style, 03 Make it yours, 04 Your site, 05 Understand, then "Send to a consultant".
 
-`APP_URL` is set near the top of the questionnaire script in `index.html` (default `https://app.autonodwell.com`). Set it to `""` to email the answers through `/api/inquiry` instead, until the app is live.
+- The catalog, assumptions, sample markets and path stages are copied from `autonodwell-app/api/app/seed.py`, the ZIP-area land and construction data from `autonodwell-app/api/data/costs_by_zip3.csv`, and the estimate math from `autonodwell-app/api/app/services/estimate.py`. The numbers were checked against the app's API for several designs and match to the dollar. If prices change in the app, update the catalog block at the top of the pop-up script in `index.html`.
+- "Send to a consultant" emails the full design, estimate and contact details through `/api/inquiry` (type "Dream home questionnaire").
+- Style photos are in `img/styles/` (resized from the app's `web/public/styles/`).
+- When the app is live, it can also take the step 1 answers directly: `/design/new?zip=…&land=…&budget=…&monthly=…&total=…&cash=…&address=…&lot_price=…` (see `prefillFromUrl` in `autonodwell-app/web/src/pages/design/DesignFlow.tsx`).
 
 ## Before launch
 
 - Finish the Resend setup so the inquiry form sends.
 - Privacy Policy and Terms of Service are published; they still need legal review.
-- Deploy the app at `APP_URL` (see `autonodwell-app/README.md`) before the questionnaire goes live, or set `APP_URL` to `""`.
+- All prices in the pop-up are the app's placeholder sample numbers. Replace them with real figures before launch.
 - Verify the founder bio details.

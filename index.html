@@ -2149,40 +2149,49 @@ San Francisco, CA 94117</p>
   });
 })();
 </script>
-<!-- Dream home questionnaire (pop-up). Ported from the Autonodwell app's step 1 ("Start"). -->
+<!-- Dream home questionnaire + design flow (pop-up).
+     A browser port of the Autonodwell app (autonodwell-app/): step 1 "Start" cards, then
+     02 Plan & style, 03 Make it yours, 04 Your site, 05 Understand → "Send to a consultant".
+     Catalog, assumptions, markets and path stages mirror api/app/seed.py; the math mirrors
+     api/app/services/estimate.py. All prices are the app's placeholder sample numbers. -->
 <style>
 .quiz{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(53,30,40,.62);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
 .quiz.open{display:flex}
 .quiz-card{position:relative;width:min(460px,100%);max-height:calc(100dvh - 32px);overflow:auto;background:#fff;color:#121212;border-radius:22px;padding:28px 28px 22px;display:grid;gap:22px;box-shadow:0 30px 80px rgba(53,30,40,.35);animation:quiz-in .32s cubic-bezier(.16,1,.3,1)}
+.quiz-card,.quiz-card button,.quiz-card input,.quiz-card select,.quiz-card textarea{font-family:var(--display)}
 .quiz-card.swap{animation:quiz-swap .28s cubic-bezier(.16,1,.3,1)}
 @keyframes quiz-in{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
 @keyframes quiz-swap{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
 @media (prefers-reduced-motion:reduce){.quiz-card,.quiz-card.swap{animation:none}}
-.quiz-x{position:absolute;top:12px;right:12px;width:40px;height:40px;border:0;border-radius:50%;background:none;color:#351E28;font-size:24px;line-height:1;cursor:pointer}
+.quiz-x{position:absolute;top:12px;right:12px;z-index:3;width:40px;height:40px;border:0;border-radius:50%;background:none;color:#351E28;font-size:24px;line-height:1;cursor:pointer}
 .quiz-x:hover{background:#D7EFFF}
 .quiz-who{display:grid;grid-template-columns:52px 1fr;gap:14px;align-items:center;padding-right:32px}
 .quiz-who img{width:52px;height:52px;border-radius:50%;object-fit:cover}
 .quiz-hi{font-size:16px;color:#351E28;opacity:.8;margin:0}
 .quiz-q{margin:2px 0 0;font-size:22px;font-weight:700;letter-spacing:-.02em;line-height:1.2;color:#351E28}
 .quiz-body{display:grid;gap:14px;min-width:0}
-.quiz-card,.quiz-card button{font-family:var(--display)}
-.quiz-body label{display:grid;gap:6px;font-family:var(--display);font-size:15px;font-weight:600;letter-spacing:0;text-transform:none;color:#351E28}
-.quiz-body label .opt{font-weight:400;opacity:.7}
-.quiz-body input[type=text],.quiz-body input[type=email],.quiz-body input[type=tel],.quiz-body input:not([type]){font:inherit;font-size:18px;font-weight:400;color:#121212;background:transparent;border:0;border-bottom:1.5px solid rgba(53,30,40,.3);padding:8px 0;border-radius:0}
-.quiz-body input:focus{outline:0;border-bottom-color:#FF5C34}
-.quiz-body input::placeholder{color:rgba(18,18,18,.38)}
+.quiz-card label{display:grid;gap:6px;font-family:var(--display);font-size:15px;font-weight:600;letter-spacing:0;text-transform:none;color:#351E28}
+.quiz-card label .opt{font-weight:400;opacity:.7}
+.quiz-card input:not([type=range]):not([type=checkbox]),.quiz-card select,.quiz-card textarea{font-size:18px;font-weight:400;color:#121212;background:transparent;border:0;border-bottom:1.5px solid rgba(53,30,40,.3);padding:8px 0;border-radius:0;width:100%}
+.quiz-card textarea{min-height:80px;resize:vertical;font-size:16px}
+.quiz-card input:focus,.quiz-card select:focus,.quiz-card textarea:focus{outline:0;border-bottom-color:#FF5C34}
+.quiz-card input::placeholder{color:rgba(18,18,18,.38)}
 .quiz-pills{display:grid;gap:8px}
-.quiz-pill{min-height:50px;border-radius:999px;border:2px solid transparent;background:#D7EFFF;color:#121212;font:inherit;font-size:16px;padding:12px 18px;cursor:pointer;text-align:center}
+.quiz-pill{min-height:50px;border-radius:999px;border:2px solid transparent;background:#D7EFFF;color:#121212;font-size:16px;padding:12px 18px;cursor:pointer;text-align:center}
 .quiz-pill:hover{background:#c4e5fb}
 .quiz-pill[aria-checked=true]{border-color:#FF5C34;font-weight:700;background:#fff}
-.quiz-skip{justify-self:start;background:none;border:0;padding:0;color:#351E28;text-decoration:underline;text-underline-offset:3px;font:inherit;font-size:15px;cursor:pointer}
+.quiz-skip{justify-self:start;background:none;border:0;padding:0;color:#351E28;text-decoration:underline;text-underline-offset:3px;font-size:15px;cursor:pointer}
 .quiz-range output{display:block;font-size:34px;font-weight:700;letter-spacing:-.03em;color:#351E28}
 .quiz-range output small{font-size:15px;font-weight:500;opacity:.7}
 .quiz-range input{width:100%;accent-color:#FF5C34}
 .quiz-ends{display:flex;justify-content:space-between;font-size:12px;color:rgba(18,18,18,.6)}
-.quiz-next-copy{background:#D7EFFF;border-radius:14px;padding:16px 18px}
-.quiz-next-copy h3{margin:0 0 6px;font-size:15px;color:#351E28}
-.quiz-next-copy p{margin:0;font-size:15px;line-height:1.5}
+.quiz-box{background:#D7EFFF;border-radius:14px;padding:16px 18px;display:grid;gap:8px}
+.quiz-box h3{margin:0;font-size:15px;color:#351E28}
+.quiz-box p{margin:0;font-size:15px;line-height:1.5}
+.quiz-row{display:flex;justify-content:space-between;gap:12px;font-size:15px}
+.quiz-row b{font-variant-numeric:tabular-nums;color:#121212}
+.quiz-row .muted{color:rgba(18,18,18,.6)}
+.quiz-fine{margin:0;font-size:12.5px;line-height:1.45;color:rgba(18,18,18,.62)}
 .quiz-check{display:grid!important;grid-template-columns:20px 1fr;gap:10px!important;font-weight:400!important;font-size:13px!important;line-height:1.45;color:#121212!important}
 .quiz-check input{width:18px;height:18px;margin-top:2px;accent-color:#FF5C34}
 .quiz-err{margin:0;font-size:14px;color:#b4361a}
@@ -2193,12 +2202,126 @@ San Francisco, CA 94117</p>
 .quiz-nav{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .quiz-back{min-width:44px;min-height:44px;border:0;background:none;color:#351E28;font-size:22px;cursor:pointer}
 .quiz-go{margin-left:auto;display:grid;place-items:center;width:58px;height:58px;border:0;border-radius:50%;background:#351E28;color:#fff;cursor:pointer;transition:background .2s,opacity .2s}
-.quiz-go.wide{width:auto;height:auto;border-radius:999px;padding:15px 24px;font:inherit;font-size:16px;font-weight:650;background:#FF5C34;color:#121212}
+.quiz-go.wide{width:auto;height:auto;border-radius:999px;padding:15px 24px;font-size:16px;font-weight:650;background:#FF5C34;color:#121212}
 .quiz-go:hover:not(:disabled){background:#FF5C34;color:#121212}
 .quiz-go.wide:hover:not(:disabled){background:#351E28;color:#fff}
 .quiz-go:disabled{opacity:.3;cursor:not-allowed}
 .quiz-hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
-@media (max-width:560px){.quiz{align-items:flex-end;padding:0}.quiz-card{width:100%;border-radius:22px 22px 0 0;max-height:92dvh;padding:24px 20px calc(20px + env(safe-area-inset-bottom))}}
+
+/* Steps 02–05: the wide design view */
+.quiz-card.flow{width:min(1080px,100%);height:min(880px,calc(100dvh - 32px));padding:0;gap:0;grid-template-rows:auto minmax(0,1fr) auto;grid-template-columns:minmax(0,1fr);overflow:hidden}
+.qf-top{display:flex;align-items:center;gap:16px;padding:16px 64px 14px 24px;border-bottom:1px solid rgba(53,30,40,.12)}
+.qf-steps{list-style:none;display:flex;gap:4px;margin:0;padding:0;overflow-x:auto;scrollbar-width:none;min-width:0;flex:1}
+.qf-steps::-webkit-scrollbar{display:none}
+.qf-steps li button{all:unset;cursor:default;display:flex;gap:6px;align-items:baseline;padding:8px 12px;border-radius:999px;font-size:14px;color:rgba(53,30,40,.45);white-space:nowrap}
+.qf-steps li button i{font-style:normal;font-family:var(--mono);font-size:11px}
+.qf-steps li.done button{color:#351E28;cursor:pointer}
+.qf-steps li.done button:hover{background:#D7EFFF}
+.qf-steps li.on button{background:#351E28;color:#fff}
+.qf-steps li.on button i{color:#FF5C34}
+.qf-body{overflow:auto;padding:28px clamp(20px,4vw,48px) 36px;display:grid;grid-auto-rows:max-content;gap:22px;align-content:start;overscroll-behavior:contain}
+.qf-guide{display:flex;gap:10px;align-items:center;margin:0;font-size:15px;color:#351E28}
+.qf-guide img{width:34px;height:34px;border-radius:50%;object-fit:cover}
+.qf-kicker{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#d94a25}
+.qf-body h2{margin:4px 0 0;font-size:clamp(26px,3.2vw,40px);line-height:1.08;letter-spacing:-.03em;color:#351E28}
+.qf-body h3{margin:0;font-size:19px;color:#351E28}
+.qf-lede{margin:0;font-size:17px;line-height:1.5;color:rgba(18,18,18,.78);max-width:60ch}
+.qf-grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.qf-pick{all:unset;box-sizing:border-box;cursor:pointer;display:grid;gap:6px;align-content:start;padding:16px;border-radius:16px;border:2px solid rgba(53,30,40,.12);background:#fff;transition:border-color .2s,background .2s}
+.qf-pick:hover{border-color:rgba(53,30,40,.35)}
+.qf-pick[aria-checked=true],.qf-pick[aria-pressed=true]{border-color:#FF5C34;background:#fff8f5}
+.qf-pick b{font-size:17px;color:#351E28}
+.qf-pick .mono{font-size:11px;color:rgba(18,18,18,.6)}
+.qf-pick .dim{font-size:14px;color:rgba(18,18,18,.65);line-height:1.4}
+.qf-pick .qf-est{font-family:var(--mono);font-size:11.5px;color:#d94a25}
+.qf-pick .ph{display:block;aspect-ratio:16/10;border-radius:10px;overflow:hidden;background:#D7EFFF}
+.qf-pick .ph img{width:100%;height:100%;object-fit:cover}
+.qf-stage{display:grid;gap:10px}
+.qf-stage .big{aspect-ratio:16/9;border-radius:18px;overflow:hidden;background:#D7EFFF}
+.qf-stage .big img{width:100%;height:100%;object-fit:cover}
+.qf-thumbs{display:flex;gap:8px}
+.qf-thumbs button{all:unset;cursor:pointer;width:84px;aspect-ratio:16/10;border-radius:8px;overflow:hidden;outline:2px solid transparent;outline-offset:2px}
+.qf-thumbs button[aria-pressed=true]{outline-color:#FF5C34}
+.qf-thumbs img{width:100%;height:100%;object-fit:cover}
+.qf-cap{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:rgba(18,18,18,.5);margin:0}
+.qf-seg{display:inline-flex;gap:6px;align-items:center;flex-wrap:wrap}
+.qf-seg button{all:unset;cursor:pointer;padding:10px 16px;border-radius:999px;background:#D7EFFF;font-size:15px}
+.qf-seg button[aria-checked=true]{background:#351E28;color:#fff}
+.qf-group{border:0;margin:0;padding:0;display:grid;gap:10px}
+.qf-group legend{font-size:16px;font-weight:700;color:#351E28;padding:0;margin-bottom:10px}
+.qf-group legend span{font-weight:400;color:rgba(18,18,18,.6)}
+.qf-opts{display:flex;flex-wrap:wrap;gap:8px}
+.qf-opt{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:10px;padding:10px 14px;border-radius:999px;border:2px solid rgba(53,30,40,.12);font-size:15px}
+.qf-opt:hover{border-color:rgba(53,30,40,.35)}
+.qf-opt[aria-pressed=true]{border-color:#FF5C34;background:#fff8f5;font-weight:600}
+.qf-opt .sw{width:20px;height:20px;border-radius:50%;border:1px solid rgba(0,0,0,.15)}
+.qf-opt .pr{font-family:var(--mono);font-size:11.5px;color:rgba(18,18,18,.6);font-weight:400}
+.qf-opts.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+.qf-opts.cards .qf-opt{border-radius:14px;display:grid;gap:4px;align-items:start;padding:14px}
+.qf-opts.cards .qf-opt .dim{font-size:13.5px;color:rgba(18,18,18,.65);font-weight:400}
+.qf-preview{display:grid;grid-template-columns:1.3fr 1fr;gap:16px;align-items:center}
+.qf-preview .big{aspect-ratio:16/10;border-radius:16px;overflow:hidden}
+.qf-preview .big img{width:100%;height:100%;object-fit:cover}
+.qf-zip{display:flex;gap:10px;align-items:flex-end;max-width:420px}
+.qf-zip label{flex:1}
+.qf-btn{all:unset;box-sizing:border-box;cursor:pointer;padding:12px 20px;border-radius:999px;background:#351E28;color:#fff;font-size:15px;font-weight:600;text-align:center}
+.qf-btn:disabled{opacity:.35;cursor:not-allowed}
+.qf-btn.orange{background:#FF5C34;color:#121212}
+.qf-path{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.qf-path li{display:grid;grid-template-columns:22px 1fr;gap:14px;padding:16px 0;border-top:1px solid rgba(53,30,40,.12)}
+.qf-path .dot{width:12px;height:12px;border-radius:50%;border:2px solid #351E28;margin-top:6px}
+.qf-path li.now .dot{background:#FF5C34;border-color:#FF5C34}
+.qf-path .head{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.qf-path .who{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:rgba(18,18,18,.55);margin:2px 0 6px}
+.qf-path p{margin:0 0 4px;font-size:15px;line-height:1.5}
+.qf-path .next{color:#d94a25;font-weight:600}
+.qf-table{display:grid;border:1px solid rgba(53,30,40,.14);border-radius:14px;overflow:hidden}
+.qf-table>div{display:flex;justify-content:space-between;gap:12px;padding:12px 16px;border-top:1px solid rgba(53,30,40,.1);font-size:15px}
+.qf-table>div:first-child{border-top:0}
+.qf-table b{font-variant-numeric:tabular-nums}
+.qf-table .head{background:#D7EFFF;font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.qf-table .total{background:#fff8f5;font-weight:700}
+.qf-table .note{display:block;font-size:12.5px;color:rgba(18,18,18,.6);padding-top:0;border-top:0}
+.qf-2col{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.qf-callout{border-radius:18px;background:#E9F056;padding:22px;display:grid;gap:10px;justify-items:start}
+.qf-callout.ok{background:#AEB8A0}
+.qf-callout h3{font-size:20px}
+.qf-form{display:grid;grid-template-columns:1fr 1fr;gap:16px 20px;padding:22px;border-radius:18px;border:1px solid rgba(53,30,40,.14)}
+.qf-form .full{grid-column:1/-1}
+.qf-foot{display:flex;align-items:center;gap:18px;padding:14px 24px calc(14px + env(safe-area-inset-bottom));border-top:1px solid rgba(53,30,40,.12);background:#fff}
+.qf-sum{display:flex;align-items:center;gap:22px;flex-wrap:wrap;min-width:0;flex:1}
+.qf-sum .lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:rgba(18,18,18,.55);flex-basis:100%}
+.qf-sum .fig{display:grid}
+.qf-sum .fig span{font-size:12px;color:rgba(18,18,18,.6)}
+.qf-sum .fig b{font-size:20px;letter-spacing:-.02em;color:#351E28;font-variant-numeric:tabular-nums}
+.qf-sum .fig b small{font-size:13px;font-weight:500;color:rgba(18,18,18,.6)}
+.qf-pill{padding:6px 12px;border-radius:999px;font-size:13px;font-weight:600}
+.qf-pill.ok{background:#AEB8A0}
+.qf-pill.warn{background:#E9F056}
+.qf-pill.bad{background:#FF5C34;color:#121212}
+.qf-actions{display:flex;gap:10px;align-items:center;flex:none}
+.qf-actions .ghost{all:unset;cursor:pointer;padding:12px 16px;border-radius:999px;font-size:15px;color:#351E28}
+.qf-actions .ghost:hover{background:#D7EFFF}
+@media (max-width:820px){
+  .qf-grid3{grid-template-columns:1fr}
+  .qf-grid3.styles{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .qf-grid3.styles .qf-pick{padding:8px}
+  .qf-grid3.styles .qf-pick .dim{display:none}
+  .qf-grid3.styles .qf-pick b{font-size:13px}
+  .qf-opts.cards,.qf-2col,.qf-preview,.qf-form{grid-template-columns:1fr}
+  .qf-sum{gap:14px}
+  .qf-sum .fig b{font-size:17px}
+}
+@media (max-width:560px){
+  .quiz{align-items:flex-end;padding:0}
+  .quiz-card{width:100%;border-radius:22px 22px 0 0;max-height:92dvh;padding:24px 20px calc(20px + env(safe-area-inset-bottom))}
+  .quiz-card.flow{height:100dvh;max-height:100dvh;border-radius:0;padding:0}
+  .qf-top{padding:12px 56px 10px 12px}
+  .qf-body{padding:20px 18px 28px}
+  .qf-foot{padding:10px 14px calc(10px + env(safe-area-inset-bottom));gap:10px}
+  .qf-sum .lbl,.qf-pill{display:none}
+  .qf-actions .ghost{padding:12px 10px}
+}
 </style>
 <div class="quiz" id="quiz" role="dialog" aria-modal="true" aria-labelledby="quiz-q" aria-hidden="true">
   <form class="quiz-card" id="quiz-card" novalidate></form>
@@ -2206,185 +2329,443 @@ San Francisco, CA 94117</p>
 <script>
 (() => {
   const root = document.getElementById("quiz"), card = document.getElementById("quiz-card");
-  /* The questionnaire is step 1 of the Autonodwell app. "Pick your home" hands the answers to the app
-     (APP_URL/design/new?…), which creates the design (POST /api/v1/designs) and continues at step 2,
-     exactly like answering inside the app. Leave APP_URL empty to email the answers through
-     /api/inquiry instead (for use before the app is live). */
-  const APP_URL = "https://app.autonodwell.com";
-  const LAND = [["own_lot","I own a lot"],["looking_at_lot","I’m looking at a lot"],["need_land","I need help finding land"]];
-  const BUDGET = [["total","A total budget"],["monthly","A monthly payment"],["need_help","Help me figure it out"]];
-  const SLIDER = { min: 1200, max: 5000, step: 50, initial: 2400 };
-  const CONSENT = "I agree that Autonodwell may contact me about my home. This is not a reservation, deposit or purchase commitment.";
-  const usd = n => "$" + Math.round(n).toLocaleString("en-US");
-  const hasLot = l => l === "own_lot" || l === "looking_at_lot";
-  const fresh = () => ({ zip: "", land: null, address: "", lotPrice: null, mode: null, total: null, monthly: SLIDER.initial, cash: null, name: "", email: "", phone: "", consent: false });
-  let a = fresh(), step = "zip", lastFocus = null, sending = false, error = "";
 
+  /* ================= Catalog + assumptions (mirrors api/app/seed.py; sample numbers) ================= */
+  const K = 100;
+  const MODELS = [
+    { slug: "model-one", name: "Model One", tagline: "Compact two-bedroom starter home", sqft: 800, bd: 2, ba: 1, base: 135000 * K },
+    { slug: "model-two", name: "Model Two", tagline: "The three-bedroom family starter home", sqft: 1200, bd: 3, ba: 2, base: 175000 * K },
+    { slug: "model-three", name: "Model Three", tagline: "Three bedrooms with room to grow", sqft: 1700, bd: 3, ba: 2, base: 255000 * K }
+  ];
+  const CATS = [
+    { slug: "siding", name: "Exterior siding", multi: false, display: "swatches", desc: "Each finish maps to a real cladding assembly.", options: [
+      { slug: "siding-cedar", name: "Natural cedar", hex: "#c9a77c", price: 0, def: true },
+      { slug: "siding-charcoal", name: "Charcoal board & batten", hex: "#3a3d3c", price: 1200 * K },
+      { slug: "siding-bone", name: "Bone fiber cement", hex: "#d8d4cb", price: 0 },
+      { slug: "siding-sage", name: "Sage lap siding", hex: "#7c8a7a", price: 800 * K } ] },
+    { slug: "kitchen", name: "Kitchen finish", multi: false, display: "swatches", desc: "Cabinet and counter package.", options: [
+      { slug: "kitchen-light", name: "Light oak & quartz", hex: "#efece6", price: 0, def: true },
+      { slug: "kitchen-walnut", name: "Walnut & stone", hex: "#a9825a", price: 2400 * K },
+      { slug: "kitchen-black", name: "Matte black & concrete", hex: "#2a2b2b", price: 1800 * K } ] },
+    { slug: "flooring", name: "Flooring", multi: false, display: "chips", desc: "Priced per square foot of the home.", options: [
+      { slug: "floor-lvp", name: "Luxury vinyl", price: 0, def: true, perSqft: true },
+      { slug: "floor-oak", name: "Oak", price: 3 * K, perSqft: true },
+      { slug: "floor-tile", name: "Tile", price: 2 * K, perSqft: true },
+      { slug: "floor-concrete", name: "Concrete", price: 1 * K, perSqft: true } ] },
+    { slug: "upgrades", name: "Upgrades", multi: true, display: "cards", desc: "Optional. Pick any.", options: [
+      { slug: "up-porch", name: "Covered front porch", price: 9500 * K, desc: "Adds ~120 sq ft of covered outdoor space." },
+      { slug: "up-solar", name: "Solar-ready roof", price: 4200 * K, desc: "Conduit, structure and panel layout prepared." },
+      { slug: "up-heatpump", name: "High-efficiency heat pump", price: 6800 * K, desc: "Upgraded heating, cooling and water heating." },
+      { slug: "up-smart", name: "Smart home package", price: 2100 * K, desc: "Thermostat, locks, leak sensors." } ] }
+  ];
+  const OPT = Object.fromEntries(CATS.flatMap(c => c.options.map(o => [o.slug, { ...o, cat: c.slug }])));
+  const A = { name: "MVP placeholder v1", rate: 700, term: 30, down: 500, closing: 300, soft: 700, cont: 600, delivery: 10000 * K, twoStory: 85000 * K };
+  // slug, name, cost index bps, site $, land $, permit $, permit weeks, tax bps, insurance $/yr, ZIP prefixes
+  const MARKETS = [
+    ["national", "National average (sample)", 10000, 65000, 60000, 4000, [12, 26], 100, 1800, []],
+    ["sacramento-ca", "Sacramento, CA (sample)", 11200, 78000, 95000, 9000, [16, 30], 110, 1800, ["956", "957", "958"]],
+    ["austin-tx", "Austin, TX (sample)", 9800, 62000, 85000, 6000, [12, 24], 190, 2600, ["786", "787"]],
+    ["phoenix-az", "Phoenix, AZ (sample)", 9600, 58000, 70000, 5000, [10, 20], 60, 1700, ["850", "852", "853"]],
+    ["raleigh-nc", "Raleigh, NC (sample)", 9500, 60000, 65000, 5500, [10, 22], 85, 1500, ["275", "276"]],
+    ["boise-id", "Boise, ID (sample)", 10000, 64000, 80000, 6000, [12, 24], 70, 1300, ["836", "837"]]
+  ].map(([slug, name, index, site, land, permit, weeks, tax, ins, prefixes]) => ({ slug, name, index, site: site * K, land: land * K, permit: permit * K, weeks, tax, ins: ins * K, prefixes }));
+  const PATH = [
+    { slug: "design", name: "Design", who: "Autonodwell architect · engineer", weeks: [4, 8], cost: "soft_contingency", desc: "Your selections become a permit-ready plan set, engineered for your site.", next: "Review your design with an Autonodwell consultant." },
+    { slug: "site", name: "Site", who: "Land · zoning · utilities", weeks: [4, 12], cost: "land", desc: "Confirm a buildable lot: zoning, setbacks, access, water, power and sewer.", next: "Tell us whether you own land or need help finding it." },
+    { slug: "financing", name: "Financing", who: "Participating lender", weeks: [4, 8], cost: null, desc: "A construction-to-permanent loan or other financing from a qualified lender.", next: "Connect with a participating lender. Lenders make their own credit decisions." },
+    { slug: "approvals", name: "Approvals", who: "Local permitting office", weeks: [12, 26], cost: null, desc: "Building permits and inspections. Timelines vary widely by city and county.", next: "We prepare and track the permit package for your jurisdiction." },
+    { slug: "construction", name: "Construction", who: "Builder · suppliers", weeks: [16, 24], cost: "home_delivery", desc: "Site work, foundation, home delivery and installation, then finishes and inspections.", next: "Schedule is set once permits and financing are in place." },
+    { slug: "keys", name: "Keys", who: "You", weeks: [0, 1], cost: null, desc: "Final inspection, closing on permanent financing, and move-in.", next: "Your home records and maintenance plan continue after closing." }
+  ];
+  const STYLES = [
+    { key: "pop", name: "Quarter Century Pop", tagline: "Soft corners, big glass, clean white panels.", photos: ["pop-front", "pop-angle"] },
+    { key: "mcm", name: "Mid-Century Modern", tagline: "Warm wood, a low flat roof and walls of glass.", photos: ["mcm-1story-front"], two: ["mcm-2story-front", "mcm-2story-wing", "mcm-2story-aframe"] },
+    { key: "craftsman", name: "Modern Craftsman", tagline: "Gabled roof, a real front porch, classic lines.", photos: ["craftsman-front", "craftsman-angle"] }
+  ];
+  const photo = n => `img/styles/${n}.jpg`;
+  /* Quarter-acre land price and construction factor by 3-digit ZIP (api/data/costs_by_zip3.csv; FHFA 2022 land, DoD 2026 factors) */
+  const ZIP = {};
+  "005,NY,496900,10300;010,MA,85700,11200;011,MA,54200,11200;012,MA,96300,12000;013,MA,79300,12000;014,MA,103000,12700;015,MA,123200,12800;016,MA,93800,12800;017,MA,286100,12000;018,MA,201800,12000;019,MA,303200,12000;020,MA,333300,12000;021,MA,505200,12000;022,MA,322300,12800;023,MA,200800,12000;024,MA,881800,12000;025,MA,384400,12000;026,MA,338100,12000;027,MA,160200,12000;028,RI,127700,11700;029,RI,110600,11700;030,NH,141100,11100;031,NH,131200,11100;032,NH,109300,11100;033,NH,103700,10900;034,NH,77300,11100;035,NH,43500,11100;036,NH,100700,11100;037,NH,108800,11100;038,NH,148400,11300;039,ME,288400,10700;040,ME,109300,10800;041,ME,300400,10800;042,ME,46900,10800;043,ME,69200,10800;044,ME,43000,12200;045,ME,176100,10800;046,ME,93600,10800;047,ME,23400,10800;048,ME,148500,10800;049,ME,50400,10800;050,VT,85700,10500;051,VT,54700,10500;052,VT,79400,10500;053,VT,64600,10500;054,VT,120000,10400;055,MA,322300,12000;056,VT,69400,10600;057,VT,60000,10500;058,VT,70100,10500;059,VT,102100,10500;060,CT,88000,10900;061,CT,78500,10900;062,CT,82600,10900;063,CT,96300,11300;064,CT,136600,10900;065,CT,117600,10900;066,CT,133600,10500;067,CT,106400,10900;068,CT,310600,10500;069,CT,366000,10500;070,NJ,319500,11800;071,NJ,134000,11800;072,NJ,218400,11800;073,NJ,507300,11800;074,NJ,255400,11800;075,NJ,165700,11800;076,NJ,348800,11800;077,NJ,328400,12000;078,NJ,158200,11800;079,NJ,342200,12100;080,NJ,89500,11800;081,NJ,70500,11800;082,NJ,133400,11800;083,NJ,57700,11800;084,NJ,750400,11800;085,NJ,195200,11800;086,NJ,97700,12000;087,NJ,218200,11800;088,NJ,207600,11800;089,NJ,221600,11800;100,NY,3164800,13200;101,NY,3657200,10300;102,NY,496900,13200;103,NY,562400,13300;104,NY,389200,13200;105,NY,253000,10300;106,NY,311200,10300;107,NY,296100,13200;108,NY,436900,10300;109,NY,126300,11500;110,NY,633100,10300;111,NY,1486800,13200;112,NY,2526200,13200;113,NY,841300,13200;114,NY,586800,13200;115,NY,449000,10300;116,NY,483300,13200;117,NY,258000,10300;118,NY,459700,10300;119,NY,416900,10300;120,NY,45000,10300;121,NY,47200,10300;122,NY,55400,10400;123,NY,42600,10200;124,NY,47000,10300;125,NY,78000,11500;126,NY,72500,10300;127,NY,39000,10300;128,NY,70700,10300;129,NY,43700,10300;130,NY,36200,10300;131,NY,40600,10300;132,NY,29000,10300;133,NY,26100,10300;134,NY,25700,11000;135,NY,18200,11000;136,NY,45400,11100;137,NY,17000,10300;138,NY,16600,10300;139,NY,18800,10300;140,NY,39600,10300;141,NY,32000,10400;142,NY,41300,10100;143,NY,15200,10700;144,NY,42500,10300;145,NY,43600,10300;146,NY,36100,10300;147,NY,81400,10300;148,NY,35800,10300;149,NY,23900,10300;150,PA,39700,10900;151,PA,46400,10900;152,PA,73400,10900;153,PA,52400,10900;154,PA,27900,10900;155,PA,32100,10900;156,PA,44200,10900;157,PA,26300,10900;158,PA,31000,10900;159,PA,26800,10900;160,PA,50500,10900;161,PA,26700,10900;162,PA,36100,10900;163,PA,19900,10900;164,PA,44400,10900;165,PA,26000,10900;166,PA,29500,10900;167,PA,19300,10900;168,PA,51700,10900;169,PA,31900,10900;170,PA,43800,10100;171,PA,52000,10000;172,PA,38400,10400;173,PA,54100,10900;174,PA,51600,10900;175,PA,73900,10900;176,PA,78400,10900;177,PA,37700,10900;178,PA,37500,10900;179,PA,24900,10900;180,PA,73200,10900;181,PA,71400,10900;182,PA,23800,10900;183,PA,32700,10700;184,PA,46900,10900;185,PA,38100,10900;186,PA,34800,10900;187,PA,29000,10900;188,PA,35300,10900;189,PA,148100,10900;190,PA,125600,10900;191,PA,138000,11700;192,PA,80100,10900;193,PA,119100,10900;194,PA,128500,10900;195,PA,60900,10900;196,PA,59000,10900;197,DE,81300,9800;198,DE,83500,9800;199,DE,73200,9800;200,DC,819800,10200;201,VA,199600,10400;202,DC,701800,10000;203,DC,701800,10200;204,DC,701800,10200;205,DC,701800,10200;206,MD,128500,10100;207,MD,156600,9400;208,MD,286900,10000;209,MD,260500,10000;210,MD,166500,9600;211,MD,154900,9400;212,MD,115900,9400;214,MD,348800,9400;215,MD,45600,9700;216,MD,91500,9700;217,MD,114600,9800;218,MD,45300,9700;219,MD,77800,9700;220,VA,345000,10200;221,VA,290800,10400;222,VA,756700,10000;223,VA,382000,10400;224,VA,102100,9900;225,VA,87800,10400;226,VA,74800,8900;227,VA,81700,8900;228,VA,57800,8900;229,VA,86400,8900;230,VA,83700,8900;231,VA,88400,8900;232,VA,73000,8900;233,VA,82600,9400;234,VA,91600,9200;235,VA,141800,9200;236,VA,85800,9200;237,VA,75300,9400;238,VA,37700,8900;239,VA,40600,8700;240,VA,45500,8900;241,VA,41600,8900;242,VA,30500,8900;243,VA,32000,8900;244,VA,67500,8900;245,VA,27100,8900;246,VA,23600,8900;247,WV,19400,9300;248,WV,40700,8100;249,WV,40400,9400;250,WV,48900,9500;251,WV,43100,9400;252,WV,30700,9400;253,WV,45700,9500;254,WV,49000,9400;255,WV,33100,9400;256,WV,40000,9400;257,WV,33100,9400;258,WV,20100,9400;259,WV,24000,9400;260,WV,29300,9400;261,WV,28500,9400;262,WV,29800,9400;263,WV,30200,9400;264,WV,27100,9400;265,WV,34600,9400;266,WV,25100,9400;267,WV,31000,9400;268,WV,28600,12300;270,NC,27100,8100;271,NC,52300,8100;272,NC,40700,8100;273,NC,39000,8100;274,NC,55300,8100;275,NC,50200,8100;276,NC,138400,8100;277,NC,106600,8100;278,NC,27600,8100;279,NC,95800,8100;280,NC,38200,8100;281,NC,44200,8100;282,NC,126200,8100;283,NC,29400,8100;284,NC,55300,8100;285,NC,38000,9000;286,NC,26600,8100;287,NC,52500,8100;288,NC,98800,8100;289,NC,40500,8100;290,SC,30100,8600;291,SC,22900,8800;292,SC,39700,8600;293,SC,32800,8800;294,SC,72300,9000;295,SC,22200,8800;296,SC,41400,8800;297,SC,33400,8800;298,SC,21800,8800;299,SC,82700,10000;300,GA,76300,8900;301,GA,40800,8800;302,GA,38000,8800;303,GA,203100,8900;304,GA,14400,8800;305,GA,44700,8800;306,GA,40600,8800;307,GA,24300,8800;308,GA,25600,8800;309,GA,48700,9800;310,GA,22600,8800;311,GA,63600,8800;312,GA,20200,8500;313,GA,35300,8800;314,GA,62800,8300;315,GA,21100,9300;316,GA,22000,8600;317,GA,18600,8800;318,GA,37400,9400;319,GA,36000,9400;320,FL,53100,8700;321,FL,60100,8700;322,FL,78500,8600;323,FL,33100,8700;324,FL,25100,8800;325,FL,47600,8700;326,FL,46000,8700;327,FL,61200,8700;328,FL,112000,8700;329,FL,79900,8900;330,FL,262000,8700;331,FL,340800,8700;332,FL,130400,8700;333,FL,301700,8700;334,FL,236900,8700;335,FL,98500,8500;336,FL,159200,8500;337,FL,234500,8500;338,FL,42400,8700;339,FL,66800,8700;341,FL,274200,8700;342,FL,154700,8700;344,FL,30700,8700;346,FL,73500,8700;347,FL,78400,8700;349,FL,95400,8700;350,AL,28200,8500;351,AL,31200,8500;352,AL,61700,8500;354,AL,31500,8500;355,AL,19400,8500;356,AL,25500,8500;357,AL,35000,8100;358,AL,57100,8100;359,AL,16600,8500;360,AL,34900,8900;361,AL,22200,8900;362,AL,21000,8700;363,AL,17600,9700;364,AL,18600,8500;365,AL,31000,8500;366,AL,34600,8000;367,AL,17200,8500;368,AL,30700,8500;369,AL,14600,8500;370,TN,44100,8700;371,TN,42100,8700;372,TN,200300,8700;373,TN,25100,8700;374,TN,47600,8400;375,TN,54900,8700;376,TN,28100,8700;377,TN,31900,8700;378,TN,27000,8700;379,TN,37400,8700;380,TN,26500,8900;381,TN,43000,8900;382,TN,17400,8700;383,TN,16800,8700;384,TN,19800,8700;385,TN,19600,8700;386,MS,22300,8100;387,MS,20600,8100;388,MS,21000,8100;389,MS,32600,8100;390,MS,23400,8100;391,MS,20100,8100;392,MS,33300,8100;393,MS,18100,8100;394,MS,17900,8100;395,MS,28400,8300;396,MS,12400,8100;397,MS,18100,8100;398,GA,21300,8800;399,GA,63600,8800;400,KY,37000,8700;401,KY,37200,9700;402,KY,53500,8400;403,KY,36100,8700;404,KY,21000,9700;405,KY,65000,8900;406,KY,32000,8700;407,KY,18700,8700;408,KY,49400,9700;409,KY,18200,8700;410,KY,46000,8700;411,KY,31400,8700;412,KY,40100,8700;413,KY,49400,8700;414,KY,49400,8700;415,KY,38700,8700;416,KY,41600,8700;417,KY,30300,8700;418,KY,49400,8700;420,KY,28100,8700;421,KY,33300,8700;422,KY,23300,9000;423,KY,21300,8700;424,KY,16400,8700;425,KY,20000,8700;426,KY,17900,8700;427,KY,23500,9700;430,OH,61600,9300;431,OH,42200,9300;432,OH,55900,9300;433,OH,31700,9300;434,OH,39900,9300;435,OH,35500,9300;436,OH,34900,9300;437,OH,27300,9300;438,OH,26400,9300;439,OH,30500,9300;440,OH,50700,9300;441,OH,40700,9300;442,OH,47400,9300;443,OH,32000,9300;444,OH,42900,9200;445,OH,24500,9300;446,OH,34400,9300;447,OH,28600,9300;448,OH,31500,9300;449,OH,30000,9300;450,OH,47600,9300;451,OH,32700,9300;452,OH,60300,9300;453,OH,35100,9300;454,OH,44700,9300;455,OH,23600,9800;456,OH,28600,9300;457,OH,32800,9300;458,OH,27700,9300;459,OH,53200,9300;460,IN,31100,9600;461,IN,35800,9500;462,IN,42600,9600;463,IN,36800,9500;464,IN,16400,9500;465,IN,35900,9500;466,IN,25000,9500;467,IN,33100,9500;468,IN,31800,9500;469,IN,23000,9500;470,IN,28300,9500;471,IN,36100,9500;472,IN,32200,9500;473,IN,18100,9500;474,IN,23300,9500;475,IN,18900,9500;476,IN,25100,9500;477,IN,22500,9500;478,IN,15200,9500;479,IN,27600,9500;480,MI,56800,10400;481,MI,58400,10700;482,MI,23100,10700;483,MI,88200,10400;484,MI,34900,10400;485,MI,12000,10400;486,MI,31800,10400;487,MI,45500,10400;488,MI,39500,10400;489,MI,22200,10400;490,MI,52000,10400;491,MI,69500,10400;492,MI,42400,10400;493,MI,66300,10400;494,MI,58500,10400;495,MI,46600,10400;496,MI,82000,10400;497,MI,76100,10400;498,MI,19900,10400;499,MI,39300,10400;500,IA,42100,10000;501,IA,32300,10000;502,IA,38200,9800;503,IA,55800,9800;504,IA,21200,10000;505,IA,23200,10000;506,IA,31800,10000;507,IA,29300,10000;508,IA,21000,10000;509,IA,47900,10000;510,IA,26400,10000;511,IA,27300,10000;512,IA,30000,10000;513,IA,64300,10000;514,IA,19400,10000;515,IA,30200,10000;516,IA,23400,10000;520,IA,41400,10000;521,IA,31500,10000;522,IA,49200,10000;523,IA,40400,10000;524,IA,46800,10000;525,IA,22200,10000;526,IA,28000,10200;527,IA,45700,10000;528,IA,41400,10000;530,WI,61600,11100;531,WI,76400,11100;532,WI,50100,11000;534,WI,51500,11100;535,WI,51700,11100;537,WI,163900,11100;538,WI,30500,11100;539,WI,44000,11100;540,WI,44300,11100;541,WI,47600,11100;542,WI,44100,11100;543,WI,46500,11100;544,WI,31900,11100;545,WI,122000,11000;546,WI,29300,11100;547,WI,35800,11100;548,WI,72400,11100;549,WI,50900,11100;550,MN,73000,11200;551,MN,119800,11300;553,MN,76200,11200;554,MN,129300,11300;555,MN,104200,10800;556,MN,51300,11200;557,MN,40900,11200;558,MN,54100,11100;559,MN,50600,11200;560,MN,56400,11200;561,MN,30000,11200;562,MN,28000,11200;563,MN,53200,11200;564,MN,111100,11200;565,MN,122400,11200;566,MN,92800,11200;567,MN,21800,11200;569,DC,701800,10200;570,SD,39200,10100;571,SD,63800,10100;572,SD,29500,10100;573,SD,31000,10100;574,SD,28600,10100;575,SD,40900,10100;576,SD,13600,10100;577,SD,52000,10100;580,ND,13300,11400;581,ND,75500,11400;582,ND,24500,11100;583,ND,78700,11400;584,ND,13300,11400;585,ND,52800,11400;586,ND,34900,11400;587,ND,66500,11400;588,ND,93900,11400;590,MT,54400,10700;591,MT,63600,10400;592,MT,61500,10700;593,MT,98500,10700;594,MT,52100,10700;595,MT,29500,10700;596,MT,83400,10700;597,MT,60700,10700;598,MT,85300,10700;599,MT,141500,10700;600,IL,136300,12100;601,IL,97700,12100;602,IL,333000,12100;603,IL,263800,10200;604,IL,56400,12100;605,IL,91600,10200;606,IL,279000,12100;607,IL,209800,10200;608,IL,89600,12100;609,IL,25700,10200;610,IL,31900,10200;611,IL,20600,10200;612,IL,35200,10200;613,IL,33100,10200;614,IL,20800,10200;615,IL,37000,10200;616,IL,29900,10200;617,IL,39900,10200;618,IL,32600,10200;619,IL,27100,10200;620,IL,18600,10200;622,IL,26400,10200;623,IL,19000,10200;624,IL,15200,10200;625,IL,24200,10200;626,IL,23900,10200;627,IL,28200,10200;628,IL,15300,10200;629,IL,18600,10200;630,MO,35900,9800;631,MO,73900,9800;633,MO,31800,9800;634,MO,17200,9800;635,MO,24900,9800;636,MO,15300,9800;637,MO,20300,9800;638,MO,16400,9800;639,MO,12400,9800;640,MO,36300,10100;641,MO,48300,9700;644,MO,29000,9800;645,MO,26400,9800;646,MO,55700,9800;647,MO,16100,9800;648,MO,15300,9800;649,MO,50100,9800;650,MO,40000,9800;651,MO,28700,9800;652,MO,24600,9800;653,MO,28000,9800;654,MO,24900,10100;655,MO,15900,10100;656,MO,20700,9800;657,MO,17700,9800;658,MO,32200,9800;660,KS,39000,9100;661,KS,29400,9100;662,KS,90600,9100;664,KS,19800,10500;665,KS,23200,9400;666,KS,20000,9100;667,KS,14700,9100;668,KS,9200,9100;669,KS,44100,9100;670,KS,24400,9100;671,KS,20500,9100;672,KS,25400,8800;673,KS,44100,9100;674,KS,28100,9100;675,KS,14300,9100;676,KS,18800,9100;677,KS,44100,9100;678,KS,19600,9100;679,KS,28500,9100;680,NE,38000,10000;681,NE,48200,9700;683,NE,34300,10000;684,NE,33800,10000;685,NE,62200,10000;686,NE,36800,10000;687,NE,20600,10000;688,NE,21600,10000;689,NE,26600,10000;690,NE,14700,10000;691,NE,23700,10000;692,NE,47400,10000;693,NE,29700,10000;700,LA,62200,8800;701,LA,191100,8800;703,LA,42100,8500;704,LA,30300,8500;705,LA,27300,8500;706,LA,31900,8500;707,LA,45100,8500;708,LA,53800,8500;710,LA,26400,8500;711,LA,31600,8100;712,LA,31900,8500;713,LA,26700,8500;714,LA,29500,8500;716,AR,18900,8400;717,AR,18600,8300;718,AR,13700,8300;719,AR,28100,8300;720,AR,28300,8300;721,AR,27400,8300;722,AR,53500,8100;723,AR,17900,8300;724,AR,19300,8300;725,AR,26100,8300;726,AR,23500,8300;727,AR,40200,8300;728,AR,17800,8300;729,AR,21000,8300;730,OK,26500,9000;731,OK,42600,9000;733,TX,87100,8200;734,OK,14400,8800;735,OK,26200,8600;736,OK,11900,8800;737,OK,17400,9500;738,OK,22400,8800;739,OK,18800,8800;740,OK,28300,8800;741,OK,44000,8800;743,OK,25700,8800;744,OK,21000,8800;745,OK,14600,8800;746,OK,19600,8800;747,OK,20500,8800;748,OK,19100,8800;749,OK,17000,8800;750,TX,137300,8200;751,TX,57600,8200;752,TX,169700,8400;753,TX,87100,8200;754,TX,19100,8200;755,TX,16400,8100;756,TX,22300,8200;757,TX,34400,8200;758,TX,19400,8200;759,TX,21400,8200;760,TX,67300,8400;761,TX,79000,8400;762,TX,60000,8200;763,TX,19400,9100;764,TX,33400,8200;765,TX,29700,8600;766,TX,23400,8200;767,TX,30800,8200;768,TX,19900,8200;769,TX,26700,8600;770,TX,77500,8200;772,TX,87100,8200;773,TX,58900,8200;774,TX,50800,8200;775,TX,58600,8200;776,TX,26600,8200;777,TX,26100,8200;778,TX,30300,8200;779,TX,27100,8200;780,TX,37200,8200;781,TX,51300,8200;782,TX,64000,7900;783,TX,34600,8500;784,TX,46800,8500;785,TX,47800,8200;786,TX,104400,8200;787,TX,289000,8200;788,TX,39500,8200;789,TX,31500,8200;790,TX,16800,8200;791,TX,25400,8200;792,TX,87100,8200;793,TX,28100,8200;794,TX,30000,8200;795,TX,20600,8600;796,TX,27400,8600;797,TX,38400,8200;798,TX,32000,8200;799,TX,50500,8400;800,CO,203200,9600;801,CO,200600,9600;802,CO,286200,9600;803,CO,902700,9700;804,CO,120000,9600;805,CO,146000,9700;806,CO,90900,9600;807,CO,28100,9700;808,CO,45500,10000;809,CO,114500,9800;810,CO,23900,9900;811,CO,38400,9600;812,CO,79900,9800;813,CO,69700,9700;814,CO,58200,9700;815,CO,93500,9700;816,CO,98500,9700;820,WY,63900,10600;821,WY,118600,10500;822,WY,36500,10500;823,WY,44500,10500;824,WY,51400,10500;825,WY,61400,10500;826,WY,63000,10600;827,WY,74800,10500;828,WY,75800,10500;829,WY,49800,10500;830,WY,888800,10500;831,WY,48100,10500;832,ID,41800,11300;833,ID,40200,11300;834,ID,49400,11300;835,ID,56100,11300;836,ID,53700,11300;837,ID,248000,10400;838,ID,86600,11300;840,UT,219400,10800;841,UT,259200,10800;842,UT,157700,10800;843,UT,89000,10700;844,UT,151300,10600;845,UT,31000,10700;846,UT,56300,10700;847,UT,69700,10700;850,AZ,186900,9900;851,AZ,86600,9900;852,AZ,229100,9900;853,AZ,128100,9900;855,AZ,43000,9800;856,AZ,42500,10800;857,AZ,110400,9700;859,AZ,50300,9800;860,AZ,80800,9800;863,AZ,68400,9800;864,AZ,53300,9800;865,AZ,76900,9900;870,NM,49900,8900;871,NM,91000,8900;873,NM,64800,8900;874,NM,45600,8900;875,NM,105300,8900;876,NM,81700,8900;877,NM,39700,8900;878,NM,48600,9500;879,NM,48100,8900;880,NM,46000,9500;881,NM,29700,10200;882,NM,25000,8900;883,NM,46900,8900;884,NM,15700,8900;885,TX,87100,8200;888,DC,701800,10200;889,NV,108600,11700;890,NV,116400,11700;891,NV,152800,11700;893,NV,42800,11700;894,NV,139800,12000;895,NV,176100,11700;897,NV,138900,11700;898,NV,53400,11700;900,CA,1214500,11100;901,CA,614700,12000;902,CA,1300900,11100;903,CA,562900,11100;904,CA,3174500,11100;905,CA,933200,11100;906,CA,619800,11100;907,CA,698100,11100;908,CA,833200,11100;910,CA,979200,11100;911,CA,1313900,11100;912,CA,1100700,11100;913,CA,611400,11100;914,CA,1085400,11100;915,CA,1043800,11100;916,CA,1258200,11100;917,CA,576800,11100;918,CA,856100,12000;919,CA,433600,11300;920,CA,472400,11300;921,CA,857000,11300;922,CA,116200,12000;923,CA,138100,12100;924,CA,225600,12100;925,CA,224400,10900;926,CA,1272400,11100;927,CA,783800,11100;928,CA,703900,11100;930,CA,469400,11400;931,CA,985400,12000;932,CA,70100,12300;933,CA,83200,11700;934,CA,277900,12900;935,CA,144900,11400;936,CA,88200,12300;937,CA,110100,12300;938,CA,614700,12000;939,CA,450500,12100;940,CA,1646800,13200;941,CA,2956900,13200;942,CA,614700,12000;943,CA,2664600,13200;944,CA,1663800,12300;945,CA,601500,13200;946,CA,730700,13200;947,CA,1118400,13200;948,CA,374300,13400;949,CA,662800,13200;950,CA,782700,12100;951,CA,1113400,13200;952,CA,157300,12400;953,CA,138900,12300;954,CA,226100,12300;955,CA,131800,12300;956,CA,164400,11800;957,CA,213100,11800;958,CA,224400,11800;959,CA,71100,12300;960,CA,55800,12300;961,CA,366700,12600;967,HI,399800,21400;968,HI,1263500,20300;970,OR,195200,12400;971,OR,189000,12400;972,OR,373400,11900;973,OR,131600,12400;974,OR,96300,12400;975,OR,98200,12400;976,OR,36800,12400;977,OR,149700,12400;978,OR,54100,12800;979,OR,43100,12400;980,WA,446300,11200;981,WA,586200,11200;982,WA,204200,11000;983,WA,144800,12200;984,WA,213800,11200;985,WA,72800,11000;986,WA,137900,11000;988,WA,103900,11000;989,WA,67800,11100;990,WA,91800,11000;991,WA,51000,11000;992,WA,98400,10800;993,WA,95100,11000;994,WA,68600,11000;995,AK,132200,22000;996,AK,59500,29700;997,AK,45900,22500;998,AK,185700,22300;999,AK,145700,22300".split(";").forEach(r => { const [p, st, land, f] = r.split(","); ZIP[p] = { prefix: p, state: st, land: +land * K, index: f ? +f : null }; });
+  const DISCLAIMER = "Estimate, not a quote. A preliminary affordability estimate is not mortgage preapproval. Prices, land, permits and financing shown are planning assumptions and will change.";
+  const CONSENT = "I agree that Autonodwell and its consultants may contact me about this home design by the method I chose. This is not a reservation, deposit or purchase commitment.";
+
+  /* ================= Estimator (mirrors api/app/services/estimate.py; integer cents) ================= */
+  const pyRound = x => { const r = Math.round(x); return Math.abs(x % 1) === 0.5 && r % 2 !== 0 ? r - 1 : r; };
+  const pct = (amount, bps) => pyRound(amount * bps / 10000);
+  const market = zip => {
+    const m = zip && zip.length >= 3 ? MARKETS.find(x => x.prefixes.includes(zip.slice(0, 3))) : null;
+    return { m: m || MARKETS[0], matched: !!m };
+  };
+  const zipRow = zip => (zip && zip.length >= 3 ? ZIP[zip.slice(0, 3)] || null : null);
+  const payment = (principal, rateBps, years) => { const n = years * 12, r = rateBps / 10000 / 12; return r === 0 ? pyRound(principal / n) : pyRound(principal * r / (1 - (1 + r) ** -n)); };
+  const optPrice = (o, sqft) => (o.perSqft ? o.price * sqft : o.price);
+
+  function calculate({ model, options, zip, monthlyBudget, land, lotPrice, stories }) {
+    const { m, matched } = market(zip), row = zipRow(zip);
+    const index = row && row.index != null ? row.index : m.index;
+    const optionsTotal = options.reduce((s, o) => s + optPrice(o, model.sqft), 0);
+    const home = pct(model.base + optionsTotal, index), homeDelivery = home + A.delivery;
+    const twoStory = stories === 2 ? pct(A.twoStory, index) : 0;
+    let landC, landLabel, zipLand = null;
+    if (land === "own_lot") { landC = 0; landLabel = "Land (you own the lot)"; }
+    else if (land === "looking_at_lot" && lotPrice != null) { landC = lotPrice; landLabel = "Land (asking price)"; }
+    else if (row) { zipLand = row; landC = row.land; landLabel = "Land allocation"; }
+    else { landC = m.land; landLabel = "Land allocation"; }
+    const hard = homeDelivery + twoStory + m.site + landC;
+    const soft = pct(hard, A.soft) + pct(hard, A.cont) + m.permit;
+    const total = hard + soft, down = pct(total, A.down), loan = total - down;
+    const pi = payment(loan, A.rate, A.term), taxes = pyRound(pct(total, m.tax) / 12), ins = pyRound(m.ins / 12);
+    const monthly = pi + taxes + ins;
+    const fit = monthlyBudget ? (monthly / monthlyBudget <= 1 ? "within" : monthly / monthlyBudget <= 1.1 ? "stretch" : "over") : null;
+    const lines = [
+      { key: "home_delivery", label: "Home + delivery", cents: homeDelivery },
+      { key: "site_install", label: "Site + installation", cents: m.site },
+      { key: "land", label: landLabel, cents: landC },
+      { key: "soft_contingency", label: "Soft costs + contingency", cents: soft }
+    ];
+    if (twoStory) lines.splice(1, 0, { key: "two_story", label: "Two-story option", cents: twoStory });
+    return { lines, optionsTotal, total, down, loan, cash: down + pct(loan, A.closing), monthly: { pi, taxes, ins, total: monthly }, fit, monthlyBudget,
+      market: { name: m.name, matched, weeks: m.weeks, landSource: !!zipLand, areaLabel: zipLand ? `ZIP area ${zipLand.prefix}, ${zipLand.state}` : null } };
+  }
+  function landBudget({ mode, total, monthly, cash, zip }) {
+    const { m } = market(zip), row = zipRow(zip), index = row && row.index != null ? row.index : m.index;
+    const amount = mode === "total" ? total : monthly;
+    if (!(mode === "total" || mode === "monthly") || amount == null) return null;
+    const d = A.down / 1e4, k = A.closing / 1e4, s = A.soft / 1e4, c = A.cont / 1e4, r = A.rate / 1e4 / 12, n = A.term * 12;
+    const f = r === 0 ? 1 / n : r / (1 - (1 + r) ** -n), tax = m.tax / 1e4;
+    const tBudget = mode === "total" ? amount : (amount - m.ins / 12) / ((1 - d) * f + tax / 12);
+    let t = tBudget, limitedBy = mode;
+    if (cash != null) { const tCash = cash / (d + k * (1 - d)); if (tCash < tBudget) { t = tCash; limitedBy = "cash"; } }
+    const defaults = defaultOptions();
+    const perModel = MODELS.map(hm => {
+      const h = pct(hm.base + defaults.reduce((sum, o) => sum + optPrice(o, hm.sqft), 0), index) + A.delivery + m.site;
+      return { name: hm.name, land: Math.floor(((t - m.permit) / (1 + s + c) - h) / 100000) * 100000 };
+    });
+    return { limitedBy, perModel, marketName: row ? `ZIP area ${row.prefix}, ${row.state}` : m.name };
+  }
+  const defaultOptions = () => CATS.filter(c => !c.multi).map(c => c.options.find(o => o.def) || c.options[0]);
+
+  /* ================= State ================= */
+  const LAND = [["own_lot", "I own a lot"], ["looking_at_lot", "I’m looking at a lot"], ["need_land", "I need help finding land"]];
+  const BUDGET = [["total", "A total budget"], ["monthly", "A monthly payment"], ["need_help", "Help me figure it out"]];
+  const SLIDER = { min: 1200, max: 5000, step: 50, initial: 2400 };
+  const STEP_NAMES = ["Start", "Plan & style", "Make it yours", "Your site", "Understand"];
+  const usd = (cents, sign) => { if (cents == null) return "—"; const v = "$" + Math.abs(Math.round(cents / 100)).toLocaleString("en-US"); return sign ? (cents < 0 ? "− " : "+ ") + v : (cents < 0 ? "−" + v : v); };
+  const dollars = n => "$" + Math.round(n).toLocaleString("en-US");
+  const weeks = w => (w[0] === w[1] ? `${w[0]} wk` : `${w[0]}–${w[1]} wks`);
+  const hasLot = l => l === "own_lot" || l === "looking_at_lot";
+  const esc = s => String(s).replace(/[&<>"']/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+  const fresh = () => ({ zip: "", land: null, address: "", lotPrice: null, mode: null, total: null, monthly: SLIDER.initial, cash: null,
+    model: "model-two", style: "pop", stories: 1, opts: defaultOptions().map(o => o.slug), photo: 0, optsBase: null,
+    name: "", email: "", phone: "", contact: "email", message: "", consent: false, showForm: false, sent: false, maxStep: 1 });
+  let a = fresh(), step = "zip", lastFocus = null, sending = false, error = "";
+  const isFlow = () => typeof step === "number";
+
+  const designZip = () => (/^\d{5}$/.test(a.zip) ? a.zip : null);
+  const est = () => calculate({
+    model: MODELS.find(m => m.slug === a.model), options: a.opts.map(s => OPT[s]), zip: designZip(),
+    monthlyBudget: a.mode === "monthly" ? a.monthly * K : null, land: a.land,
+    lotPrice: a.land === "looking_at_lot" && a.lotPrice != null ? a.lotPrice * K : null, stories: a.stories
+  });
+  const styleOf = () => STYLES.find(s => s.key === a.style);
+  const gallery = () => { const s = styleOf(); return a.stories === 2 && s.two ? s.two : s.photos; };
+  const homeLabel = () => `${MODELS.find(m => m.slug === a.model).name} · ${styleOf().name}${a.stories === 2 ? " · Two story" : ""}`;
+
+  /* ================= Step 1: one question per card (as in the app's StepStart) ================= */
   const seq = () => {
     const s = ["zip", "land"];
     if (hasLot(a.land)) s.push("lot");
     s.push("budget");
     if (a.mode === "total" || a.mode === "monthly") s.push("amount");
     s.push("result");
-    if (!APP_URL) s.push("contact");
     return s;
   };
-  const QUESTIONS = {
-    zip: "Let’s see what you can build.", land: "Do you have land?", lot: "Where’s the lot?",
-    budget: "How do you think about budget?",
-    amount: () => a.mode === "monthly" ? "What feels comfortable each month?" : "What’s your total budget?",
-    result: "Here’s your starting point.", contact: "How can we reach you?", done: "You’re on the list."
-  };
-  const ready = () => ({
-    zip: /^\d{5}$/.test(a.zip), land: !!a.land, lot: a.address.trim().length > 0, budget: !!a.mode,
-    amount: a.mode === "monthly" || a.total != null, result: true,
-    contact: a.name.trim() && /^\S+@\S+\.\S+$/.test(a.email.trim()) && a.consent
-  })[step];
-
+  const QUESTIONS = { zip: "Let’s see what you can build.", land: "Do you have land?", lot: "Where’s the lot?", budget: "How do you think about budget?",
+    amount: () => (a.mode === "monthly" ? "What feels comfortable each month?" : "What’s your total budget?"), result: "Here’s your starting point." };
+  const ready = () => ({ zip: /^\d{5}$/.test(a.zip), land: !!a.land, lot: a.address.trim().length > 0, budget: !!a.mode,
+    amount: a.mode === "monthly" || a.total != null, result: !!a.land && !!a.mode })[step];
   const whatNext = () => {
-    if (a.mode === "need_help") return "We’ll start with a budget range. Then we’ll pick a home together and show what it costs per month and in cash.";
+    if (a.mode === "need_help") return "We’ll start with a budget range. Pick a home next and we’ll show what it costs per month and in cash.";
     if (hasLot(a.land)) {
-      const base = `We’ll check what can be built at ${a.address.trim() || "your lot"}: zoning, setbacks, utilities and access. Then we’ll pick a home that fits.`;
-      return a.land === "looking_at_lot" && a.lotPrice != null ? `${base} We’ll use the ${usd(a.lotPrice)} asking price as your land cost.` : base;
+      const base = `We’ll check what can be built at ${a.address.trim() || "your lot"}: zoning, setbacks, utilities and access. Next, pick a home that fits.`;
+      return a.land === "looking_at_lot" && a.lotPrice != null ? `${base} We’ll use the ${dollars(a.lotPrice)} asking price as your land cost.` : base;
     }
-    return "We’ll use your budget to set a price range for land, then help you search. Then we’ll pick a home that fits.";
+    return "We’ll use your budget to set a price range for land, then help you search. Next, pick a home so we can size the land budget.";
   };
-
-  const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const pills = (key, list) => `<div class="quiz-pills" role="radiogroup" aria-labelledby="quiz-q">${list.map(([v, l]) =>
     `<button type="button" class="quiz-pill" role="radio" aria-checked="${a[key] === v}" data-pick="${key}" data-v="${v}">${l}</button>`).join("")}</div>`;
-  const money = (key, label, optional) => `<label><span>${label}${optional ? ' <span class="opt">(optional)</span>' : ""}</span><input inputmode="numeric" autocomplete="off" placeholder="$0" data-money="${key}" value="${a[key] == null ? "" : usd(a[key])}"></label>`;
-
-  const body = () => {
+  const money = (key, label, optional) => `<label><span>${label}${optional ? ' <span class="opt">(optional)</span>' : ""}</span><input inputmode="numeric" autocomplete="off" placeholder="$0" data-money="${key}" value="${a[key] == null ? "" : dollars(a[key])}"></label>`;
+  const landBox = () => {
+    if (a.land !== "need_land") return "";
+    const d = landBudget({ mode: a.mode, total: a.total != null ? a.total * K : null, monthly: a.monthly * K, cash: a.cash != null ? a.cash * K : null, zip: designZip() });
+    if (!d) return "";
+    const allOver = d.perModel.every(x => x.land < 0);
+    return `<div class="quiz-box"><h3>Your land budget</h3><p>With your budget in ${esc(d.marketName)}, you could spend up to about:</p>
+      ${d.perModel.map(x => `<div class="quiz-row"><span>${x.name}</span>${x.land < 0 ? '<span class="muted">Over budget in this area</span>' : `<b>${usd(x.land)} for land</b>`}</div>`).join("")}
+      ${allOver ? `<p>Your budget doesn’t cover land plus a home in ${esc(d.marketName)} yet. A consultant can look at other areas, a smaller home, or financing options.</p>` : ""}
+      ${d.limitedBy === "cash" ? "<p>Limited by the cash you have available for the down payment and closing costs.</p>" : ""}
+      <p class="quiz-fine">${DISCLAIMER}</p></div>`;
+  };
+  const askBody = () => {
     switch (step) {
       case "zip": return `<label>Where do you want to build?<input inputmode="numeric" autocomplete="postal-code" maxlength="5" placeholder="ZIP code" data-f="zip" value="${esc(a.zip)}"></label><button type="button" class="quiz-skip" data-skip>Not sure yet</button>`;
       case "land": return pills("land", LAND);
       case "lot": return `<label>Street address<input autocomplete="street-address" maxlength="200" data-f="address" value="${esc(a.address)}"></label>` + (a.land === "looking_at_lot" ? money("lotPrice", "Asking price", true) : "");
       case "budget": return pills("mode", BUDGET);
-      case "amount": return (a.mode === "total" ? money("total", "Total budget") :
-        `<div class="quiz-range"><label for="quiz-slider">Comfortable monthly budget</label><output id="quiz-out">${usd(a.monthly)}<small> / mo</small></output><input id="quiz-slider" type="range" min="${SLIDER.min}" max="${SLIDER.max}" step="${SLIDER.step}" value="${a.monthly}"><div class="quiz-ends"><span>${usd(SLIDER.min)}</span><span>${usd(SLIDER.max)}</span></div></div>`) + money("cash", "Cash you could put in", true);
-      case "result": return `<div class="quiz-next-copy"><h3>What happens next</h3><p>${esc(whatNext())}</p></div>`;
-      case "contact": return `<label>Full name<input autocomplete="name" maxlength="120" data-f="name" value="${esc(a.name)}"></label><label>Email<input type="email" autocomplete="email" maxlength="200" data-f="email" value="${esc(a.email)}"></label><label><span>Phone <span class="opt">(optional)</span></span><input type="tel" autocomplete="tel" maxlength="40" data-f="phone" value="${esc(a.phone)}"></label><label class="quiz-check"><input type="checkbox" data-consent ${a.consent ? "checked" : ""}><span>${CONSENT}</span></label><div class="quiz-hp" aria-hidden="true"><label>Website<input tabindex="-1" autocomplete="off" name="website"></label></div>${error ? `<p class="quiz-err" role="alert">${esc(error)}</p>` : ""}`;
-      case "done": return `<div class="quiz-next-copy"><h3>Thanks, ${esc(a.name.trim().split(" ")[0] || "friend")}.</h3><p>${esc(error || "Your answers are with the Autonodwell team. We’ll reach out to walk you through your options and next steps.")}</p></div>`;
+      case "amount": return (a.mode === "total" ? money("total", "Total budget") : slider()) + money("cash", "Cash you could put in", true);
+      case "result": return `<div class="quiz-box"><h3>What happens next</h3><p>${esc(whatNext())}</p></div>${landBox()}`;
     }
   };
-
-  const render = (swap) => {
+  const slider = () => `<div class="quiz-range"><label for="quiz-slider">Comfortable monthly budget</label><output id="quiz-out">${dollars(a.monthly)}<small> / mo</small></output><input id="quiz-slider" type="range" min="${SLIDER.min}" max="${SLIDER.max}" step="${SLIDER.step}" value="${a.monthly}"><div class="quiz-ends"><span>${dollars(SLIDER.min)}</span><span>${dollars(SLIDER.max)}</span></div>${isFlow() ? `<p class="quiz-fine" id="quiz-slider-note"></p>` : ""}</div>`;
+  const renderAsk = () => {
     const s = seq(), i = s.indexOf(step), q = QUESTIONS[step];
-    const isDone = step === "done", last = step === "contact", isResult = step === "result";
+    card.className = "quiz-card";
     card.innerHTML = `<button type="button" class="quiz-x" data-close aria-label="Close">×</button>
       <div class="quiz-who"><img src="img/sarah.jpg" alt="" width="52" height="52"><div><p class="quiz-hi">Hi, I’m Sarah.</p><h2 class="quiz-q" id="quiz-q">${typeof q === "function" ? q() : q}</h2></div></div>
-      <div class="quiz-body">${body()}</div>
+      <div class="quiz-body">${askBody()}</div>
       <div class="quiz-foot">
-        ${isDone ? "" : `<div class="quiz-dots" aria-hidden="true">${s.map(x => `<i class="${x === step ? "on" : ""}"></i>`).join("")}</div>`}
+        <div class="quiz-dots" aria-hidden="true">${s.map(x => `<i class="${x === step ? "on" : ""}"></i>`).join("")}</div>
         <div class="quiz-nav">
-          ${i > 0 && !isDone ? '<button type="button" class="quiz-back" data-back aria-label="Back">←</button>' : "<span></span>"}
-          ${isDone ? '<button type="button" class="quiz-go wide" data-close>Done</button>'
-            : isResult ? `<button type="submit" class="quiz-go wide">${APP_URL ? "Pick your home" : "Talk with Sarah’s team"}</button>`
-            : last ? `<button type="submit" class="quiz-go wide" ${sending ? "disabled" : ""}>${sending ? "Sending…" : "Send my answers"}</button>`
+          ${i > 0 ? '<button type="button" class="quiz-back" data-back aria-label="Back">←</button>' : "<span></span>"}
+          ${step === "result" ? '<button type="submit" class="quiz-go wide">Pick your home</button>'
             : '<button type="submit" class="quiz-go" aria-label="Next"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>'}
         </div>
       </div>`;
-    syncGo();
+  };
+
+  /* ================= Steps 02–05 ================= */
+  const guide = line => `<p class="qf-guide"><img src="img/sarah.jpg" alt="" width="34" height="34"><span>${line}</span></p>`;
+  const head = (n, title, lede, line) => `<header>${guide(line)}<span class="qf-kicker">Step 0${n} · ${STEP_NAMES[n - 1]}</span><h2 id="quiz-q">${title}</h2>${lede ? `<p class="qf-lede">${lede}</p>` : ""}</header>`;
+
+  const stepPlan = e => {
+    const st = styleOf(), g = gallery(), shot = g[a.photo] || g[0];
+    const premium = e.lines.find(l => l.key === "two_story");
+    return head(2, "What would home look like for you?", a.mode === "monthly"
+        ? "Pick a starter home and set a comfortable monthly budget. Your budget shapes the home from the beginning, not at the end."
+        : "Pick a starter home. You’ll see what it costs as you make it yours.", "Now the fun part. Pick a plan and a look.") +
+      `<h3>Pick your plan</h3><div class="qf-grid3" role="radiogroup" aria-label="Home plan">${MODELS.map(m =>
+        `<button type="button" class="qf-pick" role="radio" aria-checked="${m.slug === a.model}" data-model="${m.slug}"><b>${m.name}</b><span class="mono">${m.sqft.toLocaleString()} ft² · ${m.bd} bd · ${m.ba} ba</span><span class="dim">${m.tagline}</span>${m.slug === a.model ? `<span class="qf-est">Est. ${usd(e.monthly.total)}/mo</span>` : ""}</button>`).join("")}</div>
+      ${a.mode === "monthly" ? slider() : ""}
+      <h3>Pick your style</h3><div class="qf-grid3 styles" role="radiogroup" aria-label="House style">${STYLES.map(s =>
+        `<button type="button" class="qf-pick" role="radio" aria-checked="${s.key === a.style}" data-style="${s.key}"><span class="ph"><img src="${photo(s.photos[0])}" alt="" loading="lazy"></span><b>${s.name}</b><span class="dim">${s.tagline}</span></button>`).join("")}</div>
+      ${a.style === "mcm" ? `<div class="qf-seg" role="radiogroup" aria-label="Stories"><button type="button" role="radio" aria-checked="${a.stories === 1}" data-stories="1">One story</button><button type="button" role="radio" aria-checked="${a.stories === 2}" data-stories="2">Two story</button>${a.stories === 2 && premium ? `<span class="pr" style="font-family:var(--mono);font-size:12px">${usd(premium.cents, true)}</span>` : ""}</div>` : ""}
+      <div class="qf-stage"><div class="big"><img src="${photo(shot)}" alt="${st.name} concept rendering"></div>
+      ${g.length > 1 ? `<div class="qf-thumbs">${g.map((p, i) => `<button type="button" aria-label="${st.name} photo ${i + 1}" aria-pressed="${i === a.photo}" data-photo="${i}"><img src="${photo(p)}" alt="" loading="lazy"></button>`).join("")}</div>` : ""}
+      <p class="qf-cap">Concept rendering. Details vary by plan.</p></div>`;
+  };
+  const stepFinish = e => {
+    const sqft = MODELS.find(m => m.slug === a.model).sqft, front = gallery()[0];
+    if (a.optsBase == null) a.optsBase = e.optionsTotal;
+    return head(3, "Choose your materials", "A curated set of finishes, not endless options. Each choice updates the home and its indicative cost.", "Make it yours. Watch the price as you go.") +
+      `<div class="qf-preview"><div class="big"><img src="${photo(front)}" alt="${styleOf().name} concept rendering"></div>
+        <div class="quiz-box"><div class="quiz-row"><span>Indicative cost change this visit</span><b>${usd(e.optionsTotal - a.optsBase, true)}</b></div><div class="quiz-row"><span>All selections</span><b>${usd(e.optionsTotal)}</b></div><p class="quiz-fine">Concept rendering. Finish previews coming soon.</p></div></div>` +
+      CATS.map(c => `<fieldset class="qf-group"><legend>${c.name}<span> · ${c.desc}</span></legend><div class="qf-opts ${c.display === "cards" ? "cards" : ""}">${c.options.map(o => {
+        const on = a.opts.includes(o.slug), price = optPrice(o, sqft);
+        return `<button type="button" class="qf-opt" aria-pressed="${on}" data-opt="${o.slug}">${o.hex ? `<i class="sw" style="background:${o.hex}"></i>` : ""}<span>${o.name}</span>${c.display === "cards" ? `<span class="dim">${o.desc}</span>` : ""}<span class="pr">${price === 0 ? "Included" : usd(price, true)}</span></button>`;
+      }).join("")}</div></fieldset>`).join("");
+  };
+  const stepSite = e => {
+    const costs = Object.fromEntries(e.lines.map(l => [l.key, l.cents]));
+    return head(4, "Understand who’s involved", "Design, site, financing, approvals, construction, keys. See who handles each stage, what it might cost and what comes next.", "Let’s check where you want to build.") +
+      `<div class="qf-zip"><label>Where do you want to build?<input inputmode="numeric" autocomplete="postal-code" maxlength="5" placeholder="ZIP code" id="qf-zip" value="${esc(a.siteZip ?? a.zip)}"></label><button type="button" class="qf-btn" data-zip-update>Update</button></div>
+      ${designZip() ? `<p class="quiz-fine">Costs shown for <b>${esc(e.market.areaLabel || e.market.name)}</b>, based on regional averages. A consultant confirms local costs before anything is final.</p>` : ""}
+      <ol class="qf-path">${PATH.map((s, i) => `<li class="${i === 0 ? "now" : ""}"><span class="dot" aria-hidden="true"></span><div><div class="head"><h3>${s.name}</h3><span class="qf-cap">${weeks(s.slug === "approvals" ? e.market.weeks : s.weeks)}</span></div><p class="who">${s.who}</p><p>${s.desc}</p>${s.cost && costs[s.cost] != null ? `<p>Est. cost: <b>${usd(costs[s.cost])}</b></p>` : ""}<p class="next">Next: ${s.next}</p></div></li>`).join("")}</ol>`;
+  };
+  const stepEstimate = e => {
+    const form = `<div class="qf-form">
+        <h3 class="full">How should we reach you?</h3>
+        <label>Full name<input autocomplete="name" maxlength="120" data-f="name" value="${esc(a.name)}"></label>
+        <label>Email<input type="email" autocomplete="email" maxlength="200" data-f="email" value="${esc(a.email)}"></label>
+        <label><span>Phone <span class="opt">(optional)</span></span><input type="tel" autocomplete="tel" maxlength="40" data-f="phone" value="${esc(a.phone)}"></label>
+        <label>Preferred contact<select data-f="contact"><option value="email"${a.contact === "email" ? " selected" : ""}>Email</option><option value="phone"${a.contact === "phone" ? " selected" : ""}>Phone call</option><option value="text"${a.contact === "text" ? " selected" : ""}>Text message</option></select></label>
+        <label class="full">Anything we should know? (land, timing, questions)<textarea maxlength="2000" data-f="message">${esc(a.message)}</textarea></label>
+        <label class="quiz-check full"><input type="checkbox" data-consent ${a.consent ? "checked" : ""}><span>${CONSENT}</span></label>
+        <div class="quiz-hp" aria-hidden="true"><label>Website<input tabindex="-1" autocomplete="off" name="website"></label></div>
+        ${error ? `<p class="quiz-err full" role="alert">${esc(error)}</p>` : ""}
+        <div class="full"><button type="button" class="qf-btn orange" data-send ${sending ? "disabled" : ""}>${sending ? "Sending…" : "Send to a consultant"}</button></div>
+      </div>`;
+    return head(5, "Your estimate", "Modeled purchase cost, monthly payment, financing assumptions and cash needed. Then walk through them with an Autonodwell consultant.", "Here’s your full estimate.") +
+      `<p class="qf-cap">${esc(homeLabel())}</p>
+      <div class="qf-table">${e.lines.map(l => `<div><span>${l.label}</span><b>${usd(l.cents)}</b></div>${l.key === "land" && e.market.landSource ? '<div class="note">Land: typical quarter-acre lot in this area (FHFA, 2022). Actual lots vary.</div>' : ""}`).join("")}<div class="total"><span>Estimated total</span><b>${usd(e.total)}</b></div></div>
+      <div class="qf-2col">
+        <div class="qf-table"><div class="head"><span>Monthly</span></div><div><span>Principal + interest</span><b>${usd(e.monthly.pi)}</b></div><div><span>Est. property taxes</span><b>${usd(e.monthly.taxes)}</b></div><div><span>Est. insurance</span><b>${usd(e.monthly.ins)}</b></div><div class="total"><span>Est. monthly ownership</span><b>${usd(e.monthly.total)}</b></div></div>
+        <div class="qf-table"><div class="head"><span>Cash &amp; financing</span></div><div><span>Down payment (${A.down / 100}%)</span><b>${usd(e.down)}</b></div><div><span>Est. cash needed incl. closing</span><b>${usd(e.cash)}</b></div><div><span>Loan amount</span><b>${usd(e.loan)}</b></div><div><span>Rate · term (assumed)</span><b>${A.rate / 100}% · ${A.term} yr</b></div></div>
+      </div>
+      <p class="quiz-fine">${DISCLAIMER} Assumption set: ${A.name}. Location data: ${esc(e.market.name)}.</p>
+      ${a.sent ? `<div class="qf-callout ok" role="status"><span class="qf-kicker" style="color:#351E28">Sent to a consultant</span><h3>Thanks${a.name.trim() ? ", " + esc(a.name.trim().split(" ")[0]) : ""}. An Autonodwell consultant will reach out to walk through these numbers.</h3>${error ? `<p class="quiz-fine">${esc(error)}</p>` : ""}<p class="quiz-fine" style="color:#121212">You can keep editing. If you change things, send it again so your consultant sees the latest version.</p><button type="button" class="qf-btn" data-reopen>Send updated design</button></div>`
+        : a.showForm ? form
+        : `<div class="qf-callout"><h3>Review with a consultant</h3><p class="quiz-fine" style="color:#121212">Free, no commitment. We’ll explain the numbers and the next steps for your location.</p><button type="button" class="qf-btn" data-showform>Review with a consultant</button></div>`}
+      ${a.showForm && a.sent ? form : ""}
+      <div class="quiz-box"><span class="qf-kicker">Next · Qualify</span><h3>Financing &amp; lenders</h3><p>When you’re ready, connect with participating lenders or other qualified financing providers.</p><p class="quiz-fine">A preliminary affordability estimate is not mortgage preapproval. A calculator is not a credit decision. Lenders make their own.</p></div>`;
+  };
+
+  const renderFlow = () => {
+    const e = est(), n = step;
+    const nextLabel = ["", "", "Make it yours", "Check your site", "See your estimate"][n];
+    card.className = "quiz-card flow";
+    card.innerHTML = `<button type="button" class="quiz-x" data-close aria-label="Close">×</button>
+      <nav class="qf-top" aria-label="Progress"><ol class="qf-steps">${STEP_NAMES.map((name, i) => {
+        const k = i + 1, cls = k === n ? "on" : k <= a.maxStep ? "done" : "";
+        return `<li class="${cls}"><button type="button" data-goto="${k}" ${k === n || k > a.maxStep ? 'tabindex="-1"' : ""} ${k === n ? 'aria-current="step"' : ""}><i>0${k}</i>${name}</button></li>`;
+      }).join("")}</ol></nav>
+      <div class="qf-body" aria-live="polite">${[0, 0, stepPlan, stepFinish, stepSite, stepEstimate][n](e)}</div>
+      <div class="qf-foot">
+        <div class="qf-sum" aria-label="Estimate summary">${sumHTML(e)}</div>
+        <div class="qf-actions"><button type="button" class="ghost" data-back>Back</button>${n < 5 ? `<button type="submit" class="quiz-go wide">${nextLabel}</button>` : ""}</div>
+      </div>`;
+    updateSliderNote(e);
+  };
+  const sumHTML = e => {
+    const fit = e.fit ? { within: ["Within budget", "ok"], stretch: ["A little over budget", "warn"], over: ["Over budget", "bad"] }[e.fit] : null;
+    return `<span class="lbl">${esc(homeLabel())}</span>
+          <div class="fig"><span>Est. total cost</span><b>${usd(e.total)}</b></div>
+          <div class="fig"><span>Est. monthly</span><b>${usd(e.monthly.total)}<small>/mo</small></b></div>
+          ${fit ? `<span class="qf-pill ${fit[1]}">${fit[0]} · ${usd(e.monthlyBudget)}/mo</span>` : ""}`;
+  };
+  const updateSliderNote = e => {
+    const el = document.getElementById("quiz-slider-note");
+    if (el) el.innerHTML = `This home is estimated at about <b>${usd((e || est()).monthly.total)}/mo</b> all-in, based on regional averages. You’ll add your location in step 4.`;
+  };
+
+  /* ================= Render + navigation ================= */
+  const render = swap => {
+    const keepScroll = isFlow() && !swap ? card.querySelector(".qf-body")?.scrollTop : 0;
+    isFlow() ? renderFlow() : renderAsk();
     if (swap) { card.classList.remove("swap"); void card.offsetWidth; card.classList.add("swap"); }
-    const f = card.querySelector(".quiz-body input:not([tabindex='-1']), .quiz-pill[aria-checked=true], .quiz-pill, .quiz-go");
-    f && f.focus({ preventScroll: true });
+    const body = card.querySelector(".qf-body");
+    if (body) body.scrollTop = keepScroll || 0;
+    const on = card.querySelector(".qf-steps li.on"), rail = card.querySelector(".qf-steps");
+    if (on && rail) rail.scrollLeft = on.offsetLeft - 12;
+    syncGo();
+  };
+  const focusFirst = () => {
+    const f = isFlow() ? card.querySelector(".qf-body h2") : card.querySelector(".quiz-body input:not([tabindex='-1']), .quiz-pill[aria-checked=true], .quiz-pill, .quiz-go");
+    if (f) { if (isFlow()) f.setAttribute("tabindex", "-1"); f.focus({ preventScroll: true }); }
   };
   const syncGo = () => {
     const go = card.querySelector('.quiz-go[type="submit"]');
-    if (go && !sending) go.disabled = !ready();
+    if (go && !isFlow()) go.disabled = !ready();
   };
-  const goTo = s => { step = s; error = ""; render(true); };
+  const goTo = s => { step = s; error = ""; if (typeof s === "number") a.maxStep = Math.max(a.maxStep, s); render(true); focusFirst(); };
   const advance = () => { const s = seq(), i = s.indexOf(step); if (s[i + 1]) goTo(s[i + 1]); };
-
-  const summary = () => {
-    const L = Object.fromEntries(LAND), B = Object.fromEntries(BUDGET), lines = [
-      "Dream home questionnaire",
-      `Where: ${a.zip || "Not sure yet"}`,
-      `Land: ${L[a.land] || "-"}`
-    ];
-    if (hasLot(a.land)) lines.push(`Lot address: ${a.address.trim() || "-"}`);
-    if (a.land === "looking_at_lot" && a.lotPrice != null) lines.push(`Lot asking price: ${usd(a.lotPrice)}`);
-    lines.push(`Budget: ${B[a.mode] || "-"}`);
-    if (a.mode === "total" && a.total != null) lines.push(`Total budget: ${usd(a.total)}`);
-    if (a.mode === "monthly") lines.push(`Monthly budget: ${usd(a.monthly)}/mo`);
-    if (a.cash != null) lines.push(`Cash available: ${usd(a.cash)}`);
-    if (a.phone.trim()) lines.push(`Phone: ${a.phone.trim()}`);
-    lines.push("", `Consent: ${CONSENT}`);
-    return lines.join("\n");
+  const back = () => {
+    if (step === 2) return goTo("result");
+    if (isFlow()) return goTo(step - 1);
+    const s = seq(); goTo(s[s.indexOf(step) - 1]);
   };
 
-  /* Same field rules as the app's startingFields(): address and lot price only with a lot, amount only for its budget mode. */
-  const handoff = () => {
-    const q = new URLSearchParams();
-    if (a.zip) q.set("zip", a.zip);
-    q.set("land", a.land); q.set("budget", a.mode);
-    if (hasLot(a.land) && a.address.trim()) q.set("address", a.address.trim());
-    if (a.land === "looking_at_lot" && a.lotPrice != null) q.set("lot_price", String(a.lotPrice));
-    if (a.mode === "total" && a.total != null) q.set("total", String(a.total));
-    if (a.mode === "monthly") q.set("monthly", String(a.monthly));
-    if (a.cash != null) q.set("cash", String(a.cash));
-    location.href = APP_URL.replace(/\/$/, "") + "/design/new?" + q.toString();
+  /* ================= Send to a consultant (emailed through /api/inquiry) ================= */
+  const summary = e => {
+    const L = Object.fromEntries(LAND), B = Object.fromEntries(BUDGET), opt = c => a.opts.filter(s => OPT[s].cat === c).map(s => OPT[s].name).join(", ") || "None";
+    const out = [
+      "DREAM HOME DESIGN (from the website)",
+      `Home: ${homeLabel()}`,
+      `Preferred contact: ${a.contact}${a.phone.trim() ? " · Phone: " + a.phone.trim() : ""}`,
+      "",
+      "Start",
+      `  Where: ${a.zip || "Not sure yet"}`,
+      `  Land: ${L[a.land]}${hasLot(a.land) && a.address.trim() ? " · " + a.address.trim() : ""}${a.land === "looking_at_lot" && a.lotPrice != null ? " · asking " + dollars(a.lotPrice) : ""}`,
+      `  Budget: ${B[a.mode]}${a.mode === "total" && a.total != null ? " · " + dollars(a.total) : ""}${a.mode === "monthly" ? " · " + dollars(a.monthly) + "/mo" : ""}${a.cash != null ? " · cash " + dollars(a.cash) : ""}`,
+      "",
+      "Selections",
+      ...CATS.map(c => `  ${c.name}: ${opt(c.slug)}`),
+      "",
+      "Estimate",
+      ...e.lines.map(l => `  ${l.label}: ${usd(l.cents)}`),
+      `  Estimated total: ${usd(e.total)}`,
+      `  Est. monthly: ${usd(e.monthly.total)}/mo (P&I ${usd(e.monthly.pi)}, taxes ${usd(e.monthly.taxes)}, insurance ${usd(e.monthly.ins)})`,
+      `  Down payment: ${usd(e.down)} · Cash needed incl. closing: ${usd(e.cash)} · Loan: ${usd(e.loan)}`,
+      e.fit ? `  Budget fit: ${e.fit}` : "",
+      `  Location data: ${e.market.areaLabel || e.market.name} · Assumptions: ${A.name}`,
+      "",
+      a.message.trim() ? "Message from the customer:\n" + a.message.trim() : "",
+      "",
+      "Consent: " + CONSENT
+    ];
+    return out.filter((l, i) => l !== "" || out[i - 1] !== "").join("\n");
   };
   const send = async () => {
+    if (!a.name.trim() || !/^\S+@\S+\.\S+$/.test(a.email.trim()) || !a.consent) { error = "Add your name, a valid email and check the consent box."; render(false); return; }
     if (/claudeusercontent\.com$|^$/.test(location.hostname) || location.protocol === "file:") {
-      error = "This is a preview, so nothing was sent. On the live site your answers go straight to the Autonodwell team."; step = "done"; render(true); return;
+      error = "This is a preview, so nothing was sent. On the live site your design goes straight to the Autonodwell team."; a.sent = true; a.showForm = false; render(false); return;
     }
-    sending = true; render(false);
+    sending = true; error = ""; render(false);
     try {
       const res = await fetch("/api/inquiry", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
-        name: a.name.trim(), email: a.email.trim(), type: "Dream home questionnaire",
-        location: a.zip || "", org: "", message: summary(),
-        website: (card.querySelector('input[name="website"]') || {}).value || ""
-      }) });
+        name: a.name.trim(), email: a.email.trim(), type: "Dream home questionnaire", location: designZip() || "", org: "",
+        message: summary(est()), website: (card.querySelector('input[name="website"]') || {}).value || "" }) });
       const out = await res.json().catch(() => ({}));
       sending = false;
-      if (res.ok && out.ok) { error = ""; step = "done"; render(true); }
-      else { error = "Sorry, that didn’t go through. Please try again in a moment."; render(false); }
-    } catch { sending = false; error = "Sorry, that didn’t go through. Check your connection and try again."; render(false); }
+      if (res.ok && out.ok) { a.sent = true; a.showForm = false; error = ""; }
+      else error = "Sorry, that didn’t go through. Please try again in a moment.";
+    } catch { sending = false; error = "Sorry, that didn’t go through. Check your connection and try again."; }
+    render(false);
   };
 
+  /* ================= Events ================= */
   card.addEventListener("submit", e => {
     e.preventDefault();
-    if (sending || !ready()) return;
-    if (step === "contact") send();
-    else if (step === "result" && APP_URL) handoff();
-    else advance();
+    if (isFlow()) { if (step < 5) goTo(step + 1); return; }
+    if (!ready()) return;
+    if (step === "result") goTo(2); else advance();
   });
   card.addEventListener("click", e => {
     const t = e.target.closest("button"); if (!t) return;
+    const d = t.dataset;
     if (t.hasAttribute("data-close")) return close();
-    if (t.hasAttribute("data-back")) { const s = seq(); goTo(s[s.indexOf(step) - 1]); return; }
+    if (t.hasAttribute("data-back")) return back();
     if (t.hasAttribute("data-skip")) { a.zip = ""; advance(); return; }
-    if (t.dataset.pick) {
-      a[t.dataset.pick] = t.dataset.v;
-      card.querySelectorAll(`[data-pick="${t.dataset.pick}"]`).forEach(b => b.setAttribute("aria-checked", String(b === t)));
-      syncGo();
-      setTimeout(() => { if (ready()) advance(); }, 220);
+    if (d.goto) { const k = +d.goto; if (k === 1) goTo("result"); else if (k <= a.maxStep && k !== step) goTo(k); return; }
+    if (d.pick) {
+      a[d.pick] = d.v;
+      card.querySelectorAll(`[data-pick="${d.pick}"]`).forEach(b => b.setAttribute("aria-checked", String(b === t)));
+      syncGo(); setTimeout(() => { if (ready()) advance(); }, 220); return;
     }
+    if (d.model) { a.model = d.model; return render(false); }
+    if (d.style) { a.style = d.style; if (d.style !== "mcm") a.stories = 1; a.photo = 0; return render(false); }
+    if (d.stories) { a.stories = +d.stories; a.photo = 0; return render(false); }
+    if (d.photo) { a.photo = +d.photo; return render(false); }
+    if (d.opt) {
+      const o = OPT[d.opt], cat = CATS.find(c => c.slug === o.cat);
+      if (cat.multi) a.opts = a.opts.includes(o.slug) ? a.opts.filter(s => s !== o.slug) : [...a.opts, o.slug];
+      else a.opts = [...a.opts.filter(s => OPT[s].cat !== cat.slug), o.slug];
+      return render(false);
+    }
+    if (t.hasAttribute("data-zip-update")) {
+      const v = (document.getElementById("qf-zip") || {}).value || "";
+      if (/^\d{5}$/.test(v)) { a.zip = v; a.siteZip = null; render(false); }
+      return;
+    }
+    if (t.hasAttribute("data-showform") || t.hasAttribute("data-reopen")) { a.showForm = true; render(false); card.querySelector('[data-f="name"]')?.focus(); return; }
+    if (t.hasAttribute("data-send")) { if (!sending) send(); return; }
   });
   card.addEventListener("input", e => {
     const t = e.target;
     if (t.dataset.f === "zip") t.value = t.value.replace(/\D/g, "").slice(0, 5);
+    if (t.id === "qf-zip") { t.value = t.value.replace(/\D/g, "").slice(0, 5); a.siteZip = t.value; return; }
     if (t.dataset.f) a[t.dataset.f] = t.value;
     if (t.dataset.money) {
-      const d = t.value.replace(/\D/g, "").slice(0, 8);
-      a[t.dataset.money] = d ? Math.min(Number(d), 10000000) : null;
-      t.value = d ? usd(a[t.dataset.money]) : "";
+      const dg = t.value.replace(/\D/g, "").slice(0, 8);
+      a[t.dataset.money] = dg ? Math.min(Number(dg), 10000000) : null;
+      t.value = dg ? dollars(a[t.dataset.money]) : "";
     }
-    if (t.id === "quiz-slider") { a.monthly = Number(t.value); document.getElementById("quiz-out").innerHTML = `${usd(a.monthly)}<small> / mo</small>`; }
+    if (t.id === "quiz-slider") {
+      a.monthly = Number(t.value);
+      document.getElementById("quiz-out").innerHTML = `${dollars(a.monthly)}<small> / mo</small>`;
+      if (isFlow()) { const e2 = est(); updateSliderNote(e2); const sm = card.querySelector(".qf-sum"); if (sm) sm.innerHTML = sumHTML(e2); }
+    }
     if (t.hasAttribute("data-consent")) a.consent = t.checked;
     syncGo();
   });
-  card.addEventListener("change", e => { if (e.target.hasAttribute("data-consent")) { a.consent = e.target.checked; syncGo(); } });
+  card.addEventListener("change", e => { const t = e.target; if (t.id === "quiz-slider" && isFlow()) { render(false); return; } if (t.hasAttribute("data-consent")) a.consent = t.checked; if (t.tagName === "SELECT" && t.dataset.f) a[t.dataset.f] = t.value; });
+  card.addEventListener("keydown", e => { if (e.key === "Enter" && e.target.id === "qf-zip") { e.preventDefault(); card.querySelector("[data-zip-update]").click(); } });
 
   const open = () => {
     lastFocus = document.activeElement;
-    if (step === "done") { a = fresh(); step = "zip"; }
     root.classList.add("open"); root.setAttribute("aria-hidden", "false");
     document.documentElement.classList.add("lock");
     card.classList.remove("swap"); void card.offsetWidth;
-    render(false);
+    render(false); focusFirst();
   };
   const close = () => {
     root.classList.remove("open"); root.setAttribute("aria-hidden", "true");
@@ -2396,7 +2777,7 @@ San Francisco, CA 94117</p>
     if (!root.classList.contains("open")) return;
     if (e.key === "Escape") { e.preventDefault(); close(); }
     if (e.key === "Tab") {
-      const f = [...card.querySelectorAll("button:not(:disabled), input:not([tabindex='-1'])")];
+      const f = [...card.querySelectorAll("button:not(:disabled):not([tabindex='-1']), input:not([tabindex='-1']), select, textarea")].filter(x => x.offsetParent);
       if (!f.length) return;
       if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
       else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
