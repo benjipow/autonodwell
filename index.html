@@ -684,6 +684,28 @@ a.path:hover .msg,a.path:focus-visible .msg{border-left-color:#121212}
 .bigcta.alt{background:var(--wasabi)}
 .bigcta.alt:hover{background:var(--cassis)}
 @media (max-width:820px){.bigcta-split{grid-template-columns:1fr}}
+/* Partner: technology narrative */
+.tech-2{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,64px)}
+.tech-col{border-top:2px solid var(--cassis);padding-top:24px}
+.tech-col h2{font-size:clamp(26px,2.8vw,40px);line-height:1.1;margin:14px 0 16px}
+.tech-col p{font-size:17px;line-height:1.6;color:#121212;max-width:52ch}
+.curve-band{background:var(--sage)}
+.curve-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:clamp(28px,5vw,80px);align-items:center}
+.curve-copy h2{font-size:clamp(28px,3.2vw,48px);line-height:1.08;margin:14px 0 18px}
+.curve-copy p{font-size:17px;line-height:1.6;color:#121212;max-width:46ch}
+.curve-copy .curve-note{margin-top:18px;font-size:11px;color:rgba(18,18,18,.6)}
+.curve-fig{margin:0;background:rgba(255,255,255,.55);border-radius:22px;padding:clamp(14px,2vw,28px)}
+.curve{display:block;width:100%;height:auto}
+.cost-band .cv{height:calc(100svh + 4 * 95svh)}
+.cost-band .cv-slide>img{filter:saturate(.95)}
+@media (max-width:820px){
+  .tech-2,.curve-grid{grid-template-columns:1fr}
+  .cost-band .cv{height:calc(100svh + 4 * 85svh)}
+  .cost-band .cv-desc{display:block}
+  .cost-band .cv-item.on .cv-desc{max-height:8em;opacity:1;margin:4px 0 8px}
+}
+/* Home hero subtext in Cassis, with a light glow so it reads over the video */
+.hero-video .lede{color:var(--cassis);text-shadow:0 0 18px rgba(215,239,255,.95),0 0 6px rgba(215,239,255,.9),0 0 2px rgba(215,239,255,.9)}
 /* Legal pages */
 .legal-page{padding:clamp(120px,14vw,180px) 0 clamp(64px,8vw,120px)}
 .legal-h1{margin-top:14px;font-size:clamp(44px,6vw,88px)}
@@ -1289,6 +1311,23 @@ a.path:hover .msg,a.path:focus-visible .msg{border-left-color:#121212}
     </div>
   </section>
 
+  <section class="band vis-tech" aria-labelledby="vtech-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="mono">Technology</span>
+        <div>
+          <h2 id="vtech-h">Know the price before you build.</h2>
+          <p class="lede" style="margin-top:16px;max-width:40ch">Most homes are designed by one team and priced by another, often after the design is finished. That’s when surprises show up, and when changes cost the most. We do it differently.</p>
+        </div>
+      </div>
+      <div class="cols-3">
+        <div><span class="mono">Together</span><h3>Designed and priced at the same time</h3><p>Every choice you make updates the cost right away, from the first sketch. No waiting until the end to find out.</p></div>
+        <div><span class="mono">Ready to build</span><h3>Parts cut ahead of time</h3><p>Key parts of your home are cut to fit before they reach your lot, so building goes faster with less waste.</p></div>
+        <div><span class="mono">Fair prices</span><h3>Builders compete on clear plans</h3><p>Local builders bid on clearly defined work, so prices are clear and easy to compare.</p></div>
+      </div>
+    </div>
+  </section>
+
   <section class="band">
     <div class="wrap">
       <div class="sec-head">
@@ -1343,16 +1382,93 @@ a.path:hover .msg,a.path:focus-visible .msg{border-left-color:#121212}
   <section class="hero">
     <div class="grain" aria-hidden="true"></div>
     <div class="wrap">
-      <span class="mono rise">Partner with us</span>
-      <h1 class="display rise" style="max-width:15ch">Build the path with us.</h1>
-      <p class="lede rise">Homeownership depends on more than a floor plan. We’re looking for the households, capital, lenders, builders and landowners who want to help prove a better way.</p>
+      <span class="mono rise">Build a path with us</span>
+      <h1 class="display rise" style="max-width:17ch">The deflationary home in a sea of cost escalation.</h1>
+      <p class="lede rise">Billionaires and families living paycheck to paycheck all care about cost. We build for the people who care about cost.</p>
+    </div>
+  </section>
+
+  <section class="band tech-band" aria-label="Why housing costs what it does">
+    <div class="wrap">
+      <div class="tech-2">
+        <div class="tech-col"><span class="mono">The bottleneck</span><h2>Architects design. Contractors estimate. The cost shows up last.</h2><p>By the time a home is priced, the decisions that drive its cost are already locked in. Housing isn’t expensive only because of materials and labor. It’s expensive because the process is fragmented.</p></div>
+        <div class="tech-col"><span class="mono">The technology</span><h2>The tools were always there.</h2><p>The tools to price a home during design have existed for years. BIM software has parametric, generative and computational design built in. In a fragmented industry, no one is paid to connect design to cost. We are. We automate that work across disciplines, so cost is known while the home is still being designed.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band curve-band" aria-labelledby="curve-h">
+    <div class="wrap curve-grid">
+      <div class="curve-copy">
+        <span class="mono">Move the unknowns earlier</span>
+        <h2 id="curve-h">Known costs early. Fewer surprises later.</h2>
+        <p>Early in a project, decisions are cheap to change and shape most of the cost. Late in a project, changes are expensive and shape very little. We do the hard work up front, where it counts. That’s how you industrialize a home.</p>
+        <p class="curve-note mono">Illustrative. Based on the MacLeamy curve.</p>
+      </div>
+      <figure class="curve-fig">
+          <svg class="curve" viewBox="0 0 800 400" style="overflow:visible" role="img" aria-labelledby="curve-t curve-d">
+            <title id="curve-t">When cost decisions happen</title>
+            <desc id="curve-d">Early in a project, the ability to shape cost is high and changes are cheap. Late in a project, the ability to shape cost is low and changes are expensive. Autonodwell does most of its work early; the traditional process finds cost late.</desc>
+            <g stroke="rgba(18,18,18,.18)" stroke-width="1"><line x1="250" y1="30" x2="250" y2="300"/><line x1="420" y1="30" x2="420" y2="300"/><line x1="590" y1="30" x2="590" y2="300"/></g>
+            <line x1="80" y1="300" x2="760" y2="300" stroke="#121212" stroke-width="1.5"/>
+            <line x1="80" y1="30" x2="80" y2="300" stroke="#121212" stroke-width="1.5"/>
+            <path d="M80,300 C120,170 190,112 255,112 C335,112 420,262 760,296 L760,300 Z" fill="rgba(255,92,52,.18)"/>
+            <path d="M80,300 C120,170 190,112 255,112 C335,112 420,262 760,296" fill="none" stroke="#FF5C34" stroke-width="4" stroke-linecap="round"/>
+            <path d="M80,298 C300,298 430,128 565,122 C665,118 705,262 760,296" fill="none" stroke="#121212" stroke-width="2.5" stroke-dasharray="7 7" stroke-linecap="round"/>
+            <path d="M80,52 C300,62 420,248 760,286" fill="none" stroke="#351E28" stroke-width="2.5"/>
+            <path d="M80,288 C400,278 520,92 760,46" fill="none" stroke="#351E28" stroke-width="2.5" stroke-opacity=".45"/>
+            <g font-family="Inter, system-ui, sans-serif" font-size="20" font-weight="600">
+              <text x="92" y="24" fill="#351E28">Your ability to shape cost</text>
+              <text x="752" y="24" fill="#351E28" fill-opacity=".75" text-anchor="end">Cost of making a change</text>
+              
+              
+            </g>
+            <g font-family="IBM Plex Mono, monospace" font-size="15" fill="#121212" text-anchor="middle" letter-spacing=".06em">
+              <text x="165" y="326">DESIGN</text><text x="335" y="326">PRICING</text><text x="505" y="326">PERMITS</text><text x="675" y="326">BUILD</text>
+              
+            </g>
+            <g font-family="Inter, system-ui, sans-serif" font-size="19" font-weight="600">
+              <rect x="80" y="362" width="34" height="14" rx="3" fill="rgba(255,92,52,.25)" stroke="#FF5C34" stroke-width="3"/>
+              <text x="124" y="375" fill="#121212">Autonodwell: cost known early</text>
+              <line x1="440" y1="369" x2="476" y2="369" stroke="#121212" stroke-width="2.5" stroke-dasharray="7 6"/>
+              <text x="486" y="375" fill="#121212">Traditional: cost found late</text>
+            </g>
+          </svg>
+      </figure>
+    </div>
+  </section>
+
+  <section class="band steps-band cost-band" aria-labelledby="cost-h">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="mono">How we keep costs down</span>
+        <div><h2 id="cost-h">Cost out by design,<br>not by cutting corners.</h2></div>
+      </div>
+      <div class="cv" id="cv-cost">
+        <div class="cv-stage">
+          <div class="cv-panel cv-left">
+            <ol class="cv-list">
+            <li class="cv-item on"><button type="button" data-cv="0"><span class="cv-name">Vertically integrated</span></button><p class="cv-desc">Design, materials pricing and the build plan move in lockstep, under one roof.</p></li>
+            <li class="cv-item"><button type="button" data-cv="1"><span class="cv-name">One model, clear scopes</span></button><p class="cv-desc">We run the model. Every trade gets a defined scope, quantities and step-by-step assembly instructions.</p></li>
+            <li class="cv-item"><button type="button" data-cv="2"><span class="cv-name">Pre-cut kit of parts</span></button><p class="cv-desc">Prefabricated, not manufactured housing. Precision parts bring back the craft and make details like curved walls affordable.</p></li>
+            <li class="cv-item"><button type="button" data-cv="3"><span class="cv-name">Open bidding</span></button><p class="cv-desc">Framers, drywall, cabinetry and finish trades compete on clearly defined work. Others cut costs by cutting quality. We cut costs by cutting uncertainty.</p></li>
+            </ol>
+          </div>
+          <div class="cv-panel cv-right">
+          <figure class="cv-slide on"><img src="img/step-2.jpg" alt="Hand drafting a floor plan" width="1280" height="720" loading="lazy"></figure>
+          <figure class="cv-slide"><img src="img/step-3.jpg" alt="Wireframe model of a home" width="1280" height="720" loading="lazy"></figure>
+          <figure class="cv-slide"><img src="img/step-6.jpg" alt="Wireframe of a home on its lot" width="1280" height="720" loading="lazy"></figure>
+          <figure class="cv-slide"><img src="img/step-7.jpg" alt="A finished home on its lot" width="1280" height="720" loading="lazy"></figure>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
   <section class="band">
     <div class="wrap">
       <div class="paths">
-        <a class="path" href="#"><span class="mono">Investors</span><h3>Request investor materials</h3><p>A capital-disciplined platform with milestone-based deployment, starting with the information, financing and delivery bottlenecks.</p><p class="msg">We’re starting with the bottlenecks, not with an oversized factory.</p><svg class="path-arrow" viewBox="0 0 48 24" aria-hidden="true"><path d="M0 12h44M34 2l10 10-10 10" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
+        <a class="path" href="#"><span class="mono">Investors</span><h3>Request investor materials</h3><p><b>Software first, factory-ready.</b> We’re starting where risk is lowest: demand, design and cost data. Every home designed on the platform builds the demand signal and the standard specifications a factory needs.</p><p class="msg">We’re not skipping the capital-intensive phase. We’re de-risking it.</p><svg class="path-arrow" viewBox="0 0 48 24" aria-hidden="true"><path d="M0 12h44M34 2l10 10-10 10" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
         <a class="path" href="#"><span class="mono">Lenders &amp; underwriters</span><h3>Shape the data package</h3><p>Help define what design, scope, cost and delivery information makes construction lending more transparent.</p><p class="msg">Better-organized project data, built with the people who underwrite it.</p><svg class="path-arrow" viewBox="0 0 48 24" aria-hidden="true"><path d="M0 12h44M34 2l10 10-10 10" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
         <a class="path" href="#"><span class="mono">Builders, developers &amp; landowners</span><h3>Explore a pilot site</h3><p>Qualified projects, clear scopes and coordinated documentation. Tested on individual homes before larger programs.</p><p class="msg">Less ambiguity before work begins. Better coordination while it’s underway.</p><svg class="path-arrow" viewBox="0 0 48 24" aria-hidden="true"><path d="M0 12h44M34 2l10 10-10 10" fill="none" stroke="currentColor" stroke-width="2"/></svg></a>
       </div>
@@ -1802,7 +1918,7 @@ San Francisco, CA 94117</p>
   }
 
   /* ---- Step pacing: a slider moves at most one step per hold, so a fast scroll can't skip photos ---- */
-  const pace = (apply, hold = 900) => {
+  const pace = (apply, hold = 450) => {
     let cur = 0, target = 0, timer = null;
     const tick = () => {
       if (timer || cur === target) return;
@@ -1908,29 +2024,26 @@ San Francisco, CA 94117</p>
     requestAnimationFrame(() => requestAnimationFrame(() => setTimeout(buildSnake, 120)));
   }
 
-  /* ---- Your Dream Home: side-by-side slider, one step per scroll increment ---- */
-  const cv = document.getElementById("cv");
-  const cvItems = cv ? [...cv.querySelectorAll(".cv-item")] : [];
-  const cvSlides = cv ? [...cv.querySelectorAll(".cv-slide")] : [];
-  let cvCur = 0;
-  const setCv = i => {
-    if (i === cvCur) return; cvCur = i;
-    cvItems.forEach((el, k) => el.classList.toggle("on", k === i));
-    cvSlides.forEach((el, k) => el.classList.toggle("on", k === i));
-  };
-  const onCv = () => {
-    if (!cv || !cv.offsetParent) return;
-    const r = cv.getBoundingClientRect(), span = r.height - innerHeight;
-    cvPace.to(Math.min(cvItems.length - 1, Math.max(0, Math.floor((-r.top / span) * cvItems.length))));
-  };
-  cv && cv.querySelectorAll("[data-cv]").forEach(b => b.addEventListener("click", () => {
-    const i = +b.dataset.cv, r = cv.getBoundingClientRect(), span = r.height - innerHeight;
-    scrollTo({ top: scrollY + r.top + span * (i + .5) / cvItems.length, behavior: reduce ? "auto" : "smooth" });
-  }));
-  const cvPace = pace(setCv);
-  addEventListener("scroll", onCv, { passive: true });
-  addEventListener("resize", onCv);
-  onCv();
+  /* ---- Side-by-side sliders (Dream Home, How we keep costs down): one step per scroll increment ---- */
+  const cvs = [...document.querySelectorAll(".cv")].map(cv => {
+    const items = [...cv.querySelectorAll(".cv-item")], slides = [...cv.querySelectorAll(".cv-slide")];
+    let cur = 0;
+    const set = i => { if (i === cur) return; cur = i; items.forEach((el, k) => el.classList.toggle("on", k === i)); slides.forEach((el, k) => el.classList.toggle("on", k === i)); };
+    const p = pace(set);
+    const on = () => {
+      if (!cv.offsetParent) return;
+      const r = cv.getBoundingClientRect(), span = r.height - innerHeight;
+      p.to(Math.min(items.length - 1, Math.max(0, Math.floor((-r.top / span) * items.length))));
+    };
+    cv.querySelectorAll("[data-cv]").forEach(b => b.addEventListener("click", () => {
+      const i = +b.dataset.cv, r = cv.getBoundingClientRect(), span = r.height - innerHeight;
+      scrollTo({ top: scrollY + r.top + span * (i + .5) / items.length, behavior: reduce ? "auto" : "smooth" });
+    }));
+    addEventListener("scroll", on, { passive: true });
+    addEventListener("resize", on);
+    on();
+    return { cv, count: items.length, p };
+  });
 
 
   /* ---- Pinned section 01 ---- */
@@ -1975,7 +2088,7 @@ San Francisco, CA 94117</p>
     let locked = false, lockAt = 0, lastEv = 0, ty = null, tDone = false;
     const pinned = () => { if (!el.offsetParent) return false; const r = el.getBoundingClientRect(); return r.top <= 2 && r.bottom >= innerHeight - 2; };
     const goTo = i => { const r = el.getBoundingClientRect(), span = r.height - innerHeight; scrollTo({ top: scrollY + r.top + span * (i + .5) / count, behavior: "auto" }); };
-    const release = () => { if (!locked) return; const now = performance.now(); if (now - lockAt > 850 && now - lastEv > 180) locked = false; else setTimeout(release, 60); };
+    const release = () => { if (!locked) return; const now = performance.now(); if (now - lockAt > 425 && now - lastEv > 180) locked = false; else setTimeout(release, 60); };
     const move = dir => { const n = cur() + dir; if (n < 0 || n >= count) return false; locked = true; lockAt = performance.now(); goTo(n); setTimeout(release, 60); return true; };
     addEventListener("wheel", e => {
       if (!pinned() || e.ctrlKey || Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
@@ -1995,7 +2108,7 @@ San Francisco, CA 94117</p>
     addEventListener("touchend", () => { ty = null; }, { passive: true });
   };
   stepLock(hPin, hSlides.length, () => hPace.want());
-  stepLock(cv, cvItems.length, () => cvPace.want());
+  cvs.forEach(c => stepLock(c.cv, c.count, () => c.p.want()));
   stepLock(pin, frames.length, () => pinPace.want());
 
   /* ---- Inquiry form: posts to /api/inquiry (Cloudflare Pages Function), which emails the team ---- */
