@@ -216,13 +216,14 @@ footer{position:relative;overflow:hidden;background:var(--ink-2);padding-block:7
   linear-gradient(180deg,rgba(215,239,255,.6) 0%,rgba(215,239,255,0) 22%)}
 .bgv-plan{position:absolute;z-index:-2;right:calc(var(--gutter) - 10px);top:50%;width:min(58vw,820px);transform:translateY(-44%);opacity:.42;transition:opacity .8s var(--ease)}
 .hero-video.playing .bgv-plan{opacity:0}
-.bgv{opacity:0;transition:opacity 1.2s var(--ease)}
-.hero-video.playing .bgv{opacity:1}
+/* Poster shows right away, so the hero is never empty when autoplay is blocked (iPhone Low Power Mode, Reduce Motion) */
+.bgv{opacity:1}
+.bgv-plan{display:none}
 .bgv-label{opacity:0;transition:opacity .8s}.hero-video.playing .bgv-label{opacity:1}
 @media (max-width:1023px){.bgv-plan{width:110vw;right:-20vw;top:30%;opacity:.22}}
 .bgv-label{position:absolute;right:var(--gutter);bottom:28px;font-size:10.5px;color:rgba(53,30,40,.55)}
 @media (max-width:720px){.bgv-shade{background:linear-gradient(0deg,rgba(215,239,255,.95) 0%,rgba(215,239,255,.7) 50%,rgba(215,239,255,.35) 100%)}.bgv-label{bottom:auto;top:92px}}
-@media (prefers-reduced-motion:reduce){.bgv{display:none}}
+
 
 
 /* ===== Steps: staircase left to right, each slides up from below with blur-to-clear ===== */
@@ -1896,7 +1897,20 @@ San Francisco, CA 94117</p>
 
   /* ---- Hero video: fade in once frames are playing; floor plan shows until then ---- */
   const bgv = document.getElementById("bgv");
-  if (bgv) bgv.addEventListener("playing", () => bgv.closest(".hero-video").classList.add("playing"), { once: true });
+  if (bgv) {
+    bgv.addEventListener("playing", () => bgv.closest(".hero-video").classList.add("playing"), { once: true });
+    if (reduce) { bgv.removeAttribute("autoplay"); bgv.pause(); }
+    else {
+      /* Phones can block autoplay (Low Power Mode, data saver). The poster shows meanwhile;
+         the first tap or scroll on the home page starts the video. */
+      const kick = () => {
+        if (current !== "home" || !bgv.paused) return;
+        const p = bgv.play(); p && p.catch(() => {});
+      };
+      ["touchstart", "pointerdown", "scroll"].forEach(ev => addEventListener(ev, kick, { passive: true }));
+      kick();
+    }
+  }
 
 
   /* ---- Steps reveal: each step comes in (and resets) as you scroll; iPhone follows 1s later with blur-to-clear ---- */
