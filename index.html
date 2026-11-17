@@ -793,7 +793,7 @@ a.path:hover .msg,a.path:focus-visible .msg{border-left-color:#121212}
         <li><a href="#partner" data-route="partner">Partner with us</a></li>
       </ul>
     </nav>
-    <a class="cta head" href="#partner" data-route="partner">Try It Free</a>
+    <a class="cta head" href="#start" data-quiz>Try It Free</a>
     <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu"><span></span><span></span></button>
   </div>
 </header>
@@ -808,7 +808,7 @@ a.path:hover .msg,a.path:focus-visible .msg{border-left-color:#121212}
       <li><a class="item" href="#partner" data-route="partner" tabindex="-1"><span class="t">Partner with us</span><span class="s">Investors, lenders, builders, landowners</span></a></li>
     </ul>
     <div class="foot">
-      <a class="cta fill" href="#partner" data-route="partner" tabindex="-1">Try It Free</a>
+      <a class="cta fill" href="#start" data-quiz tabindex="-1">Try It Free</a>
       <span class="mono">Pre-commercial · In development</span>
     </div>
   </nav>
@@ -859,7 +859,7 @@ a.path:hover .msg,a.path:focus-visible .msg{border-left-color:#121212}
         <h1 class="display rise">Making the American Dream <em>buildable</em> again.</h1>
         <p class="lede rise">Autonodwell is a homebuilding platform connecting family budgets to custom home design, land, and financing in one seamless process.</p>
         <div class="actions rise">
-          <a class="cta fill" href="#partner" data-route="partner">Design Your Dream Home, FREE!</a>
+          <a class="cta fill" href="#start" data-quiz>Design Your Dream Home, FREE!</a>
           <a class="cta ghost" href="#how-it-works" data-route="how-it-works">See how it works</a>
         </div>
       </div>
@@ -897,7 +897,7 @@ a.path:hover .msg,a.path:focus-visible .msg{border-left-color:#121212}
             <span class="mono">Starter homes</span>
             <h2>Attainable shouldn’t mean stripped down.</h2>
             <p>A starter home should be thoughtfully designed, not stripped of daylight, function or beauty. Good design should be part of an attainable home from the start, not a luxury reserved for people who are already wealthy.</p>
-            <a class="cta fill" href="#partner" data-route="partner" tabindex="-1">Try It Free</a>
+            <a class="cta fill" href="#start" data-quiz tabindex="-1">Try It Free</a>
           </div>
         </div>
       </div>
@@ -1993,5 +1993,249 @@ San Francisco, CA 94117</p>
   });
 })();
 </script>
+<!-- Dream home questionnaire (pop-up). Ported from the Autonodwell app's step 1 ("Start"). -->
+<style>
+.quiz{position:fixed;inset:0;z-index:200;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(53,30,40,.62);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.quiz.open{display:flex}
+.quiz-card{position:relative;width:min(460px,100%);max-height:calc(100dvh - 32px);overflow:auto;background:#fff;color:#121212;border-radius:22px;padding:28px 28px 22px;display:grid;gap:22px;box-shadow:0 30px 80px rgba(53,30,40,.35);animation:quiz-in .32s cubic-bezier(.16,1,.3,1)}
+.quiz-card.swap{animation:quiz-swap .28s cubic-bezier(.16,1,.3,1)}
+@keyframes quiz-in{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
+@keyframes quiz-swap{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.quiz-card,.quiz-card.swap{animation:none}}
+.quiz-x{position:absolute;top:12px;right:12px;width:40px;height:40px;border:0;border-radius:50%;background:none;color:#351E28;font-size:24px;line-height:1;cursor:pointer}
+.quiz-x:hover{background:#D7EFFF}
+.quiz-who{display:grid;grid-template-columns:52px 1fr;gap:14px;align-items:center;padding-right:32px}
+.quiz-who img{width:52px;height:52px;border-radius:50%;object-fit:cover}
+.quiz-hi{font-size:16px;color:#351E28;opacity:.8;margin:0}
+.quiz-q{margin:2px 0 0;font-size:22px;font-weight:700;letter-spacing:-.02em;line-height:1.2;color:#351E28}
+.quiz-body{display:grid;gap:14px;min-width:0}
+.quiz-card,.quiz-card button{font-family:var(--display)}
+.quiz-body label{display:grid;gap:6px;font-family:var(--display);font-size:15px;font-weight:600;letter-spacing:0;text-transform:none;color:#351E28}
+.quiz-body label .opt{font-weight:400;opacity:.7}
+.quiz-body input[type=text],.quiz-body input[type=email],.quiz-body input[type=tel],.quiz-body input:not([type]){font:inherit;font-size:18px;font-weight:400;color:#121212;background:transparent;border:0;border-bottom:1.5px solid rgba(53,30,40,.3);padding:8px 0;border-radius:0}
+.quiz-body input:focus{outline:0;border-bottom-color:#FF5C34}
+.quiz-body input::placeholder{color:rgba(18,18,18,.38)}
+.quiz-pills{display:grid;gap:8px}
+.quiz-pill{min-height:50px;border-radius:999px;border:2px solid transparent;background:#D7EFFF;color:#121212;font:inherit;font-size:16px;padding:12px 18px;cursor:pointer;text-align:center}
+.quiz-pill:hover{background:#c4e5fb}
+.quiz-pill[aria-checked=true]{border-color:#FF5C34;font-weight:700;background:#fff}
+.quiz-skip{justify-self:start;background:none;border:0;padding:0;color:#351E28;text-decoration:underline;text-underline-offset:3px;font:inherit;font-size:15px;cursor:pointer}
+.quiz-range output{display:block;font-size:34px;font-weight:700;letter-spacing:-.03em;color:#351E28}
+.quiz-range output small{font-size:15px;font-weight:500;opacity:.7}
+.quiz-range input{width:100%;accent-color:#FF5C34}
+.quiz-ends{display:flex;justify-content:space-between;font-size:12px;color:rgba(18,18,18,.6)}
+.quiz-next-copy{background:#D7EFFF;border-radius:14px;padding:16px 18px}
+.quiz-next-copy h3{margin:0 0 6px;font-size:15px;color:#351E28}
+.quiz-next-copy p{margin:0;font-size:15px;line-height:1.5}
+.quiz-check{display:grid!important;grid-template-columns:20px 1fr;gap:10px!important;font-weight:400!important;font-size:13px!important;line-height:1.45;color:#121212!important}
+.quiz-check input{width:18px;height:18px;margin-top:2px;accent-color:#FF5C34}
+.quiz-err{margin:0;font-size:14px;color:#b4361a}
+.quiz-foot{display:grid;gap:14px}
+.quiz-dots{display:flex;justify-content:center;gap:6px}
+.quiz-dots i{width:6px;height:6px;border-radius:50%;background:rgba(53,30,40,.22)}
+.quiz-dots i.on{background:#351E28}
+.quiz-nav{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.quiz-back{min-width:44px;min-height:44px;border:0;background:none;color:#351E28;font-size:22px;cursor:pointer}
+.quiz-go{margin-left:auto;display:grid;place-items:center;width:58px;height:58px;border:0;border-radius:50%;background:#351E28;color:#fff;cursor:pointer;transition:background .2s,opacity .2s}
+.quiz-go.wide{width:auto;height:auto;border-radius:999px;padding:15px 24px;font:inherit;font-size:16px;font-weight:650;background:#FF5C34;color:#121212}
+.quiz-go:hover:not(:disabled){background:#FF5C34;color:#121212}
+.quiz-go.wide:hover:not(:disabled){background:#351E28;color:#fff}
+.quiz-go:disabled{opacity:.3;cursor:not-allowed}
+.quiz-hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+@media (max-width:560px){.quiz{align-items:flex-end;padding:0}.quiz-card{width:100%;border-radius:22px 22px 0 0;max-height:92dvh;padding:24px 20px calc(20px + env(safe-area-inset-bottom))}}
+</style>
+<div class="quiz" id="quiz" role="dialog" aria-modal="true" aria-labelledby="quiz-q" aria-hidden="true">
+  <form class="quiz-card" id="quiz-card" novalidate></form>
+</div>
+<script>
+(() => {
+  const root = document.getElementById("quiz"), card = document.getElementById("quiz-card");
+  const LAND = [["own_lot","I own a lot"],["looking_at_lot","I’m looking at a lot"],["need_land","I need help finding land"]];
+  const BUDGET = [["total","A total budget"],["monthly","A monthly payment"],["need_help","Help me figure it out"]];
+  const SLIDER = { min: 1200, max: 5000, step: 50, initial: 2400 };
+  const CONSENT = "I agree that Autonodwell may contact me about my home. This is not a reservation, deposit or purchase commitment.";
+  const usd = n => "$" + Math.round(n).toLocaleString("en-US");
+  const hasLot = l => l === "own_lot" || l === "looking_at_lot";
+  const fresh = () => ({ zip: "", land: null, address: "", lotPrice: null, mode: null, total: null, monthly: SLIDER.initial, cash: null, name: "", email: "", phone: "", consent: false });
+  let a = fresh(), step = "zip", lastFocus = null, sending = false, error = "";
+
+  const seq = () => {
+    const s = ["zip", "land"];
+    if (hasLot(a.land)) s.push("lot");
+    s.push("budget");
+    if (a.mode === "total" || a.mode === "monthly") s.push("amount");
+    s.push("result", "contact");
+    return s;
+  };
+  const QUESTIONS = {
+    zip: "Let’s see what you can build.", land: "Do you have land?", lot: "Where’s the lot?",
+    budget: "How do you think about budget?",
+    amount: () => a.mode === "monthly" ? "What feels comfortable each month?" : "What’s your total budget?",
+    result: "Here’s your starting point.", contact: "How can we reach you?", done: "You’re on the list."
+  };
+  const ready = () => ({
+    zip: /^\d{5}$/.test(a.zip), land: !!a.land, lot: a.address.trim().length > 0, budget: !!a.mode,
+    amount: a.mode === "monthly" || a.total != null, result: true,
+    contact: a.name.trim() && /^\S+@\S+\.\S+$/.test(a.email.trim()) && a.consent
+  })[step];
+
+  const whatNext = () => {
+    if (a.mode === "need_help") return "We’ll start with a budget range. Then we’ll pick a home together and show what it costs per month and in cash.";
+    if (hasLot(a.land)) {
+      const base = `We’ll check what can be built at ${a.address.trim() || "your lot"}: zoning, setbacks, utilities and access. Then we’ll pick a home that fits.`;
+      return a.land === "looking_at_lot" && a.lotPrice != null ? `${base} We’ll use the ${usd(a.lotPrice)} asking price as your land cost.` : base;
+    }
+    return "We’ll use your budget to set a price range for land, then help you search. Then we’ll pick a home that fits.";
+  };
+
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const pills = (key, list) => `<div class="quiz-pills" role="radiogroup" aria-labelledby="quiz-q">${list.map(([v, l]) =>
+    `<button type="button" class="quiz-pill" role="radio" aria-checked="${a[key] === v}" data-pick="${key}" data-v="${v}">${l}</button>`).join("")}</div>`;
+  const money = (key, label, optional) => `<label><span>${label}${optional ? ' <span class="opt">(optional)</span>' : ""}</span><input inputmode="numeric" autocomplete="off" placeholder="$0" data-money="${key}" value="${a[key] == null ? "" : usd(a[key])}"></label>`;
+
+  const body = () => {
+    switch (step) {
+      case "zip": return `<label>Where do you want to build?<input inputmode="numeric" autocomplete="postal-code" maxlength="5" placeholder="ZIP code" data-f="zip" value="${esc(a.zip)}"></label><button type="button" class="quiz-skip" data-skip>Not sure yet</button>`;
+      case "land": return pills("land", LAND);
+      case "lot": return `<label>Street address<input autocomplete="street-address" maxlength="200" data-f="address" value="${esc(a.address)}"></label>` + (a.land === "looking_at_lot" ? money("lotPrice", "Asking price", true) : "");
+      case "budget": return pills("mode", BUDGET);
+      case "amount": return (a.mode === "total" ? money("total", "Total budget") :
+        `<div class="quiz-range"><label for="quiz-slider">Comfortable monthly budget</label><output id="quiz-out">${usd(a.monthly)}<small> / mo</small></output><input id="quiz-slider" type="range" min="${SLIDER.min}" max="${SLIDER.max}" step="${SLIDER.step}" value="${a.monthly}"><div class="quiz-ends"><span>${usd(SLIDER.min)}</span><span>${usd(SLIDER.max)}</span></div></div>`) + money("cash", "Cash you could put in", true);
+      case "result": return `<div class="quiz-next-copy"><h3>What happens next</h3><p>${esc(whatNext())}</p></div>`;
+      case "contact": return `<label>Full name<input autocomplete="name" maxlength="120" data-f="name" value="${esc(a.name)}"></label><label>Email<input type="email" autocomplete="email" maxlength="200" data-f="email" value="${esc(a.email)}"></label><label><span>Phone <span class="opt">(optional)</span></span><input type="tel" autocomplete="tel" maxlength="40" data-f="phone" value="${esc(a.phone)}"></label><label class="quiz-check"><input type="checkbox" data-consent ${a.consent ? "checked" : ""}><span>${CONSENT}</span></label><div class="quiz-hp" aria-hidden="true"><label>Website<input tabindex="-1" autocomplete="off" name="website"></label></div>${error ? `<p class="quiz-err" role="alert">${esc(error)}</p>` : ""}`;
+      case "done": return `<div class="quiz-next-copy"><h3>Thanks, ${esc(a.name.trim().split(" ")[0] || "friend")}.</h3><p>${esc(error || "Your answers are with the Autonodwell team. We’ll reach out to walk you through your options and next steps.")}</p></div>`;
+    }
+  };
+
+  const render = (swap) => {
+    const s = seq(), i = s.indexOf(step), q = QUESTIONS[step];
+    const isDone = step === "done", last = step === "contact", isResult = step === "result";
+    card.innerHTML = `<button type="button" class="quiz-x" data-close aria-label="Close">×</button>
+      <div class="quiz-who"><img src="img/sarah.jpg" alt="" width="52" height="52"><div><p class="quiz-hi">Hi, I’m Sarah.</p><h2 class="quiz-q" id="quiz-q">${typeof q === "function" ? q() : q}</h2></div></div>
+      <div class="quiz-body">${body()}</div>
+      <div class="quiz-foot">
+        ${isDone ? "" : `<div class="quiz-dots" aria-hidden="true">${s.map(x => `<i class="${x === step ? "on" : ""}"></i>`).join("")}</div>`}
+        <div class="quiz-nav">
+          ${i > 0 && !isDone ? '<button type="button" class="quiz-back" data-back aria-label="Back">←</button>' : "<span></span>"}
+          ${isDone ? '<button type="button" class="quiz-go wide" data-close>Done</button>'
+            : isResult ? '<button type="submit" class="quiz-go wide">Talk with Sarah’s team</button>'
+            : last ? `<button type="submit" class="quiz-go wide" ${sending ? "disabled" : ""}>${sending ? "Sending…" : "Send my answers"}</button>`
+            : '<button type="submit" class="quiz-go" aria-label="Next"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>'}
+        </div>
+      </div>`;
+    syncGo();
+    if (swap) { card.classList.remove("swap"); void card.offsetWidth; card.classList.add("swap"); }
+    const f = card.querySelector(".quiz-body input:not([tabindex='-1']), .quiz-pill[aria-checked=true], .quiz-pill, .quiz-go");
+    f && f.focus({ preventScroll: true });
+  };
+  const syncGo = () => {
+    const go = card.querySelector('.quiz-go[type="submit"]');
+    if (go && !sending) go.disabled = !ready();
+  };
+  const goTo = s => { step = s; error = ""; render(true); };
+  const advance = () => { const s = seq(), i = s.indexOf(step); if (s[i + 1]) goTo(s[i + 1]); };
+
+  const summary = () => {
+    const L = Object.fromEntries(LAND), B = Object.fromEntries(BUDGET), lines = [
+      "Dream home questionnaire",
+      `Where: ${a.zip || "Not sure yet"}`,
+      `Land: ${L[a.land] || "-"}`
+    ];
+    if (hasLot(a.land)) lines.push(`Lot address: ${a.address.trim() || "-"}`);
+    if (a.land === "looking_at_lot" && a.lotPrice != null) lines.push(`Lot asking price: ${usd(a.lotPrice)}`);
+    lines.push(`Budget: ${B[a.mode] || "-"}`);
+    if (a.mode === "total" && a.total != null) lines.push(`Total budget: ${usd(a.total)}`);
+    if (a.mode === "monthly") lines.push(`Monthly budget: ${usd(a.monthly)}/mo`);
+    if (a.cash != null) lines.push(`Cash available: ${usd(a.cash)}`);
+    if (a.phone.trim()) lines.push(`Phone: ${a.phone.trim()}`);
+    lines.push("", `Consent: ${CONSENT}`);
+    return lines.join("\n");
+  };
+
+  const send = async () => {
+    if (/claudeusercontent\.com$|^$/.test(location.hostname) || location.protocol === "file:") {
+      error = "This is a preview, so nothing was sent. On the live site your answers go straight to the Autonodwell team."; step = "done"; render(true); return;
+    }
+    sending = true; render(false);
+    try {
+      const res = await fetch("/api/inquiry", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
+        name: a.name.trim(), email: a.email.trim(), type: "Dream home questionnaire",
+        location: a.zip || "", org: "", message: summary(),
+        website: (card.querySelector('input[name="website"]') || {}).value || ""
+      }) });
+      const out = await res.json().catch(() => ({}));
+      sending = false;
+      if (res.ok && out.ok) { error = ""; step = "done"; render(true); }
+      else { error = "Sorry, that didn’t go through. Please try again in a moment."; render(false); }
+    } catch { sending = false; error = "Sorry, that didn’t go through. Check your connection and try again."; render(false); }
+  };
+
+  card.addEventListener("submit", e => {
+    e.preventDefault();
+    if (sending || !ready()) return;
+    if (step === "contact") send(); else advance();
+  });
+  card.addEventListener("click", e => {
+    const t = e.target.closest("button"); if (!t) return;
+    if (t.hasAttribute("data-close")) return close();
+    if (t.hasAttribute("data-back")) { const s = seq(); goTo(s[s.indexOf(step) - 1]); return; }
+    if (t.hasAttribute("data-skip")) { a.zip = ""; advance(); return; }
+    if (t.dataset.pick) {
+      a[t.dataset.pick] = t.dataset.v;
+      card.querySelectorAll(`[data-pick="${t.dataset.pick}"]`).forEach(b => b.setAttribute("aria-checked", String(b === t)));
+      syncGo();
+      setTimeout(() => { if (ready()) advance(); }, 220);
+    }
+  });
+  card.addEventListener("input", e => {
+    const t = e.target;
+    if (t.dataset.f === "zip") t.value = t.value.replace(/\D/g, "").slice(0, 5);
+    if (t.dataset.f) a[t.dataset.f] = t.value;
+    if (t.dataset.money) {
+      const d = t.value.replace(/\D/g, "").slice(0, 8);
+      a[t.dataset.money] = d ? Math.min(Number(d), 10000000) : null;
+      t.value = d ? usd(a[t.dataset.money]) : "";
+    }
+    if (t.id === "quiz-slider") { a.monthly = Number(t.value); document.getElementById("quiz-out").innerHTML = `${usd(a.monthly)}<small> / mo</small>`; }
+    if (t.hasAttribute("data-consent")) a.consent = t.checked;
+    syncGo();
+  });
+  card.addEventListener("change", e => { if (e.target.hasAttribute("data-consent")) { a.consent = e.target.checked; syncGo(); } });
+
+  const open = () => {
+    lastFocus = document.activeElement;
+    if (step === "done") { a = fresh(); step = "zip"; }
+    root.classList.add("open"); root.setAttribute("aria-hidden", "false");
+    document.documentElement.classList.add("lock");
+    card.classList.remove("swap"); void card.offsetWidth;
+    render(false);
+  };
+  const close = () => {
+    root.classList.remove("open"); root.setAttribute("aria-hidden", "true");
+    if (!document.getElementById("mobile-menu")?.classList.contains("open")) document.documentElement.classList.remove("lock");
+    lastFocus && lastFocus.focus && lastFocus.focus({ preventScroll: true });
+  };
+  root.addEventListener("click", e => { if (e.target === root) close(); });
+  addEventListener("keydown", e => {
+    if (!root.classList.contains("open")) return;
+    if (e.key === "Escape") { e.preventDefault(); close(); }
+    if (e.key === "Tab") {
+      const f = [...card.querySelectorAll("button:not(:disabled), input:not([tabindex='-1'])")];
+      if (!f.length) return;
+      if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+      else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+    }
+  }, true);
+  document.addEventListener("click", e => {
+    const b = e.target.closest("[data-quiz]"); if (!b) return;
+    e.preventDefault(); e.stopPropagation();
+    const menu = document.getElementById("mobile-menu");
+    if (menu && menu.classList.contains("open")) document.getElementById("burger").click();
+    open();
+  }, true);
+  if (location.hash === "#start") open();
+})();
+</script>
+
 </body>
 </html>

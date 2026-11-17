@@ -7,6 +7,7 @@
 //   INQUIRY_FROM    a sender on a domain verified in Resend, e.g. "Autonodwell <inquiries@autonodwell.com>"
 
 const TYPES = [
+  "Dream home questionnaire",
   "Future homeowner: early access",
   "Investor",
   "Lender or underwriter",
