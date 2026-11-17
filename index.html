@@ -2088,7 +2088,7 @@ San Francisco, CA 94117</p>
     let locked = false, lockAt = 0, lastEv = 0, ty = null, tDone = false;
     const pinned = () => { if (!el.offsetParent) return false; const r = el.getBoundingClientRect(); return r.top <= 2 && r.bottom >= innerHeight - 2; };
     const goTo = i => { const r = el.getBoundingClientRect(), span = r.height - innerHeight; scrollTo({ top: scrollY + r.top + span * (i + .5) / count, behavior: "auto" }); };
-    const release = () => { if (!locked) return; const now = performance.now(); if (now - lockAt > 425 && now - lastEv > 180) locked = false; else setTimeout(release, 60); };
+    const release = () => { if (!locked) return; const now = performance.now(); if (now - lockAt > 425 && now - lastEv > 300) locked = false; else setTimeout(release, 60); };
     const move = dir => { const n = cur() + dir; if (n < 0 || n >= count) return false; locked = true; lockAt = performance.now(); goTo(n); setTimeout(release, 60); return true; };
     addEventListener("wheel", e => {
       if (!pinned() || e.ctrlKey || Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
