@@ -852,7 +852,7 @@ a.path:hover .msg,a.path:focus-visible .msg{border-left-color:#121212}
 <!-- ================= HOME ================= -->
 <article class="page" id="page-home" data-title="Autonodwell">
   <section class="hero hero-video">
-    <video class="bgv" id="bgv" poster="hero-poster.jpg" autoplay muted loop playsinline preload="auto" aria-hidden="true" tabindex="-1">
+    <video class="bgv" id="bgv" poster="hero-poster.jpg" autoplay muted loop playsinline webkit-playsinline preload="auto" aria-hidden="true" tabindex="-1">
       <source src="hero.mp4" type="video/mp4">
     </video>
     <svg class="bgv-plan" viewBox="0 0 480 300" aria-hidden="true">
@@ -1903,12 +1903,29 @@ San Francisco, CA 94117</p>
     else {
       /* Phones can block autoplay (Low Power Mode, data saver). The poster shows meanwhile;
          the first tap or scroll on the home page starts the video. */
+      bgv.muted = true; bgv.defaultMuted = true;
       const kick = () => {
         if (current !== "home" || !bgv.paused) return;
         const p = bgv.play(); p && p.catch(() => {});
       };
       ["touchstart", "pointerdown", "scroll"].forEach(ev => addEventListener(ev, kick, { passive: true }));
       kick();
+      /* iPhone Safari only streams video from servers that answer byte-range requests; some hosts
+         (including previews) don't. If it hasn't started after 2.5s, load the whole file and play it locally. */
+      let swapped = false;
+      const swapToBlob = async () => {
+        if (swapped || !bgv.paused && bgv.currentTime > 0) return;
+        swapped = true;
+        try {
+          const src = bgv.querySelector("source")?.src || bgv.currentSrc;
+          const blob = await (await fetch(src)).blob();
+          bgv.src = URL.createObjectURL(new Blob([blob], { type: "video/mp4" }));
+          bgv.load(); kick();
+        } catch (e) { swapped = false; }
+      };
+      bgv.addEventListener("error", swapToBlob, true);
+      bgv.querySelector("source")?.addEventListener("error", swapToBlob);
+      setTimeout(() => { if (bgv.paused || bgv.currentTime === 0) swapToBlob(); }, 2500);
     }
   }
 
