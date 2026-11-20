@@ -13,6 +13,7 @@ const TYPES = [
   "Lender or underwriter",
   "Builder or delivery partner",
   "Developer or landowner",
+  "Privacy, legal or copyright request",
   "Other",
 ];
 
