@@ -1,0 +1,13 @@
+{
+  // Autonodwell website on Cloudflare Workers (static assets + the inquiry form).
+  // "name" must match the Worker's name in the Cloudflare dashboard.
+  "name": "autonodwell",
+  "main": "worker.js",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": ".",
+    "binding": "ASSETS"
+  },
+  // Keep the variables set in the dashboard (INQUIRY_TO, INQUIRY_FROM) when deploying.
+  "keep_vars": true
+}

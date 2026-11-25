@@ -7,13 +7,19 @@ Static site. No build step.
 - `logo.png`: header logo and favicon
 - `autonodwell-app/`: a copy of the Autonodwell customer app (from `Arcitu/autonodwell-app`): React web app, FastAPI API, migrations and deploy pipeline. See its own README. It is not part of the website; `_redirects` keeps it from being served.
 
-## Deploy on Cloudflare Pages
+## Deploy on Cloudflare (Workers)
 
-Connect this repo in Cloudflare Pages. Framework preset: None. Build command: empty. Output directory: `/`.
+This repo is connected to the Cloudflare Worker named `autonodwell` (Workers & Pages, Sarah's account). Every push to `main` deploys automatically.
+
+- `wrangler.jsonc`: Worker settings. The site files are served as static assets; `name` must match the Worker's name in Cloudflare.
+- `worker.js`: serves the site and handles `POST /api/inquiry`.
+- `.assetsignore`: keeps code, the README and the `autonodwell-app/` folder from being published.
+
+Build settings in Cloudflare: build command empty, deploy command `npx wrangler deploy`, root directory empty.
 
 ### Inquiry form
 
-`functions/api/inquiry.js` receives the Partner form and emails it through Resend. Add these in Pages > Settings > Environment variables (encrypted):
+`functions/api/inquiry.js` (called by `worker.js`) receives the Partner form and emails it through Resend. Add these in the Worker's Settings > Variables and Secrets, then redeploy:
 
 - `RESEND_API_KEY`: Resend API key
 - `INQUIRY_TO`: inbox that receives inquiries
