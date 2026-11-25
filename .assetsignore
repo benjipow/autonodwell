@@ -8,3 +8,4 @@ autonodwell-app
 README.md
 node_modules
 .wrangler
+.gitignore
