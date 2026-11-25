@@ -160,6 +160,7 @@ section{position:relative}
 .boundaries div{border:1px dashed rgba(53,30,40,.22);padding:22px}
 .boundaries b{display:block;font-weight:560;margin-bottom:6px}
 .boundaries span{color:var(--mute);font-size:15px}
+.boundaries .bound-img{display:block;width:100%;height:auto;margin:0 0 18px;border-radius:12px}
 
 /* Stats */
 .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line)}
@@ -1213,9 +1214,9 @@ a.path:hover .msg,a.path:focus-visible .msg{border-left-color:#121212}
         </div>
       </div>
       <div class="boundaries">
-        <div><b>A concept image</b><span>is not a construction-ready plan.</span></div>
-        <div><b>A preliminary affordability estimate</b><span>is not mortgage preapproval.</span></div>
-        <div><b>An early price estimate</b><span>is not a binding construction quote.</span></div>
+        <div><img class="bound-img" src="img/estimate/concept.svg" alt="" width="480" height="300" loading="lazy"><b>A concept image</b><span>is not a construction-ready plan.</span></div>
+        <div><img class="bound-img" src="img/estimate/affordability.svg" alt="" width="480" height="300" loading="lazy"><b>A preliminary affordability estimate</b><span>is not mortgage preapproval.</span></div>
+        <div><img class="bound-img" src="img/estimate/price.svg" alt="" width="480" height="300" loading="lazy"><b>An early price estimate</b><span>is not a binding construction quote.</span></div>
       </div>
       <div class="finance reveal">
         <div>
