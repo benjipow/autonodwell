@@ -706,6 +706,10 @@ a.path:hover .msg,a.path:focus-visible .msg{border-left-color:#121212}
   .cost-band .cv-desc{display:block}
   .cost-band .cv-item.on .cv-desc{max-height:8em;opacity:1;margin:4px 0 8px}
 }
+/* Native scroll-snap for the pinned sliders (snap points are added by script) */
+html.snap-on{scroll-snap-type:y mandatory}
+.pin,.hpin,.cv{position:relative}
+.snap-mark{position:absolute;left:0;width:1px;height:1px;scroll-snap-align:start;scroll-snap-stop:always;pointer-events:none}
 /* Legal pages */
 .legal-page{padding:clamp(120px,14vw,180px) 0 clamp(64px,8vw,120px)}
 .legal-h1{margin-top:14px;font-size:clamp(44px,6vw,88px)}
@@ -1941,15 +1945,10 @@ with the subject line “Dispute Notice” and requesting a delivery confirmatio
   }
 
   /* ---- Step pacing: a slider moves at most one step per hold, so a fast scroll can't skip photos ---- */
-  const pace = (apply, hold = 450) => {
-    let cur = 0, target = 0, timer = null;
-    const tick = () => {
-      if (timer || cur === target) return;
-      cur += target > cur ? 1 : -1;
-      apply(cur);
-      timer = setTimeout(() => { timer = null; tick(); }, reduce ? 0 : hold);
-    };
-    return { to: i => { target = i; tick(); }, now: () => cur, want: () => target };
+  /* Slide index follows the scroll position directly; native scroll-snap (see snapMarks) makes each slide a stop. */
+  const pace = apply => {
+    let cur = 0;
+    return { to: i => { if (i !== cur) { cur = i; apply(i); } }, now: () => cur, want: () => cur };
   };
 
   /* ---- How it works: horizontal journey, one full-width step per scroll increment ---- */
@@ -2105,34 +2104,37 @@ with the subject line “Dispute Notice” and requesting a delivery confirmatio
   const pinPace = pace(setStep);
   setStep(0); onPin();
 
-  /* ---- Pinned sliders: one gesture moves exactly one slide (wheel and touch) ---- */
-  const stepLock = (el, count, cur) => {
+  /* ---- Pinned sliders: native scroll-snap. One invisible snap point per slide, placed where that slide
+     shows; scroll-snap-stop: always stops the browser from skipping past a slide on a fast flick or swipe. ---- */
+  const snapTracks = [];
+  const snapMarks = (el, count) => {
     if (!el) return;
-    let locked = false, lockAt = 0, lastEv = 0, ty = null, tDone = false;
-    const pinned = () => { if (!el.offsetParent) return false; const r = el.getBoundingClientRect(); return r.top <= 2 && r.bottom >= innerHeight - 2; };
-    const goTo = i => { const r = el.getBoundingClientRect(), span = r.height - innerHeight; scrollTo({ top: scrollY + r.top + span * (i + .5) / count, behavior: "auto" }); };
-    const release = () => { if (!locked) return; const now = performance.now(); if (now - lockAt > 425 && now - lastEv > 300) locked = false; else setTimeout(release, 60); };
-    const move = dir => { const n = cur() + dir; if (n < 0 || n >= count) return false; locked = true; lockAt = performance.now(); goTo(n); setTimeout(release, 60); return true; };
-    addEventListener("wheel", e => {
-      if (!pinned() || e.ctrlKey || Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
-      lastEv = performance.now();
-      if (locked) { e.preventDefault(); return; }
-      if (Math.abs(e.deltaY) < 2) return;
-      if (move(e.deltaY > 0 ? 1 : -1)) e.preventDefault();
-    }, { passive: false });
-    addEventListener("touchstart", e => { ty = pinned() ? e.touches[0].clientY : null; tDone = false; }, { passive: true });
-    addEventListener("touchmove", e => {
-      if (ty == null) return;
-      const dy = ty - e.touches[0].clientY, dir = dy > 0 ? 1 : -1, n = cur() + dir;
-      if (n < 0 || n >= count) { if (!tDone) ty = null; else e.preventDefault(); return; }
-      e.preventDefault(); lastEv = performance.now();
-      if (!tDone && !locked && Math.abs(dy) > 30) { tDone = true; move(dir); }
-    }, { passive: false });
-    addEventListener("touchend", () => { ty = null; }, { passive: true });
+    const add = top => {
+      const m = document.createElement("div");
+      m.className = "snap-mark"; m.setAttribute("aria-hidden", "true");
+      m.style.top = top; el.appendChild(m);
+    };
+    add("0px");                                                            // entering the slider
+    for (let k = 0; k < count; k++) add(`calc((100% - 100svh) * ${(k + .5) / count})`);
+    add("100%");                                                           // leaving it: the next section's top
+    snapTracks.push(el);
   };
-  stepLock(hPin, hSlides.length, () => hPace.want());
-  cvs.forEach(c => stepLock(c.cv, c.count, () => c.p.want()));
-  stepLock(pin, frames.length, () => pinPace.want());
+  snapMarks(hPin, hSlides.length);
+  cvs.forEach(c => snapMarks(c.cv, c.count));
+  snapMarks(pin, frames.length);
+  /* Snapping is switched on only while a slider fills the screen, so the rest of the page scrolls freely. */
+  const root = document.documentElement;
+  const snapCheck = () => {
+    const on = snapTracks.some(el => {
+      if (!el.offsetParent) return false;
+      const r = el.getBoundingClientRect();
+      return r.top <= 1 && r.bottom >= innerHeight - 1;
+    });
+    root.classList.toggle("snap-on", on);
+  };
+  addEventListener("scroll", snapCheck, { passive: true });
+  addEventListener("resize", snapCheck);
+  snapCheck();
 
   /* ---- Inquiry form: posts to /api/inquiry (Cloudflare Pages Function), which emails the team ---- */
   const form = document.getElementById("inquiry"), msg = document.getElementById("formmsg");
