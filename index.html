@@ -3037,9 +3037,18 @@ with the subject line “Dispute Notice” and requesting a delivery confirmatio
   el.querySelector(".offer-x").addEventListener("click", close);
   addEventListener("click", e => { if (e.target.closest(".offer-btn")) close(); }, true);
   document.addEventListener("keydown", e => { if (e.key === "Escape" && shown && !done && !(quiz && quiz.classList.contains("open"))) close(); });
+  /* Show after 8 seconds on the site, or when the visitor is about to leave */
   setTimeout(show, 8000);
-  const onScroll = () => { if (scrollY > innerHeight * 1.5) { show(); removeEventListener("scroll", onScroll); } };
-  addEventListener("scroll", onScroll, { passive: true });
+  let armed = false; setTimeout(() => { armed = true; }, 3000);
+  /* Desktop: cursor heads out the top of the window (toward tabs, address bar or close) */
+  document.addEventListener("mouseout", e => { if (armed && !e.relatedTarget && e.clientY <= 0) show(); });
+  /* Phones: a quick flick back up the page usually means reaching for the address bar or back */
+  let lastY = scrollY, lastT = performance.now();
+  addEventListener("scroll", () => {
+    const now = performance.now(), dy = scrollY - lastY, dt = now - lastT;
+    if (armed && matchMedia("(hover: none)").matches && dy < -120 && dt < 160 && scrollY > innerHeight) show();
+    lastY = scrollY; lastT = now;
+  }, { passive: true });
   addEventListener("hashchange", () => { if (shown && !done && blocked()) hide(); else if (shown && !done) { el.classList.add("show"); el.setAttribute("aria-hidden", "false"); setFocusable(true); } });
 })();
 </script>
