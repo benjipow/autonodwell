@@ -33,7 +33,7 @@ function Header() {
   return (
     <header className="top">
       <div className="wrap bar">
-        <Link to="/" className="logo"><img src="/logo.png" alt="" width={38} height={36} />Autonodwell</Link>
+        <Link to="/" className="logo"><img src="/logo.svg" alt="" width={38} height={35} />Autonodwell</Link>
         <nav className="nav" aria-label="Primary">
           <NavLink to="/design/new">Design</NavLink>
           <NavLink to="/account">My homes</NavLink>
