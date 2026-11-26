@@ -806,6 +806,102 @@ html.snap-on{scroll-snap-type:y mandatory}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
 }
+
+/* ===== Lead gen offer pop-up ===== */
+.offer{position:fixed;right:clamp(14px,2.4vw,32px);bottom:clamp(14px,2.4vw,32px);z-index:90;width:min(340px,calc(100vw - 28px));background:#351E28;color:#E9F6FF;border-radius:18px;padding:38px 28px 26px;text-align:center;box-shadow:0 24px 60px rgba(18,18,18,.38);overflow:hidden;opacity:0;transform:translateY(24px) scale(.98);pointer-events:none;transition:opacity .5s var(--ease),transform .6s var(--ease);visibility:hidden}
+.offer.show{opacity:1;transform:none;pointer-events:auto;visibility:visible}
+.offer::before{content:"";position:absolute;left:50%;top:44%;width:340px;height:340px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,92,52,.55),rgba(255,92,52,.18) 42%,rgba(255,92,52,0) 70%);pointer-events:none}
+.offer::after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;background:linear-gradient(90deg,#FF5C34,#E9F056)}
+.offer-x{position:absolute;top:12px;right:12px;width:36px;height:36px;border:0;border-radius:50%;background:rgba(233,246,255,.08);color:#E9F6FF;cursor:pointer;display:grid;place-items:center;transition:background .25s}
+.offer-x:hover,.offer-x:focus-visible{background:rgba(233,246,255,.2)}
+.offer-eyebrow{position:relative;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#E9F056;margin:0 0 14px}
+.offer-t{position:relative;font-family:var(--display);font-weight:800;font-variation-settings:"wdth" 80;font-size:clamp(38px,4.4vw,48px);line-height:.92;letter-spacing:-.02em;text-transform:uppercase;color:#D7EFFF;margin:0 0 14px;text-shadow:0 4px 18px rgba(18,18,18,.55),0 2px 4px rgba(18,18,18,.4)}
+.offer-s{position:relative;font-family:var(--serif);font-size:21px;line-height:1.3;font-weight:330;color:rgba(233,246,255,.82);margin:0 0 24px}
+.offer-btn{position:relative;display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:15px 20px;border-radius:999px;background:#E9F056;color:#351E28;font-size:16px;font-weight:650;transition:background .25s,transform .25s}
+.offer-btn:hover,.offer-btn:focus-visible{background:#FF5C34;color:#fff;transform:translateY(-1px)}
+@media (max-width:560px){.offer{left:12px;right:12px;bottom:12px;width:auto;padding:28px 22px 22px}.offer-t{font-size:36px}.offer-s{font-size:19px;margin-bottom:18px}}
+@media (prefers-reduced-motion:reduce){.offer{transition:none}}
+
+/* ===== Offer flow: location squeeze page + signup page ===== */
+.offer-page{padding:clamp(120px,14vw,170px) 0 clamp(64px,8vw,120px)}
+.loc{max-width:760px;margin:0 auto;text-align:center}
+.loc h1{font-size:clamp(40px,5.6vw,80px);margin:14px 0 18px}
+.loc .lede{color:var(--mute);margin:0 auto 40px;max-width:36ch}
+.loc-form{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) auto;gap:16px;align-items:end;text-align:left;background:var(--ink-2);border:1px solid var(--line);border-radius:18px;padding:24px}
+.loc-form .cta{justify-content:center;padding:14px 22px;border-radius:999px;cursor:pointer;font:inherit;font-weight:600;font-size:15px}
+.loc-err{grid-column:1/-1;color:#b3341a;font-size:14px;min-height:0;margin:0}
+.loc-note{margin-top:22px;font-size:14px;color:var(--mute)}
+.signup{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:clamp(24px,4vw,56px);align-items:start}
+.deal{background:#351E28;color:#E9F6FF;border-radius:22px;padding:clamp(26px,3.4vw,44px);position:relative;overflow:hidden}
+.deal::before{content:"";position:absolute;left:50%;top:-120px;width:520px;height:520px;transform:translateX(-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,92,52,.42),rgba(255,92,52,0) 68%);pointer-events:none}
+.deal>*{position:relative}
+.deal .mono{color:#E9F056}
+.deal h1{font-family:var(--display);font-weight:800;font-variation-settings:"wdth" 80;font-size:clamp(40px,5vw,68px);line-height:.92;letter-spacing:-.02em;text-transform:uppercase;color:#D7EFFF;margin:12px 0 10px;text-shadow:0 4px 18px rgba(18,18,18,.55),0 2px 4px rgba(18,18,18,.4)}
+.deal .deal-sub{font-family:var(--serif);font-size:clamp(20px,2vw,26px);font-weight:330;color:rgba(233,246,255,.85);margin:0 0 24px}
+.ph{border:2px dashed rgba(233,246,255,.45);border-radius:14px;aspect-ratio:16/8;display:grid;place-items:center;text-align:center;padding:18px;margin:0 0 26px;background:rgba(233,246,255,.04)}
+.ph span{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:rgba(233,246,255,.7);line-height:1.8}
+.ph b{display:block;color:#E9F056;font-weight:600;font-size:13px}
+.deal h2{font-size:clamp(24px,2.4vw,32px);font-variation-settings:"wdth" 110;color:#E9F6FF;margin:0 0 12px;line-height:1.1}
+.deal p{color:rgba(233,246,255,.82);font-size:16.5px;margin:0 0 18px}
+.deal ul{list-style:none;padding:0;margin:0 0 22px;display:grid;gap:12px}
+.deal li{padding-left:28px;position:relative;font-size:15.5px;color:rgba(233,246,255,.86)}
+.deal li::before{content:"";position:absolute;left:0;top:.45em;width:14px;height:14px;border-radius:50%;background:#FF5C34;box-shadow:inset 0 0 0 4px #351E28,0 0 0 1px #FF5C34}
+.deal li b{color:#fff}
+.deal details{border-top:1px solid rgba(233,246,255,.16);padding-top:14px}
+.deal summary{cursor:pointer;font-weight:600;color:#E9F056;font-size:15px}
+.deal .fine{font-size:13px;line-height:1.55;color:rgba(233,246,255,.62);margin:12px 0 0}
+.deal .fine a,.consent a{text-decoration:underline;text-underline-offset:2px}
+.signup-card{border:1px solid var(--line);background:var(--ink-2);border-radius:22px;padding:clamp(24px,3vw,40px)}
+.signup-card h2{font-size:clamp(26px,2.6vw,36px);font-variation-settings:"wdth" 110;margin:0 0 6px}
+.signup-card>p{color:var(--mute);margin:0 0 22px;font-size:15.5px}
+.consent{display:flex;gap:12px;align-items:flex-start;font-family:var(--display);font-size:13px;line-height:1.55;letter-spacing:0;text-transform:none;color:var(--mute)}
+.consent input{width:18px;height:18px;margin-top:2px;flex:none;accent-color:#FF5C34}
+.signup .cta.fill{justify-content:center;border-radius:999px;padding:14px 22px;cursor:pointer;font:inherit;font-weight:600;font-size:15px}
+@media (max-width:900px){.loc-form{grid-template-columns:1fr}}
+.deal-block{border-top:1px solid rgba(233,246,255,.16);padding-top:26px;margin-top:26px}
+.deal-block:first-of-type{border-top:0;padding-top:0;margin-top:8px}
+.deal .tag{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#351E28;background:#E9F056;border-radius:999px;padding:5px 12px;margin:0 0 14px}
+.rate{background:rgba(233,246,255,.06);border:1px solid rgba(233,246,255,.16);border-radius:14px;padding:16px 18px}
+.rate p{margin:0;font-size:15.5px}
+.deal .rate-big{font-family:var(--display);font-weight:800;font-variation-settings:"wdth" 85;font-size:clamp(30px,3vw,40px);line-height:1;color:#D7EFFF;margin:0 0 8px}
+.rate-big small{font-size:.42em;font-weight:600;color:rgba(233,246,255,.75);letter-spacing:0}
+.deal .rate-or{text-align:center;font-family:var(--serif);font-style:italic;font-size:18px;margin:10px 0}
+.deal details{margin-top:18px}
+.signup-card{position:sticky;top:96px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.ph-btn{width:100%;font:inherit;color:inherit;cursor:pointer;position:relative;overflow:hidden;transition:border-color .3s,background .3s}
+.ph-btn .ph-label{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:rgba(233,246,255,.7);line-height:1.8;transition:opacity .3s}
+.ph-btn .ph-label b{display:block;color:#E9F056;font-weight:600;font-size:13px}
+.ph .ph-hover{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:rgba(53,30,40,.9);border-radius:12px;font-family:var(--display);font-weight:700;font-size:22px;letter-spacing:0;text-transform:none;line-height:1;color:#E9F056;opacity:0;transition:opacity .3s}
+.ph-hover svg{animation:ph-bob 1.2s ease-in-out infinite}
+@keyframes ph-bob{50%{transform:translateY(5px)}}
+.ph-btn:hover,.ph-btn:focus-visible{border-color:#E9F056;outline:none}
+.ph-btn:hover .ph-hover,.ph-btn:focus-visible .ph-hover{opacity:1}.ph-btn:hover .ph-label,.ph-btn:focus-visible .ph-label{opacity:0}
+.ph-btn[aria-expanded="true"] .ph-hover{display:none}.ph-btn[aria-expanded="true"]:hover .ph-label{opacity:1}
+.ph .ph-picked{position:absolute;top:12px;right:12px;z-index:1;background:#E9F056;color:#351E28;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;line-height:1.2;border-radius:999px;padding:6px 11px;display:none}
+.ph-btn.picked .ph-picked{display:block}
+.deal .ph-btn{margin-bottom:0}
+.deal-body{display:grid;grid-template-rows:0fr;transition:grid-template-rows .5s var(--ease)}
+.deal-body.open{grid-template-rows:1fr}
+.deal-inner{overflow:hidden;min-height:0}
+.deal-body.open .deal-inner{padding-top:22px}
+.deal-body:not(.open) .deal-inner{visibility:hidden;transition:visibility 0s .5s}
+.pick-row{display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;margin-top:22px;padding-top:20px;border-top:1px solid rgba(233,246,255,.16)}
+.pick{display:flex;align-items:center;gap:14px;cursor:pointer;font-family:var(--display);font-size:18px;font-weight:650;letter-spacing:0;text-transform:none;color:#fff}
+.pick input{position:absolute;opacity:0;width:1px;height:1px}
+.pick-box{width:36px;height:36px;flex:none;border-radius:10px;border:2px solid #E9F056;display:grid;place-items:center;transition:background .2s}
+.pick-box::after{content:"";width:14px;height:8px;border-left:3px solid #351E28;border-bottom:3px solid #351E28;transform:rotate(-45deg) translate(1px,-2px);opacity:0}
+.pick input:checked+.pick-box{background:#E9F056}
+.pick input:checked+.pick-box::after{opacity:1}
+.pick input:focus-visible+.pick-box{box-shadow:0 0 0 3px rgba(233,240,86,.45)}
+.collapse{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid rgba(233,246,255,.35);color:#E9F6FF;border-radius:999px;padding:10px 16px;font:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:background .2s}
+.collapse:hover,.collapse:focus-visible{background:rgba(233,246,255,.12)}
+.picked-list{grid-column:1/-1;margin:0;font-size:14px;color:var(--mute)}
+.picked-list b{color:var(--bone)}
+@media (prefers-reduced-motion:reduce){.deal-body,.ph-hover svg{transition:none;animation:none}}
+
+@media (max-width:760px){.signup{grid-template-columns:1fr}.signup-card{position:static}}
+
 </style>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Organization", "name": "Autonodwell", "url": "https://www.autonodwell.com", "logo": "https://www.autonodwell.com/logo.png", "description": "Autonodwell is a homebuilding platform connecting family budgets to custom home design, land, and financing in one seamless process."}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is the price real?", "acceptedAnswer": {"@type": "Answer", "text": "The first number is a preliminary, all-in budget, not a quote. It covers land, site work, the house, design, permits, utility connections, financing costs and contingency, and shows the assumptions behind each. As the design and site are confirmed, the price breakdown shows which amounts are quoted, which are still allowances, and what’s excluded."}}, {"@type": "Question", "name": "I don’t even know where to start. What do I do first?", "acceptedAnswer": {"@type": "Answer", "text": "Answer two questions: do you have land, and do you know your budget? “I don’t know yet” works for both. If you need help with both, we start with a budget range and use it to guide the lot search. Exploring homes and getting a starting range is free."}}, {"@type": "Question", "name": "Can I afford the monthly payment and still have room to live?", "acceptedAnswer": {"@type": "Answer", "text": "Start with the monthly payment you’re comfortable with, not the house. Your budget shapes the home from the first step, and you see the full monthly cost and cash needed alongside the purchase price. A preliminary estimate is not mortgage preapproval; your lender confirms what you can borrow."}}, {"@type": "Question", "name": "Where can I actually build this?", "acceptedAnswer": {"@type": "Answer", "text": "If you own a lot or are looking at one, we check what could fit there before you commit: zoning, setbacks, easements, access, slope, hazards and utilities. If you need land, your budget sets the lot price range for your search."}}, {"@type": "Question", "name": "Will a bank finance it?", "acceptedAnswer": {"@type": "Answer", "text": "Construction financing comes through participating lenders, who check your borrowing capacity early and explain how construction loans work. If you own land, they check whether its equity can count. Before work starts, the lender reviews the plans, contract, appraisal and draw schedule. Lenders make their own credit decisions."}}, {"@type": "Question", "name": "What happens if construction costs go up?", "acceptedAnswer": {"@type": "Answer", "text": "The budget includes contingency, and early pricing happens before you pay for a full drawing set. If an estimate runs over budget, we revise the home or revisit the lot first. The final construction contract sets out what’s quoted, what’s still an allowance, and what’s excluded, so you can see where costs could still move."}}, {"@type": "Question", "name": "How long will it take?", "acceptedAnswer": {"@type": "Answer", "text": "It depends mostly on the lot, permits and financing. We don’t promise a timeline we can’t control. At each step you see what’s cleared, what’s holding up the start date, and what comes next."}}, {"@type": "Question", "name": "Who is responsible if something goes wrong?", "acceptedAnswer": {"@type": "Answer", "text": "Each stage has a named professional team: the architect or designer for the drawings, engineers for structure and systems, the general contractor for construction, trades and change orders, and the lender for financing and draws. You see who’s involved at every step, and you get warranties, manuals and maintenance information at move-in."}}, {"@type": "Question", "name": "Is this manufactured housing?", "acceptedAnswer": {"@type": "Answer", "text": "No. Manufactured homes are built entirely in a factory and delivered on a chassis. Our homes are designed for your lot, built there by local builders, and go through local plan review and permits. We use prefabrication where it helps: a pre-cut kit of parts with easy-to-follow assembly instructions. That saves time, labor and waste without cutting quality, and it brings back craft, like curved walls that would usually cost too much. Local framers, drywall, cabinetry and finish trades can bid on each project, so prices stay competitive."}}, {"@type": "Question", "name": "Can I customize it?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, within a thoughtful range. You choose a layout that fits your lot and budget, then a curated set of finishes and materials. Each choice shows how it changes the cost, so you can see the tradeoff as you make it."}}, {"@type": "Question", "name": "What does the deposit commit me to?", "acceptedAnswer": {"@type": "Answer", "text": "Nothing today. Exploring homes and joining early access is free, and it isn’t a reservation, deposit or purchase commitment. Any future agreement would spell out what it covers, what’s refundable, and what happens next before you sign."}}, {"@type": "Question", "name": "Do I need a big house to make this work?", "acceptedAnswer": {"@type": "Answer", "text": "No. The collection starts with a thoughtfully designed starter home, about 1,100 square feet with three bedrooms and two baths. Built for daylight, function and room for family life, not size for its own sake."}}, {"@type": "Question", "name": "Every time we save more, prices go up. Is homeownership still realistic?", "acceptedAnswer": {"@type": "Answer", "text": "Prices have outpaced wages for decades, and that isn’t your fault. Starting from what you can afford, seeing real costs early, and choosing a home sized for how you live can turn “I could never” into a realistic next step."}}, {"@type": "Question", "name": "How do lenders fit into the Autonodwell process?", "acceptedAnswer": {"@type": "Answer", "text": "From the first step. The lender checks borrowing capacity, explains construction financing and checks whether owned land can count as equity. Before construction, the lender reviews the plans, contract, appraisal and draw schedule, and at the end handles any final draw or loan conversion."}}, {"@type": "Question", "name": "What project information can a lender or underwriter expect?", "acceptedAnswer": {"@type": "Answer", "text": "An all-in budget, a lot feasibility screen, drawings, a construction contract and a price breakdown that separates quoted amounts from allowances and exclusions. We want to shape this package with lenders. Autonodwell outputs have not yet been validated by a lender for underwriting."}}, {"@type": "Question", "name": "When do builders and contractors get involved?", "acceptedAnswer": {"@type": "Answer", "text": "Early. The contractor or estimator prices the house and site work while the home is being fitted to the lot, then gathers trade bids, reconciles them with the estimate and finalizes the contract as scope is confirmed. During construction, the contractor manages trades, change orders and draw requests."}}, {"@type": "Question", "name": "What does the feasibility lead or architect do?", "acceptedAnswer": {"@type": "Answer", "text": "The feasibility lead screens a lot before purchase: zoning, setbacks, easements, access, slope, hazards and utilities, plus the likely approval path. The architect or designer tests the home on the site, develops the drawings, and often leads permit submissions and responses."}}, {"@type": "Question", "name": "How are trades such as plumbers involved?", "acceptedAnswer": {"@type": "Answer", "text": "A plumber can advise during design when sewer routing, connection costs or fixture placement could affect it. On site, the plumber typically handles below-slab work if needed, rough-in before walls close, and final fixtures."}}, {"@type": "Question", "name": "How does Autonodwell reduce scope ambiguity before work begins?", "acceptedAnswer": {"@type": "Answer", "text": "Budget and lot are checked before a home is picked, the home is priced on its actual site before full drawings, and the final price separates quoted amounts, allowances and exclusions. If an estimate exceeds the budget, the home or the lot is revisited first."}}, {"@type": "Question", "name": "How is Autonodwell approaching capital?", "acceptedAnswer": {"@type": "Answer", "text": "We’re starting with the information, financing and delivery bottlenecks, not with an oversized factory. Capital is deployed against milestones, with a clear account of what has and hasn’t been proven yet."}}, {"@type": "Question", "name": "Can developers or landowners bring a site?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Sites go through the same feasibility screen, and the delivery system is tested on individual homes before larger programs."}}, {"@type": "Question", "name": "How do I start a conversation?", "acceptedAnswer": {"@type": "Answer", "text": "Use the inquiry form on this page and choose the option that describes you. We’ll follow up by email."}}]}</script>
@@ -1535,6 +1631,106 @@ html.snap-on{scroll-snap-type:y mandatory}
   </section>
 </article>
 
+
+<article class="page" id="page-offers" data-title="Exclusive offers near you · Autonodwell">
+  <section class="offer-page">
+    <div class="wrap">
+      <div class="loc">
+        <span class="mono">Autonodwell offers</span>
+        <h1 class="display">Select a location to see local offers.</h1>
+        <p class="lede">Offers and rates vary by market. Tell us where you plan to build and we’ll show you what’s available.</p>
+        <form class="loc-form" id="loc-form" novalidate>
+          <label for="loc-state">State<select id="loc-state" name="state" required><option value="">Select a state</option><option value="Alabama">Alabama</option><option value="Alaska">Alaska</option><option value="Arizona">Arizona</option><option value="Arkansas">Arkansas</option><option value="California">California</option><option value="Colorado">Colorado</option><option value="Connecticut">Connecticut</option><option value="Delaware">Delaware</option><option value="District of Columbia">District of Columbia</option><option value="Florida">Florida</option><option value="Georgia">Georgia</option><option value="Hawaii">Hawaii</option><option value="Idaho">Idaho</option><option value="Illinois">Illinois</option><option value="Indiana">Indiana</option><option value="Iowa">Iowa</option><option value="Kansas">Kansas</option><option value="Kentucky">Kentucky</option><option value="Louisiana">Louisiana</option><option value="Maine">Maine</option><option value="Maryland">Maryland</option><option value="Massachusetts">Massachusetts</option><option value="Michigan">Michigan</option><option value="Minnesota">Minnesota</option><option value="Mississippi">Mississippi</option><option value="Missouri">Missouri</option><option value="Montana">Montana</option><option value="Nebraska">Nebraska</option><option value="Nevada">Nevada</option><option value="New Hampshire">New Hampshire</option><option value="New Jersey">New Jersey</option><option value="New Mexico">New Mexico</option><option value="New York">New York</option><option value="North Carolina">North Carolina</option><option value="North Dakota">North Dakota</option><option value="Ohio">Ohio</option><option value="Oklahoma">Oklahoma</option><option value="Oregon">Oregon</option><option value="Pennsylvania">Pennsylvania</option><option value="Rhode Island">Rhode Island</option><option value="South Carolina">South Carolina</option><option value="South Dakota">South Dakota</option><option value="Tennessee">Tennessee</option><option value="Texas">Texas</option><option value="Utah">Utah</option><option value="Vermont">Vermont</option><option value="Virginia">Virginia</option><option value="Washington">Washington</option><option value="West Virginia">West Virginia</option><option value="Wisconsin">Wisconsin</option><option value="Wyoming">Wyoming</option></select></label>
+          <label for="loc-zip">ZIP code<input id="loc-zip" name="zip" inputmode="numeric" autocomplete="postal-code" maxlength="5" pattern="[0-9]{5}" placeholder="e.g. 94110" required></label>
+          <button class="cta fill" type="submit">See offers</button>
+          <p class="loc-err" id="loc-err" role="alert"></p>
+        </form>
+        <p class="loc-note">We only use your location to match you with offers in your area. See our <a href="#privacy" data-route="privacy">Privacy policy</a>.</p>
+      </div>
+    </div>
+  </section>
+</article>
+
+<article class="page" id="page-offer-signup" data-title="Get exclusive rates · Autonodwell">
+  <section class="offer-page">
+    <div class="wrap">
+      <div class="signup">
+        <div class="deal">
+          <span class="mono" id="deal-where">Exclusive offer</span>
+          <h1>Get Exclusive Rates</h1>
+          <p class="deal-sub">Limited Offers Near You</p>
+          <section class="deal-block" aria-labelledby="fpr-h">
+            <button type="button" class="ph ph-btn" aria-expanded="false" aria-controls="body-fpr" data-offer-toggle><span class="ph-label">Placeholder<b>Architecture floor plan review</b></span><span class="ph-hover" aria-hidden="true">View Offer<svg viewBox="0 0 16 20" width="14" height="18"><path d="M8 0v17M2 11l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2"/></svg></span><span class="ph-picked" aria-hidden="true">✓ Selected</span><span class="sr-only">View offer: Architecture floor plan review</span></button><div class="deal-body" id="body-fpr"><div class="deal-inner">
+            <span class="tag">Offer 1 · Floor plan review</span>
+            <h2 id="fpr-h">See your floor plan through an architect’s eyes, before you build.</h2>
+            <p>The biggest savings on a home happen before construction starts. Sign up to receive an exclusive rate on a one-on-one architecture floor plan review, where an architect studies your plan the way a builder and a lender will: how it lives, what it takes to build, and where it can be simpler.</p>
+            <ul>
+              <li><b>Insight before design.</b> We start with how you live, who shares the home and what success looks like to you, then measure the plan against it.</li>
+              <li><b>Buildability check.</b> Spans, wall layouts and details that quietly drive up cost or schedule get flagged early, while changes are still cheap.</li>
+              <li><b>Cost-smart changes.</b> Practical edits that keep the feel of the home and trim what it takes to build.</li>
+              <li><b>Ready for your estimate.</b> Your review notes carry into your Autonodwell price estimate, so design and budget stay in step.</li>
+            </ul>
+            <details>
+              <summary>See offer details</summary>
+              <p class="fine">Exclusive rates apply to the architecture floor plan review only, are available for a limited time and in limited markets, and vary by location. Your rate is confirmed in writing before any work begins, and signing up does not commit you to purchase. The review is design guidance. It is not construction-ready plans, a binding construction quote or mortgage preapproval. Autonodwell may change or end this offer at any time. Use of this offer is governed by our <a href="#terms" data-route="terms">Terms of service</a> and <a href="#privacy" data-route="privacy">Privacy policy</a>.</p>
+            </details>
+          <div class="pick-row"><label class="pick" for="pick-fpr"><input type="checkbox" id="pick-fpr" name="offers" value="Architecture floor plan review" form="offer-form" data-offer-pick><span class="pick-box" aria-hidden="true"></span><span>I’m interested in this offer</span></label><button type="button" class="collapse" data-offer-collapse>Collapse offer<svg viewBox="0 0 16 20" width="12" height="15" aria-hidden="true"><path d="M8 20V3M2 9l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg></button></div></div></div>
+          </section>
+          <section class="deal-block" aria-labelledby="rate-h">
+            <button type="button" class="ph ph-btn" aria-expanded="false" aria-controls="body-rate" data-offer-toggle><span class="ph-label">Placeholder<b>Low mortgage rate special</b></span><span class="ph-hover" aria-hidden="true">View Offer<svg viewBox="0 0 16 20" width="14" height="18"><path d="M8 0v17M2 11l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2"/></svg></span><span class="ph-picked" aria-hidden="true">✓ Selected</span><span class="sr-only">View offer: Low mortgage rate special</span></button><div class="deal-body" id="body-rate"><div class="deal-inner">
+            <span class="tag">Offer 2 · Low mortgage rate special</span>
+            <h2 id="rate-h">Black Friday is on now.</h2>
+            <p>Discover your dream home in time for the holidays with a special promotional rate.</p>
+            <div class="rate">
+              <p class="rate-big">X.XXX% <small>(X.XXX% APR)¹</small></p>
+              <p>Promotional FHA 5/1 ARM, plus up to $X,XXX in closing costs² and up to a $XX,XXX price reduction³</p>
+            </div>
+            <p class="rate-or">or</p>
+            <div class="rate">
+              <p class="rate-big">X.XXX% <small>(X.XXX% APR)⁴</small></p>
+              <p>Promotional FHA fixed rate, plus up to $X,XXX in closing costs² and up to a $XX,XXX price reduction³</p>
+            </div>
+            <details>
+              <summary>See details</summary>
+              <p class="fine">¹ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+              <p class="fine">² Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+              <p class="fine">³ Curabitur pretium tincidunt lacus, nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit.</p>
+              <p class="fine">⁴ Integer nec odio praesent libero, sed cursus ante dapibus diam. Sed nisi nulla quis sem at nibh elementum imperdiet.</p>
+            </details>
+          <div class="pick-row"><label class="pick" for="pick-rate"><input type="checkbox" id="pick-rate" name="offers" value="Low mortgage rate special" form="offer-form" data-offer-pick><span class="pick-box" aria-hidden="true"></span><span>I’m interested in this offer</span></label><button type="button" class="collapse" data-offer-collapse>Collapse offer<svg viewBox="0 0 16 20" width="12" height="15" aria-hidden="true"><path d="M8 20V3M2 9l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2"/></svg></button></div></div></div>
+          </section>
+        </div>
+        <div class="signup-card">
+          <h2>Claim your exclusive rate</h2>
+          <p>Tell us a little about you and we’ll follow up with your local offer.</p>
+          <form class="inquiry" id="offer-form" novalidate>
+            <label for="o-name" class="full">Full name<input id="o-name" name="name" autocomplete="name" required></label>
+            <label for="o-email">Email address<input id="o-email" name="email" type="email" autocomplete="email" required></label>
+            <label for="o-phone">Phone number<input id="o-phone" name="phone" type="tel" autocomplete="tel" placeholder="(555) 555-5555"></label>
+            <label for="o-state">State<select id="o-state" name="state" required><option value="">Select a state</option><option value="Alabama">Alabama</option><option value="Alaska">Alaska</option><option value="Arizona">Arizona</option><option value="Arkansas">Arkansas</option><option value="California">California</option><option value="Colorado">Colorado</option><option value="Connecticut">Connecticut</option><option value="Delaware">Delaware</option><option value="District of Columbia">District of Columbia</option><option value="Florida">Florida</option><option value="Georgia">Georgia</option><option value="Hawaii">Hawaii</option><option value="Idaho">Idaho</option><option value="Illinois">Illinois</option><option value="Indiana">Indiana</option><option value="Iowa">Iowa</option><option value="Kansas">Kansas</option><option value="Kentucky">Kentucky</option><option value="Louisiana">Louisiana</option><option value="Maine">Maine</option><option value="Maryland">Maryland</option><option value="Massachusetts">Massachusetts</option><option value="Michigan">Michigan</option><option value="Minnesota">Minnesota</option><option value="Mississippi">Mississippi</option><option value="Missouri">Missouri</option><option value="Montana">Montana</option><option value="Nebraska">Nebraska</option><option value="Nevada">Nevada</option><option value="New Hampshire">New Hampshire</option><option value="New Jersey">New Jersey</option><option value="New Mexico">New Mexico</option><option value="New York">New York</option><option value="North Carolina">North Carolina</option><option value="North Dakota">North Dakota</option><option value="Ohio">Ohio</option><option value="Oklahoma">Oklahoma</option><option value="Oregon">Oregon</option><option value="Pennsylvania">Pennsylvania</option><option value="Rhode Island">Rhode Island</option><option value="South Carolina">South Carolina</option><option value="South Dakota">South Dakota</option><option value="Tennessee">Tennessee</option><option value="Texas">Texas</option><option value="Utah">Utah</option><option value="Vermont">Vermont</option><option value="Virginia">Virginia</option><option value="Washington">Washington</option><option value="West Virginia">West Virginia</option><option value="Wisconsin">Wisconsin</option><option value="Wyoming">Wyoming</option></select></label>
+            <label for="o-zip">ZIP code<input id="o-zip" name="zip" inputmode="numeric" autocomplete="postal-code" maxlength="5" required></label>
+            <label for="o-when" class="full">When are you looking to build?
+              <select id="o-when" name="when">
+                <option>As soon as possible</option>
+                <option>In 3 to 6 months</option>
+                <option>In 6 to 12 months</option>
+                <option>In 12 months or more</option>
+                <option>Just exploring</option>
+              </select>
+            </label>
+            <label for="o-msg" class="full">What can we help you with? (optional)<textarea id="o-msg" name="message" placeholder="Tell us about your plan, lot or questions"></textarea></label>
+            <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden"><label for="o-website">Website<input id="o-website" name="website" tabindex="-1" autocomplete="off"></label></div>
+            <p class="picked-list" id="picked-list" aria-live="polite">Offers selected: <b>none yet</b>. Open an offer on the left and check the box to add it.</p>
+            <label class="consent full" for="o-consent"><input type="checkbox" id="o-consent" name="consent" required><span>I agree that Autonodwell may contact me by email or phone about the offers I selected and related services, as described in the <a href="#privacy" data-route="privacy">Privacy policy</a>, and I agree to the <a href="#terms" data-route="terms">Terms of service</a>. I can ask Autonodwell to stop contacting me or to remove my information at any time through the inquiry form. Agreeing is not a condition of any purchase.</span></label>
+            <div class="full"><button class="cta fill" type="submit" style="width:100%">Claim my exclusive rate</button></div>
+            <p class="formmsg" id="offer-msg" role="status"></p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</article>
+
 <article class="page" id="page-privacy" data-title="Privacy policy · Autonodwell">
   <section class="legal-page">
     <div class="wrap">
@@ -1798,7 +1994,7 @@ with the subject line “Dispute Notice” and requesting a delivery confirmatio
 
 <script>
 (() => {
-  const routes = ["home","how-it-works","vision","partner","privacy","terms"];
+  const routes = ["home","how-it-works","vision","partner","privacy","terms","offers","offer-signup"];
   const hdr = document.getElementById("hdr");
   const burger = document.getElementById("burger");
   const menu = document.getElementById("mobile-menu");
@@ -2816,5 +3012,113 @@ with the subject line “Dispute Notice” and requesting a delivery confirmatio
 })();
 </script>
 
+
+<aside class="offer" id="offer" aria-labelledby="offer-t" aria-hidden="true">
+  <button class="offer-x" type="button" aria-label="Close offer"><svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.8" fill="none"/></svg></button>
+  <p class="offer-eyebrow">Autonodwell offers</p>
+  <h2 class="offer-t" id="offer-t">Get Exclusive Rates</h2>
+  <p class="offer-s">Limited Offers Near You</p>
+  <a class="offer-btn" href="#offers" data-route="offers">View Offer<svg viewBox="0 0 20 12" width="18" height="11" aria-hidden="true"><path d="M0 6h17M12 1l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></a>
+</aside>
+<script>
+(() => {
+  const el = document.getElementById("offer"); if (!el) return;
+  const KEY = "autonodwell-offer-closed";
+  const read = () => { try { return sessionStorage.getItem(KEY); } catch { return null; } };
+  const save = () => { try { sessionStorage.setItem(KEY, "1"); } catch {} };
+  const quiz = document.getElementById("quiz");
+  const blocked = () => ["privacy", "terms", "offers", "offer-signup"].includes(location.hash.slice(1)) || (quiz && quiz.classList.contains("open"));
+  let shown = false, done = !!read();
+  const setFocusable = on => el.querySelectorAll("a,button").forEach(n => on ? n.removeAttribute("tabindex") : n.setAttribute("tabindex", "-1"));
+  const show = () => { if (done || shown || blocked()) return; shown = true; el.classList.add("show"); el.setAttribute("aria-hidden", "false"); setFocusable(true); };
+  const hide = () => { el.classList.remove("show"); el.setAttribute("aria-hidden", "true"); setFocusable(false); };
+  const close = () => { done = true; save(); hide(); };
+  setFocusable(false);
+  el.querySelector(".offer-x").addEventListener("click", close);
+  addEventListener("click", e => { if (e.target.closest(".offer-btn")) close(); }, true);
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && shown && !done && !(quiz && quiz.classList.contains("open"))) close(); });
+  setTimeout(show, 8000);
+  const onScroll = () => { if (scrollY > innerHeight * 1.5) { show(); removeEventListener("scroll", onScroll); } };
+  addEventListener("scroll", onScroll, { passive: true });
+  addEventListener("hashchange", () => { if (shown && !done && blocked()) hide(); else if (shown && !done) { el.classList.add("show"); el.setAttribute("aria-hidden", "false"); setFocusable(true); } });
+})();
+</script>
+
+<script>
+(() => {
+  const KEY = "autonodwell-offer-loc";
+  const get = () => { try { return JSON.parse(sessionStorage.getItem(KEY) || "{}"); } catch { return {}; } };
+  const put = v => { try { sessionStorage.setItem(KEY, JSON.stringify(v)); } catch {} };
+  const lf = document.getElementById("loc-form"), err = document.getElementById("loc-err");
+  const zipOk = z => /^\d{5}$/.test(z);
+  ["loc-zip", "o-zip"].forEach(id => { const z = document.getElementById(id); z && z.addEventListener("input", () => { z.value = z.value.replace(/\D/g, "").slice(0, 5); }); });
+  const fill = () => {
+    const v = get(), where = document.getElementById("deal-where");
+    if (v.state) document.getElementById("o-state").value = v.state;
+    if (v.zip) document.getElementById("o-zip").value = v.zip;
+    where.textContent = v.state ? `Exclusive offer · ${v.state}${v.zip ? " " + v.zip : ""}` : "Exclusive offer";
+    if (v.state) document.getElementById("loc-state").value = v.state;
+    if (v.zip) document.getElementById("loc-zip").value = v.zip;
+  };
+  fill();
+  addEventListener("hashchange", fill);
+  lf.addEventListener("input", () => { err.textContent = ""; });
+  lf.addEventListener("submit", e => {
+    e.preventDefault();
+    const state = lf.state.value, zip = lf.zip.value.trim();
+    if (!state) { err.textContent = "Choose a state to see offers."; lf.state.focus(); return; }
+    if (!zipOk(zip)) { err.textContent = "Enter a 5-digit ZIP code."; lf.zip.focus(); return; }
+    err.textContent = ""; put({ state, zip }); fill();
+    location.hash = "offer-signup";
+  });
+
+
+  const pickList = document.getElementById("picked-list");
+  const picks = [...document.querySelectorAll("[data-offer-pick]")];
+  const picked = () => picks.filter(c => c.checked).map(c => c.value);
+  const syncPicks = () => {
+    picks.forEach(c => c.closest(".deal-block").querySelector(".ph-btn").classList.toggle("picked", c.checked));
+    const v = picked();
+    pickList.innerHTML = v.length ? "Offers selected: <b>" + v.join(" and ") + "</b>" : "Offers selected: <b>none yet</b>. Open an offer on the left and check the box to add it.";
+  };
+  picks.forEach(c => c.addEventListener("change", syncPicks));
+  const setOpen = (block, open) => {
+    const btn = block.querySelector("[data-offer-toggle]"), body = block.querySelector(".deal-body");
+    btn.setAttribute("aria-expanded", String(open)); body.classList.toggle("open", open);
+  };
+  document.querySelectorAll("[data-offer-toggle]").forEach(b => b.addEventListener("click", () => setOpen(b.closest(".deal-block"), b.getAttribute("aria-expanded") !== "true")));
+  document.querySelectorAll("[data-offer-collapse]").forEach(b => b.addEventListener("click", () => {
+    const block = b.closest(".deal-block"); setOpen(block, false);
+    const t = block.querySelector("[data-offer-toggle]"); t.focus({ preventScroll: true });
+    const top = block.getBoundingClientRect().top + scrollY - 110; if (top < scrollY) scrollTo({ top, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  }));
+  const f = document.getElementById("offer-form"), msg = document.getElementById("offer-msg");
+  const btn = f.querySelector('button[type="submit"]');
+  const say = t => { msg.textContent = t; msg.classList.add("show"); };
+  f.addEventListener("submit", async e => {
+    e.preventDefault();
+    const name = f.name.value.trim(), email = f.email.value.trim(), state = f.state.value, zip = f.zip.value.trim();
+    if (!name || !/^\S+@\S+\.\S+$/.test(email)) { say("Add your full name and a valid email address."); return; }
+    if (!state || !zipOk(zip)) { say("Add your state and a 5-digit ZIP code so we can match your local offer."); return; }
+    if (!picked().length) { say("Choose at least one offer: open an offer on the left and check “I’m interested in this offer.”"); return; }
+    if (!f.consent.checked) { say("Please check the box to agree to be contacted about this offer."); return; }
+    if (/claudeusercontent\.com$|^$/.test(location.hostname) || location.protocol === "file:") {
+      say("This is a preview, so nothing was sent. On the live site this form sends your request to the Autonodwell team.");
+      return;
+    }
+    btn.disabled = true; const label = btn.textContent; btn.textContent = "Sending…";
+    const phone = f.phone.value.trim(), notes = f.message.value.trim();
+    const message = [`Offers selected: ${picked().join(", ")}`, `Phone: ${phone || "-"}`, `State: ${state}`, `ZIP: ${zip}`, `Timeline: ${f.when.value}`, `Consent to contact: yes`, "", notes || "(no message)"].join("\n");
+    try {
+      const res = await fetch("/api/inquiry", { method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, type: "Exclusive offers signup", location: `${zip}, ${state}`, org: "", message, website: f.website.value }) });
+      const out = await res.json().catch(() => ({}));
+      if (res.ok && out.ok) { f.reset(); picks.forEach(c => c.checked = false); syncPicks(); fill(); say("Thanks, " + name.split(" ")[0] + ". Your request is in. We’ll follow up by email with your local offer."); }
+      else say("Sorry, your request didn’t go through. Please try again in a moment.");
+    } catch { say("Sorry, your request didn’t go through. Check your connection and try again."); }
+    finally { btn.disabled = false; btn.textContent = label; }
+  });
+})();
+</script>
 </body>
 </html>

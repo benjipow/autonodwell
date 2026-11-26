@@ -8,6 +8,7 @@
 
 const TYPES = [
   "Dream home questionnaire",
+  "Exclusive offers signup",
   "Future homeowner: early access",
   "Investor",
   "Lender or underwriter",
