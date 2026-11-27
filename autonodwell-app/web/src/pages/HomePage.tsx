@@ -3,6 +3,8 @@ import { useAppData } from '../AppData'
 import { ModelMedia } from '../components/ModelMedia'
 import { baths, usd } from '../lib/format'
 import { styles } from '../lib/styles'
+import { JOURNEY } from '../lib/journey'
+import { Marker } from '../components/Marker'
 
 const STEPS = [
   ['01', 'Start', 'Share your land and your budget. Either answer can be “I don’t know yet.”'],
@@ -27,8 +29,11 @@ export default function HomePage() {
       </section>
 
       <ol className="step-strip">
-        {STEPS.map(([n, t, d]) => (
-          <li key={n}><span className="mono accent">Step {n}</span><h3>{t}</h3><p className="dim">{d}</p></li>
+        {STEPS.map(([n, t, d], i) => (
+          <li key={n} className={`sheet tone-${JOURNEY[i].tone}`}>
+            <div className="sheet-head"><span className="callout-mark"><b>{n}</b><i>Step</i></span><Marker name={JOURNEY[i].marker} size={40} /></div>
+            <h3>{t}</h3><p>{d}</p>
+          </li>
         ))}
       </ol>
 

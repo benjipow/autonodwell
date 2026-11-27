@@ -7,6 +7,8 @@
  *  05 Understand    — full estimate, then "Review with a consultant" (creates the sales lead)
  * All numbers come from the API's estimator; this file only displays them.
  */
+import { Marker } from '../../components/Marker'
+import { JOURNEY } from '../../lib/journey'
 import { Fragment, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { track } from '../../analytics'
@@ -40,36 +42,6 @@ const BUDGET_CHOICES: { value: BudgetMode; label: string }[] = [
 type AskId = 'zip' | 'land' | 'lot' | 'budget' | 'amount' | 'result'
 
 const hasLot = (land: LandStatus | null) => land === 'own_lot' || land === 'looking_at_lot'
-
-/**
- * Step 1 answers handed over from the marketing site's questionnaire
- * (autonodwell.com → /design/new?zip=…&land=…&budget=…). Dollar amounts are whole dollars.
- * The customer lands on the "Here's your starting point" card and continues with the normal
- * flow: "Pick your home" creates the design (POST /designs) exactly as if they had answered here.
- */
-type Prefill = {
-  zip: string; land: LandStatus | null; mode: BudgetMode | null; address: string
-  total: number | null; monthly: number | null; cash: number | null; lotPrice: number | null
-}
-function prefillFromUrl(): Prefill | null {
-  const q = new URLSearchParams(window.location.search)
-  if (!q.has('land') && !q.has('budget') && !q.has('zip')) return null
-  const cents = (k: string) => {
-    const v = q.get(k)
-    return v && /^\d{1,8}$/.test(v) ? Math.min(Number(v), MAX_DOLLARS) * 100 : null
-  }
-  const land = LAND_CHOICES.find((c) => c.value === q.get('land'))?.value ?? null
-  const mode = BUDGET_CHOICES.find((c) => c.value === q.get('budget'))?.value ?? null
-  const m = cents('monthly')
-  const monthly = m == null ? null
-    : Math.min(BUDGET.max, Math.max(BUDGET.min, Math.round(m / BUDGET.step) * BUDGET.step))
-  return {
-    zip: /^\d{5}$/.test(q.get('zip') ?? '') ? q.get('zip')! : '',
-    land, mode,
-    address: (q.get('address') ?? '').slice(0, 200),
-    total: cents('total'), monthly, cash: cents('cash'), lotPrice: cents('lot_price'),
-  }
-}
 
 /** Cards that don't apply to the current answers are left out. */
 function askSequence(land: LandStatus | null, mode: BudgetMode | null): AskId[] {
@@ -163,18 +135,6 @@ export default function DesignFlow() {
       setStyle('pop')
       setStories(1)
       setAsk('zip')
-      const pre = prefillFromUrl()
-      if (pre) {
-        setZip(pre.zip)
-        setLandStatus(pre.land)
-        setBudgetMode(pre.mode)
-        setSiteAddress(hasLot(pre.land) ? pre.address : '')
-        setLotPriceCents(pre.land === 'looking_at_lot' ? pre.lotPrice : null)
-        setTotalCents(pre.mode === 'total' ? pre.total : null)
-        if (pre.mode === 'monthly' && pre.monthly != null) setBudget(pre.monthly)
-        setCashCents(pre.cash)
-        if (pre.land && pre.mode) setAsk('result')
-      }
       return
     }
     if (loadedDesignId.current && loadedDesignId.current !== id) setAsk('zip')
@@ -385,9 +345,9 @@ function Stepper({ step, design }: { step: number; design: Design | null }) {
       {STEP_NAMES.map((name, i) => {
         const n = i + 1
         const reachable = design && n <= Math.max(design.current_step, step)
-        const inner = <><i>0{n}</i>{name}</>
+        const inner = <><i>0{n}</i><Marker name={JOURNEY[i].marker} size={20} />{name}</>
         return (
-          <li key={name} className={n === step ? 'on' : n < step ? 'done' : ''} aria-current={n === step ? 'step' : undefined}>
+          <li key={name} className={`tone-${JOURNEY[i].tone}${n === step ? ' on' : n < step ? ' done' : ''}`} aria-current={n === step ? 'step' : undefined}>
             {reachable ? <Link to={`/design/${design!.id}/step/${n}`}>{inner}</Link> : <span>{inner}</span>}
           </li>
         )

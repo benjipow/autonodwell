@@ -213,7 +213,7 @@ export function FloorPlan({ planKey, className }: { planKey: string; className?:
                   const clip = `${uid}-${fi}-${ri}`
                   return (
                     <g key={`${r.label}-${r.x}-${r.y}`}>
-                      <rect x={x} y={y} width={w} height={h} fill="none" stroke="var(--bone)" strokeWidth={1.2} strokeDasharray={r.open ? '6 4' : undefined} />
+                      <rect x={x} y={y} width={w} height={h} fill="none" stroke="var(--cassis)" strokeWidth={1.2} strokeDasharray={r.open ? '6 4' : undefined} />
                       <clipPath id={clip}><rect x={x + 2} y={y + 2} width={Math.max(0, w - 4)} height={Math.max(0, h - 4)} /></clipPath>
                       <g clipPath={`url(#${clip})`}>
                         <RoomLabel x={x} y={y} w={w} h={h} label={r.label} />
@@ -221,9 +221,9 @@ export function FloorPlan({ planKey, className }: { planKey: string; className?:
                     </g>
                   )
                 })}
-                <polygon points={outline.map(([x, y]) => `${ox + u(x)},${u(y)}`).join(' ')} fill="none" stroke="var(--bone)" strokeWidth={3} />
+                <polygon points={outline.map(([x, y]) => `${ox + u(x)},${u(y)}`).join(' ')} fill="none" stroke="var(--cassis)" strokeWidth={3} />
                 {floor.entry && (
-                  <line x1={ox + u(floor.entry.x1)} y1={u(floor.entry.y1)} x2={ox + u(floor.entry.x2)} y2={u(floor.entry.y2)} stroke="var(--stake)" strokeWidth={4} strokeLinecap="butt" />
+                  <line x1={ox + u(floor.entry.x1)} y1={u(floor.entry.y1)} x2={ox + u(floor.entry.x2)} y2={u(floor.entry.y2)} stroke="var(--orange)" strokeWidth={4} strokeLinecap="butt" />
                 )}
                 {floor.name && (
                   <text x={ox + u(floor.w) / 2} y={u(floor.h) + 14} textAnchor="middle" className="plan-label" fontSize={FONT} letterSpacing="0.08em">{floor.name}</text>
@@ -246,22 +246,22 @@ export function HousePreview({ siding = '#c9a77c', porch = false, solar = false,
   return (
     <svg viewBox="0 0 300 170" className="house" role="img" aria-label="Exterior preview (illustrative)">
       <line x1="10" y1="150" x2="290" y2="150" stroke="var(--line-strong)" />
-      <path d={`M${x0 - 10} 78 L150 28 L${x0 + w + 10} 78 Z`} fill="#1d2020" stroke="var(--bone)" strokeWidth="1.4" />
+      <path d={`M${x0 - 10} 78 L150 28 L${x0 + w + 10} 78 Z`} fill="var(--cassis)" stroke="var(--cassis)" strokeWidth="1.4" />
       {solar && [0, 1, 2].map((i) => (
-        <path key={i} d={`M${160 + i * 18} ${40 + i * 7} l16 8 l0 9 l-16 -8 z`} fill="#26343f" stroke="#7aa0b8" strokeWidth=".6" />
+        <path key={i} d={`M${160 + i * 18} ${40 + i * 7} l16 8 l0 9 l-16 -8 z`} fill="var(--ground)" stroke="var(--cassis)" strokeWidth=".6" />
       ))}
-      <rect x={x0} y="78" width={w} height="72" fill={siding} stroke="var(--bone)" strokeWidth="1.4" />
+      <rect x={x0} y="78" width={w} height="72" fill={siding} stroke="var(--cassis)" strokeWidth="1.4" />
       {Array.from({ length: Math.floor(w / 8) }).map((_, i) => (
         <line key={i} x1={x0 + 4 + i * 8} y1="80" x2={x0 + 4 + i * 8} y2="148" stroke="rgba(0,0,0,.12)" />
       ))}
-      <rect x="140" y="108" width="20" height="42" fill="var(--stake)" />
-      <rect x={x0 + 14} y="94" width="26" height="20" fill="#cfd8d6" stroke="#0c0d0d" />
-      <rect x={x0 + w - 40} y="94" width="26" height="20" fill="#cfd8d6" stroke="#0c0d0d" />
+      <rect x="140" y="108" width="20" height="42" fill="var(--orange)" />
+      <rect x={x0 + 14} y="94" width="26" height="20" fill="var(--panel)" stroke="var(--cassis)" />
+      <rect x={x0 + w - 40} y="94" width="26" height="20" fill="var(--panel)" stroke="var(--cassis)" />
       {porch && (<g>
-        <path d={`M110 100 L190 100 L196 108 L104 108 Z`} fill="#2a2b2b" stroke="var(--bone)" strokeWidth="1" />
-        <line x1="112" y1="108" x2="112" y2="150" stroke="var(--bone)" strokeWidth="2" />
-        <line x1="188" y1="108" x2="188" y2="150" stroke="var(--bone)" strokeWidth="2" />
-        <rect x="100" y="148" width="100" height="4" fill="var(--bone)" />
+        <path d={`M110 100 L190 100 L196 108 L104 108 Z`} fill="var(--cassis)" stroke="var(--cassis)" strokeWidth="1" />
+        <line x1="112" y1="108" x2="112" y2="150" stroke="var(--cassis)" strokeWidth="2" />
+        <line x1="188" y1="108" x2="188" y2="150" stroke="var(--cassis)" strokeWidth="2" />
+        <rect x="100" y="148" width="100" height="4" fill="var(--cassis)" />
       </g>)}
     </svg>
   )
