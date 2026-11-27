@@ -57,7 +57,13 @@ export async function onRequestPost({ request, env }) {
     }),
   });
 
-  if (!res.ok) return json({ ok: false, error: "send_failed" }, 502);
+  if (!res.ok) {
+    // Resend's reason (e.g. domain not verified, key restricted, invalid key). Never logs the key.
+    let reason = "";
+    try { reason = (await res.text()).slice(0, 300); } catch {}
+    console.error(`Resend refused the inquiry email: ${res.status} ${reason} (from: ${env.INQUIRY_FROM})`);
+    return json({ ok: false, error: "send_failed" }, 502);
+  }
   return json({ ok: true });
 }
 

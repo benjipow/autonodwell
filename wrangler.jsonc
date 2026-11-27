@@ -9,5 +9,7 @@
     "binding": "ASSETS"
   },
   // Keep the variables set in the dashboard (INQUIRY_TO, INQUIRY_FROM) when deploying.
-  "keep_vars": true
+  "keep_vars": true,
+  // Worker logs (Observability → Logs), so a refused form email shows Resend's reason.
+  "observability": { "enabled": true }
 }
