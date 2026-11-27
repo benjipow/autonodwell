@@ -79,7 +79,7 @@ export default function App() {
       </main>
       <footer className="foot">
         <div className="wrap">
-          <p>Autonodwell is in pre-commercial development. Homes, prices, financing, sites and timelines shown are concepts and estimates, not offers. A preliminary affordability estimate is not mortgage preapproval.</p>
+          <p>Autonodwell is in pre-commercial development. Homes, prices, financing, sites and timelines shown are concepts and estimates, not offers. A preliminary affordability estimate is not mortgage preapproval or a loan offer. Autonodwell is not a lender or mortgage broker.</p>
           <div className="mono">© 2026 Autonodwell · <a className="link" href={privacyUrl}>Privacy policy</a> · <button type="button" className="link" onClick={reopenConsent}>Privacy choices</button></div>
         </div>
       </footer>

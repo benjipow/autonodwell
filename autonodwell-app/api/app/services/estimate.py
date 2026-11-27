@@ -13,7 +13,8 @@ from sqlalchemy.orm import Session
 from ..models import AssumptionSet, HomeModel, Market, Option, PathStage, PricingMode, ZipLandValue, ZipPrefix
 
 DISCLAIMER = (
-    "Estimate, not a quote. A preliminary affordability estimate is not mortgage preapproval. "
+    "Estimate, not a quote. A preliminary affordability estimate is not mortgage preapproval or a loan offer. "
+    "Rates, terms and payments shown are examples only; your actual rate, APR, fees and eligibility come from your lender. "
     "Prices, land, permits and financing shown are planning assumptions and will change."
 )
 CONSTRUCTION_SOURCE = "DoD area cost factors, 2026"

@@ -367,9 +367,9 @@ function Summary({ model, styleName, stories, estimate, step, saving, onNext, on
       <div className="summary-body">
         <span className="mono">{model ? homeLabel(model.name, styleName, stories) : 'Your home'}</span>
         <div className="sum-row"><span>Est. total cost</span><b>{usd(estimate?.total_cents)}</b></div>
-        <div className="sum-row big"><span>Est. monthly</span><b>{usd(estimate?.monthly.total_cents)}<small>/mo</small></b></div>
+        <div className="sum-row big"><span>Example monthly</span><b>{usd(estimate?.monthly.total_cents)}<small>/mo</small></b></div>
         {fit && <span className={`pill ${fit.tone}`}>{fit.label} · {usd(estimate!.budget.monthly_budget_cents)}/mo</span>}
-        <p className="fine">Estimate, not a quote. Includes est. taxes and insurance.</p>
+        <p className="fine">Estimate, not a quote or loan offer. Example payment includes est. taxes and insurance.</p>
       </div>
       <div className="summary-actions">
         {onBack && <button className="btn ghost" onClick={onBack}>Back</button>}
@@ -864,14 +864,14 @@ function StepUnderstand({ design, onSubmitted }: { design: Design; onSubmitted: 
           <div><span>Principal + interest</span><b>{usd(e.monthly.principal_interest_cents)}</b></div>
           <div><span>Est. property taxes</span><b>{usd(e.monthly.taxes_cents)}</b></div>
           <div><span>Est. insurance</span><b>{usd(e.monthly.insurance_cents)}</b></div>
-          <div className="total"><span>Est. monthly ownership</span><b>{usd(e.monthly.total_cents)}</b></div>
+          <div className="total"><span>Example monthly ownership</span><b>{usd(e.monthly.total_cents)}</b></div>
         </div>
         <div className="est-table">
           <div className="head"><span className="mono">Cash & financing</span></div>
           <div><span>Down payment ({e.assumptions.down_payment_pct as number}%)</span><b>{usd(e.down_payment_cents)}</b></div>
           <div><span>Est. cash needed incl. closing</span><b>{usd(e.cash_needed_cents)}</b></div>
           <div><span>Loan amount</span><b>{usd(e.loan_cents)}</b></div>
-          <div><span>Rate · term (assumed)</span><b>{e.assumptions.interest_rate_pct as number}% · {e.assumptions.term_years as number} yr</b></div>
+          <div><span>Example rate · term (not an offer)</span><b>{e.assumptions.interest_rate_pct as number}% · {e.assumptions.term_years as number} yr</b></div>
         </div>
       </div>
       <p className="note">{e.disclaimer} Assumption set: {e.assumptions.name as string}. Location data: {e.market.name}.</p>
@@ -910,10 +910,10 @@ function StepUnderstand({ design, onSubmitted }: { design: Design; onSubmitted: 
       )}
 
       <div className="finance">
-        <span className="mono accent">Next · Qualify</span>
+        <span className="mono accent">Next · Financing</span>
         <h3>Financing &amp; lenders</h3>
-        <p>When you’re ready, connect with participating lenders or other qualified financing providers.</p>
-        <ul><li>A preliminary affordability estimate is not mortgage preapproval.</li><li>A calculator is not a credit decision. Lenders make their own.</li></ul>
+        <p>When you’re ready, we can share contact information for licensed lenders and other financing providers. Autonodwell is not a lender or mortgage broker and doesn’t make credit decisions.</p>
+        <ul><li>This affordability estimate is an illustration. It is not mortgage preapproval or a loan offer.</li><li>Rates, terms and payments shown are examples only. Your actual rate, APR, fees and eligibility come from your lender.</li><li>Lenders make their own credit decisions.</li></ul>
       </div>
       <SignInDialog open={signIn} reason="Create a free account so your consultant can see this design and you can come back to it." onClose={(ok) => { setSignIn(false); if (ok) setShowForm(true) }} />
     </>
