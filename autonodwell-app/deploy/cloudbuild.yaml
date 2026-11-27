@@ -46,8 +46,8 @@ steps:
       - --image=${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO}/api:${_TAG}
       - --service-account=${_RUNTIME_SA}@$PROJECT_ID.iam.gserviceaccount.com
       - --add-cloudsql-instances=$PROJECT_ID:${_REGION}:${_SQL_INSTANCE}
-      - --set-env-vars=ENV=production,AUTH_MODE=firebase,FIREBASE_PROJECT_ID=$PROJECT_ID,CRM_PROVIDER=${_CRM_PROVIDER},CORS_ORIGINS=,APP_BASE_URL=https://app.autonodwell.com
-      - --set-secrets=DATABASE_URL=DATABASE_URL:latest,ADMIN_EMAILS=ADMIN_EMAILS:latest,CRM_WEBHOOK_URL=CRM_WEBHOOK_URL:latest
+      - --set-env-vars=ENV=production,AUTH_MODE=firebase,FIREBASE_PROJECT_ID=$PROJECT_ID,CRM_PROVIDER=${_CRM_PROVIDER},CORS_ORIGINS=,APP_BASE_URL=https://app.autonodwell.com,LEAD_NOTIFY_FROM=Autonodwell <inquiries@autonodwell.com>
+      - --set-secrets=DATABASE_URL=DATABASE_URL:latest,ADMIN_EMAILS=ADMIN_EMAILS:latest,CRM_WEBHOOK_URL=CRM_WEBHOOK_URL:latest,RESEND_API_KEY=RESEND_API_KEY:latest,LEAD_NOTIFY_TO=LEAD_NOTIFY_TO:latest
       - --allow-unauthenticated   # the API checks Firebase tokens itself; public endpoints are catalog/estimate
       - --min-instances=0
       - --max-instances=10

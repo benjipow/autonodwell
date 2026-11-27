@@ -10,7 +10,7 @@ from ..auth import current_user
 from ..db import get_db
 from ..models import Design, DesignStatus, Lead, LeadActivity, LeadStatus, User
 from ..schemas import DesignIn, DesignOut, DesignPatch, DesignSummary, MeOut, MePatch, SubmitIn
-from ..services import crm
+from ..services import crm, notify
 from ..services.designs import checked_style_stories, design_out, estimate_for, get_home_model, normalize_selections, resolve_home_model
 
 router = APIRouter(tags=["customer"])
@@ -201,6 +201,8 @@ def submit_design(
     db.add(LeadActivity(lead_id=lead.id, actor_id=user.id, kind="created" if is_new else "resubmitted",
                         body="Customer requested a consultant review", data={"estimate_total_cents": e["total_cents"]}))
     ev = crm.enqueue_lead_sync(db, lead, "created" if is_new else "resubmitted")
+    alert = crm.build_payload(lead)
     db.commit()
     background.add_task(crm.run_in_background, ev.id)
+    background.add_task(notify.send_lead_email, alert, is_new)
     return design_out(db, d)

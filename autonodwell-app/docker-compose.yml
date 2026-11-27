@@ -14,6 +14,8 @@ services:
       AUTH_MODE: dev
       ADMIN_EMAILS: admin@example.com
       CRM_PROVIDER: ${CRM_PROVIDER:-none}
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
+      LEAD_NOTIFY_TO: ${LEAD_NOTIFY_TO:-}
       GHL_PRIVATE_TOKEN: ${GHL_PRIVATE_TOKEN:-}
       GHL_LOCATION_ID: ${GHL_LOCATION_ID:-}
       PORT: "8000"

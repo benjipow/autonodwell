@@ -38,12 +38,23 @@ class Settings(BaseSettings):
     crm_webhook_url: str | None = None
     crm_webhook_secret: str | None = None
 
+    # Lead alert emails through Resend (same account as the website's inquiry form).
+    # Off unless RESEND_API_KEY and LEAD_NOTIFY_TO are set. LEAD_NOTIFY_FROM must be on a
+    # domain verified in Resend (autonodwell.com, the same as the website).
+    resend_api_key: str | None = None
+    lead_notify_to: str | None = None  # comma-separated; keep in Secret Manager, never in code
+    lead_notify_from: str = "Autonodwell <inquiries@autonodwell.com>"
+
     # Public URL of the web app, used for deep links sent to the CRM.
     app_base_url: str = "http://localhost:5173"
 
     @property
     def admin_email_set(self) -> set[str]:
         return {e.strip().lower() for e in self.admin_emails.split(",") if e.strip()}
+
+    @property
+    def lead_notify_list(self) -> list[str]:
+        return [e.strip() for e in (self.lead_notify_to or "").split(",") if e.strip()]
 
     @property
     def cors_origin_list(self) -> list[str]:

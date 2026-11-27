@@ -18,6 +18,7 @@ Firebase Auth / Identity Platform · Alembic migrations · Firebase Hosting (`/a
 api/        FastAPI app, SQLAlchemy models, Alembic migrations, tests
 web/        React web app (customer flow, My homes, Sales console, Admin)
 deploy/     Cloud Build pipeline (build → migrate → deploy API → deploy web)
+website/    Marketing site for autonodwell.com (static, hosted on Cloudflare Pages; see website/README.md)
 docs/       ARCHITECTURE.md — data model, decisions, roadmap
 ```
 
@@ -53,6 +54,7 @@ Local mode uses **dev sign-in** (no Firebase needed): any email works.
 | Give a teammate sales access | They sign in once → Admin › Team → set role to Sales |
 | Change the database schema | Edit `api/app/models.py` → `alembic revision --autogenerate -m "what changed"` → review the file → commit. CI fails if models and migrations disagree. |
 | Change an API endpoint | Edit `api/app/schemas.py`/routers → `cd web && npm run gen:api` to regenerate the typed client. CI fails if it's stale. |
+| Lead alert emails | When a customer sends a design to a consultant, the API emails the team through Resend (`api/app/services/notify.py`), alongside the CRM sync. Off unless `RESEND_API_KEY` and `LEAD_NOTIFY_TO` are set. |
 | Switch CRM | Set `CRM_PROVIDER=ghl`, `webhook` (Zapier/Make/n8n) or `none`. To add HubSpot etc., add an adapter in `api/app/services/crm/adapters.py`. |
 | Export leads | Sales console → Export CSV (respects the current filters) |
 
@@ -66,6 +68,8 @@ Run these with the founder's GCP access. Region assumed `us-central1`.
    - `DATABASE_URL` = `postgresql+psycopg://app:PASSWORD@/autonodwell?host=/cloudsql/PROJECT:us-central1:autonodwell-db`
    - `GHL_PRIVATE_TOKEN`, `GHL_LOCATION_ID`: from GoHighLevel › Settings › Private Integrations. The token needs the contacts and opportunities scopes.
    - `ADMIN_EMAILS` = the founder's email
+   - `RESEND_API_KEY` = the same Resend key the website uses (Resend › API Keys). Lead alerts are sent from `inquiries@autonodwell.com`: autonodwell.com is the domain verified in Resend, the same sender the website uses.
+   - `LEAD_NOTIFY_TO` = who gets an email when a customer sends a design to a consultant (comma-separated). Kept as a secret so the address never sits in the repo.
 4. **Service account** `autonodwell-api` with these roles: Cloud SQL Client, Secret Manager Secret Accessor, Firebase Authentication Admin.
 5. **Artifact Registry** Docker repo named `autonodwell`.
 6. **Firebase:** add Firebase to the GCP project. Enable Authentication with the providers **Anonymous**, **Google** and **Email/Password**. Add `app.autonodwell.com` to the authorized domains.
