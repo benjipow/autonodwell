@@ -6,7 +6,9 @@
   "compatibility_date": "2026-11-01",
   "assets": {
     "directory": ".",
-    "binding": "ASSETS"
+    "binding": "ASSETS",
+    // Run worker.js before serving files, so autonodwell.com can redirect to www.
+    "run_worker_first": true
   },
   // Keep the variables set in the dashboard (INQUIRY_TO, INQUIRY_FROM) when deploying.
   "keep_vars": true,
